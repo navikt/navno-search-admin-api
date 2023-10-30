@@ -1,2 +1,2 @@
-# navno-search-api
+# navno-search-admin-api
 Søkebackend for nav.no

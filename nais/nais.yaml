@@ -1,7 +1,7 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: navno-search-api
+  name: navno-search-admin-api
   namespace: personbruker
   labels:
     team: personbruker
@@ -41,7 +41,7 @@ spec:
      - "{{this}}"
          {{/each}}
   envFrom:
-    - secret: navno-search-api-secret
+    - secret: navno-search-admin-api-secret
   secureLogs:
     enabled: true
   resources:
