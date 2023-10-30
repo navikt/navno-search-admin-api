@@ -1,12 +1,10 @@
 package no.nav.navnosearchadminapi.utils
 
-import no.nav.navnosearchadminapi.admin.consumer.kodeverk.dto.KodeverkResponse
-import no.nav.navnosearchadminapi.admin.dto.inbound.ContentDto
-import no.nav.navnosearchadminapi.admin.dto.inbound.ContentMetadata
-import no.nav.navnosearchadminapi.common.model.ContentDao
-import no.nav.navnosearchadminapi.common.model.MultiLangField
-import no.nav.navnosearchadminapi.common.utils.ENGLISH
-import no.nav.navnosearchadminapi.common.utils.NORWEGIAN_BOKMAAL
+import no.nav.navnosearchadminapi.consumer.kodeverk.dto.KodeverkResponse
+import no.nav.navnosearchadminapi.dto.inbound.ContentDto
+import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata
+import no.nav.navnosearchadminapi.model.ContentDao
+import no.nav.navnosearchadminapi.model.MultiLangField
 import org.springframework.data.elasticsearch.core.suggest.Completion
 import java.time.ZonedDateTime
 

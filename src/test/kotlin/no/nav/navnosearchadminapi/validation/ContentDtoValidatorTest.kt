@@ -1,7 +1,7 @@
 package no.nav.navnosearchadminapi.validation
 
-import no.nav.navnosearchadminapi.admin.consumer.kodeverk.KodeverkConsumer
-import no.nav.navnosearchadminapi.admin.validation.ContentDtoValidator
+import no.nav.navnosearchadminapi.consumer.kodeverk.KodeverkConsumer
+import no.nav.navnosearchadminapi.service.validation.ContentDtoValidator
 import no.nav.navnosearchadminapi.utils.dummyContentDto
 import no.nav.navnosearchadminapi.utils.mockedKodeverkResponse
 import org.assertj.core.api.Assertions.assertThat

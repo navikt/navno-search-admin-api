@@ -5,8 +5,8 @@ import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
-import no.nav.navnosearchadminapi.admin.dto.outbound.SaveContentResponse
-import no.nav.navnosearchadminapi.common.exception.handler.ErrorResponse
+import no.nav.navnosearchadminapi.dto.outbound.SaveContentResponse
+import no.nav.navnosearchadminapi.exception.handler.ErrorResponse
 import no.nav.navnosearchadminapi.utils.TEAM_NAME
 import no.nav.navnosearchadminapi.utils.dummyContentDto
 import no.nav.navnosearchadminapi.utils.mockedKodeverkResponse

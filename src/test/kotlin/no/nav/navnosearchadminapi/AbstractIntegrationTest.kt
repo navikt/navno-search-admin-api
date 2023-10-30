@@ -1,6 +1,6 @@
 package no.nav.navnosearchadminapi
 
-import no.nav.navnosearchadminapi.admin.repository.ContentRepository
+import no.nav.navnosearchadminapi.repository.ContentRepository
 import no.nav.navnosearchadminapi.utils.initialTestData
 import org.junit.jupiter.api.extension.ExtendWith
 import org.opensearch.testcontainers.OpensearchContainer
@@ -15,8 +15,6 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.util.MultiValueMapAdapter
-import org.springframework.web.util.UriComponentsBuilder
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.Duration
@@ -41,15 +39,6 @@ abstract class AbstractIntegrationTest {
     fun host() = "http://localhost:$serverPort"
 
     fun indexCount() = repository.count()
-
-    fun searchUrl(term: String, page: Int = 0, filters: Map<String, List<String>> = emptyMap()): String {
-        return UriComponentsBuilder.fromHttpUrl(host())
-            .path("/content/search")
-            .queryParam("term", term)
-            .queryParam("page", page)
-            .queryParams(MultiValueMapAdapter(filters))
-            .build().toUriString()
-    }
 
     fun setupIndex() {
         repository.deleteAll()
