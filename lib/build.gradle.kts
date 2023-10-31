@@ -42,7 +42,7 @@ publishing {
         maven {
             url = uri("https://maven.pkg.github.com/navikt/navno-search-admin-api")
             credentials {
-                username = "x-access-token"
+                username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
             }
         }
