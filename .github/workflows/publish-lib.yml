@@ -5,10 +5,11 @@ on:
       - main
     paths:
       - 'lib/src/main/**'
-
 jobs:
   publish-lib:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Sjekk ut koden
         uses: actions/checkout@v3
