@@ -40,7 +40,7 @@ publishing {
     repositories{
         mavenLocal()
         maven {
-            url = uri("https://maven.pkg.github.com/navikt/tms-utkast")
+            url = uri("https://maven.pkg.github.com/navikt/navno-search-admin-api")
             credentials {
                 username = "x-access-token"
                 password = System.getenv("GITHUB_TOKEN")
