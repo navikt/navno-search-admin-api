@@ -1,5 +1,5 @@
 FROM navikt/java:17
-COPY build/libs/navno-search-admin-api.jar /app/app.jar
+COPY app/build/libs/app.jar /app/app.jar
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75 \
                -XX:+HeapDumpOnOutOfMemoryError \
                -XX:HeapDumpPath=/oom-dump.hprof"
