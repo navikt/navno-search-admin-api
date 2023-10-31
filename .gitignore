@@ -7,4 +7,4 @@ build
 *.iws
 .DS_Store
 
-/src/main/resources/application-local.yml
+/app/src/main/resources/application-local.yml
