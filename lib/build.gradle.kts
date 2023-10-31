@@ -50,8 +50,8 @@ publishing {
 
     publications {
         create<MavenPublication>("gpr") {
-            groupId = "no.nav.tms.utkast"
-            artifactId = "builder"
+            groupId = "no.nav.navnosearchadminapi"
+            artifactId = "common"
             version = libraryVersion
             from(components["java"])
         }
