@@ -1,4 +1,4 @@
-package no.nav.navnosearchadminapi.common.utils
+package no.nav.navnosearchadminapi.common.constants
 
 val NORWEGIAN = "no"
 val NORWEGIAN_BOKMAAL = "nb"

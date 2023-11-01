@@ -1,6 +1,6 @@
 package no.nav.navnosearchadminapi.utils
 
-import no.nav.navnosearchadminapi.service.validation.enums.DescriptorProvider
+import no.nav.navnosearchadminapi.common.enums.DescriptorProvider
 
 inline fun <reified T> enumContains(name: String): Boolean where T : Enum<T>, T : DescriptorProvider {
     return enumValues<T>().any { it.descriptor == name }

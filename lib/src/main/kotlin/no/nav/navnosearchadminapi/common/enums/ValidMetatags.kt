@@ -1,4 +1,4 @@
-package no.nav.navnosearchadminapi.service.validation.enums
+package no.nav.navnosearchadminapi.common.enums
 
 enum class ValidMetatags(override val descriptor: String) : DescriptorProvider {
     INFORMASJON("informasjon"),

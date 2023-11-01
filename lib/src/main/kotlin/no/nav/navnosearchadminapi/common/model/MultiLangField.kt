@@ -1,8 +1,8 @@
 package no.nav.navnosearchadminapi.common.model
 
-import no.nav.navnosearchadminapi.common.utils.ENGLISH
-import no.nav.navnosearchadminapi.common.utils.norwegianLanguageCodes
-import no.nav.navnosearchadminapi.common.utils.supportedLanguages
+import no.nav.navnosearchadminapi.common.constants.ENGLISH
+import no.nav.navnosearchadminapi.common.constants.norwegianLanguageCodes
+import no.nav.navnosearchadminapi.common.constants.supportedLanguages
 import org.springframework.data.elasticsearch.annotations.Field
 import org.springframework.data.elasticsearch.annotations.FieldType
 

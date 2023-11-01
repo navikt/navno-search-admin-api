@@ -1,14 +1,14 @@
 package no.nav.navnosearchadminapi.service.mapper
 
+import no.nav.navnosearchadminapi.common.constants.ENGLISH
+import no.nav.navnosearchadminapi.common.constants.NORWEGIAN
+import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
+import no.nav.navnosearchadminapi.common.constants.norwegianLanguageCodes
+import no.nav.navnosearchadminapi.common.constants.supportedLanguages
+import no.nav.navnosearchadminapi.common.enums.ValidMetatags
 import no.nav.navnosearchadminapi.common.model.ContentDao
 import no.nav.navnosearchadminapi.common.model.MultiLangField
-import no.nav.navnosearchadminapi.common.utils.ENGLISH
-import no.nav.navnosearchadminapi.common.utils.NORWEGIAN
-import no.nav.navnosearchadminapi.common.utils.NORWEGIAN_BOKMAAL
-import no.nav.navnosearchadminapi.common.utils.norwegianLanguageCodes
-import no.nav.navnosearchadminapi.common.utils.supportedLanguages
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
-import no.nav.navnosearchadminapi.service.validation.enums.ValidMetatags
 import no.nav.navnosearchadminapi.utils.createInternalId
 import org.springframework.data.elasticsearch.core.suggest.Completion
 import org.springframework.stereotype.Component

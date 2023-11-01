@@ -1,9 +1,9 @@
 package no.nav.navnosearchadminapi.utils
 
+import no.nav.navnosearchadminapi.common.constants.ENGLISH
+import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
 import no.nav.navnosearchadminapi.common.model.ContentDao
 import no.nav.navnosearchadminapi.common.model.MultiLangField
-import no.nav.navnosearchadminapi.common.utils.ENGLISH
-import no.nav.navnosearchadminapi.common.utils.NORWEGIAN_BOKMAAL
 import no.nav.navnosearchadminapi.consumer.kodeverk.dto.KodeverkResponse
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata

@@ -1,4 +1,4 @@
-package no.nav.navnosearchadminapi.service.validation.enums
+package no.nav.navnosearchadminapi.common.enums
 
 enum class ValidAudiences(override val descriptor: String) : DescriptorProvider {
     PRIVATPERSON("privatperson"),
