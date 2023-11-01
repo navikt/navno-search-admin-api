@@ -19,3 +19,9 @@ management:
 kodeverk:
   spraak:
     url: ${KODEVERK_SPRAAK_URL}
+
+no.nav.security.jwt:
+  issuer:
+    azuread:
+      accepted-audience: ${AZURE_APP_CLIENT_ID}
+      discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}

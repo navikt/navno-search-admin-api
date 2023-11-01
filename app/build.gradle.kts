@@ -28,6 +28,7 @@ repositories {
 dependencies {
     val versions = object {
         val coroutines = "1.7.3"
+        val navSecurity = "3.1.7"
         val logstash = "7.4"
         val opensearch = "1.2.0"
         val opensearchTestcontainers = "2.0.0"
@@ -35,6 +36,7 @@ dependencies {
     }
 
     implementation(project(":lib"))
+    implementation("no.nav.security:token-validation-spring:${versions.navSecurity}")
     implementation("org.opensearch.client:spring-data-opensearch-starter:${versions.opensearch}") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }

@@ -29,6 +29,9 @@ spec:
   openSearch:
     access: admin
     instance: navno-search
+  azure:
+    application:
+      enabled: true
   accessPolicy:
     outbound:
       external:
