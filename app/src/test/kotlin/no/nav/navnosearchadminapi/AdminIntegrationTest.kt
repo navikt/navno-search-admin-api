@@ -40,7 +40,8 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
 
     @Test
     fun testFetchingContent() {
-        val response = restTemplate.getForEntity<Map<String, Any>>("${host()}/content/$TEAM_NAME?page=0")
+        val response =
+            restTemplate.getForEntity<Map<String, Any>>("${host()}/content/$TEAM_NAME?page=0", validAuthHeader())
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(response.body?.get("totalElements")).isEqualTo(10)
@@ -66,7 +67,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(dummyContentDto(id = null))),
+            HttpEntity(listOf(dummyContentDto(id = null)), validAuthHeader()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
@@ -80,7 +81,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(content)),
+            HttpEntity(listOf(content), validAuthHeader()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
@@ -94,7 +95,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(dummyContentDto(language = "unsupported"))),
+            HttpEntity(listOf(dummyContentDto(language = "unsupported")), validAuthHeader()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
@@ -105,7 +106,11 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
     fun testDeletingContent() {
         val deletedId = "1"
         val response: ResponseEntity<String> =
-            restTemplate.exchange("${host()}/content/$TEAM_NAME/$deletedId", HttpMethod.DELETE)
+            restTemplate.exchange(
+                "${host()}/content/$TEAM_NAME/$deletedId",
+                HttpMethod.DELETE,
+                HttpEntity<Any>(validAuthHeader()),
+            )
 
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
@@ -118,7 +123,11 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val deletedId = "1"
         val teamName = "missing-team"
         val response: ResponseEntity<ErrorResponse> =
-            restTemplate.exchange("${host()}/content/$teamName/$deletedId", HttpMethod.DELETE)
+            restTemplate.exchange(
+                "${host()}/content/$teamName/$deletedId",
+                HttpMethod.DELETE,
+                HttpEntity<Any>(validAuthHeader()),
+            )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
         assertThat(response.body?.message).isEqualTo("Dokument med ekstern id $deletedId finnes ikke for team $teamName")
