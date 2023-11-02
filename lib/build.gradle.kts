@@ -2,11 +2,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     val versions = object {
-        val kotlin = "1.9.0"
         val versions = "0.49.0"
     }
 
-    kotlin("jvm") version (versions.kotlin)
+    kotlin("jvm")
     id("com.github.ben-manes.versions") version (versions.versions) // ./gradlew dependencyUpdates to check for new versions
     `java-library`
     `maven-publish`
