@@ -43,12 +43,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("net.logstash.logback:logstash-logback-encoder:${versions.logstash}")
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+    testImplementation("no.nav.security:token-validation-spring-test:${versions.navSecurity}")
     testImplementation("org.opensearch.client:spring-data-opensearch-test-autoconfigure:${versions.opensearch}") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }

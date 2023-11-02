@@ -53,7 +53,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(content)),
+            HttpEntity(listOf(content), validAuthHeader()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
