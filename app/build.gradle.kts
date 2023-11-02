@@ -70,6 +70,7 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
     testLogging {
+        testLogging.showStandardStreams = true
         exceptionFormat = TestExceptionFormat.FULL
         events("passed", "skipped", "failed")
     }
