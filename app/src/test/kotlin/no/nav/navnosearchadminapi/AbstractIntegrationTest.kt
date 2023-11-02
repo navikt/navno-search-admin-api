@@ -8,6 +8,8 @@ import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.extension.ExtendWith
 import org.opensearch.testcontainers.OpensearchContainer
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.util.TestPropertyValues
@@ -32,6 +34,8 @@ import java.time.Duration
 @AutoConfigureWireMock(port = 0)
 @EnableMockOAuth2Server
 abstract class AbstractIntegrationTest {
+
+    val logger: Logger = LoggerFactory.getLogger(AbstractIntegrationTest::class.java)
 
     @Autowired
     lateinit var restTemplate: TestRestTemplate
@@ -61,7 +65,7 @@ abstract class AbstractIntegrationTest {
     }
 
     private fun token(issuerId: String, subject: String, audience: String): String {
-        return server.issueToken(
+        val token = server.issueToken(
             issuerId,
             "theclientid",
             DefaultOAuth2TokenCallback(
@@ -72,7 +76,9 @@ abstract class AbstractIntegrationTest {
                 emptyMap(),
                 3600
             )
-        ).serialize()
+        )
+        logger.info("Issuer: ${token.jwtClaimsSet.issuer}")
+        return token.serialize()
     }
 
     internal class Initializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
