@@ -14,7 +14,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.web.client.exchange
-import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders.CONTENT_TYPE
 import org.springframework.http.HttpMethod
@@ -40,8 +39,11 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
 
     @Test
     fun testFetchingContent() {
-        val response =
-            restTemplate.getForEntity<Map<String, Any>>("${host()}/content/$TEAM_NAME?page=0", validAuthHeader())
+        val response: ResponseEntity<Map<String, Any>> = restTemplate.exchange(
+            "${host()}/content/$TEAM_NAME?page=0",
+            HttpMethod.GET,
+            HttpEntity<Any>(validAuthHeader()),
+        )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(response.body?.get("totalElements")).isEqualTo(10)

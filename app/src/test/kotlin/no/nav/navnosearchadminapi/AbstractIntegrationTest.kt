@@ -73,7 +73,7 @@ abstract class AbstractIntegrationTest {
                 subject,
                 JOSEObjectType.JWT.type,
                 listOf(audience),
-                emptyMap(),
+                mapOf("acr" to "Level4"),
                 3600
             )
         )
