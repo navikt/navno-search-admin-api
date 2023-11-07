@@ -1,4 +1,4 @@
-package no.nav.navnosearchadminapi
+package no.nav.navnosearchadminapi.integrationtests
 
 import com.nimbusds.jose.JOSEObjectType
 import no.nav.navnosearchadminapi.common.repository.ContentRepository

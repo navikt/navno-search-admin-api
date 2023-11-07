@@ -1,4 +1,4 @@
-package no.nav.navnosearchadminapi
+package no.nav.navnosearchadminapi.integrationtests
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse

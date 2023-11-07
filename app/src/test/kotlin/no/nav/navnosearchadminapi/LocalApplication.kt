@@ -1,12 +1,17 @@
 package no.nav.navnosearchadminapi
 
+import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
+import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchDataAutoConfiguration
-import org.springframework.boot.runApplication
+
 
 @SpringBootApplication(exclude = [ElasticsearchDataAutoConfiguration::class])
-class NavnoSearchAdminApiApplication
+@EnableMockOAuth2Server
+class LocalApplication
 
 fun main(args: Array<String>) {
-    runApplication<NavnoSearchAdminApiApplication>(*args)
+    val springApp = SpringApplication(LocalApplication::class.java)
+    springApp.setAdditionalProfiles("local")
+    springApp.run(*args)
 }
