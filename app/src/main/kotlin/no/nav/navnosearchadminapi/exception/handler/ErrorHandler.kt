@@ -21,7 +21,7 @@ class ErrorHandler {
     val logger: Logger = LoggerFactory.getLogger(ErrorHandler::class.java)
 
     @ExceptionHandler(value = [JwtTokenUnauthorizedException::class])
-    fun missingRequestParamHandler(
+    fun jwtTokenUnauthorizedHandler(
         ex: JwtTokenUnauthorizedException,
         request: HttpServletRequest
     ): ResponseEntity<ErrorResponse> {
