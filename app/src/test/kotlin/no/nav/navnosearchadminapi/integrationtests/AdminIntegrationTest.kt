@@ -120,15 +120,15 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
     }
 
     @Test
-    fun testSavingContentWithNonSupportedLanguage() {
+    fun testSavingContentWithInvalidLanguage() {
         val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(dummyContentDto(language = "unsupported")), authHeader()),
+            HttpEntity(listOf(dummyContentDto(language = "røverspråk")), authHeader()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(response.body!!.validationErrors["11"]!!.first()).isEqualTo("Ugyldig språkkode: unsupported. Må være tobokstavs språkkode fra kodeverk-api.")
+        assertThat(response.body!!.validationErrors["11"]!!.first()).isEqualTo("Ugyldig språkkode: røverspråk. Må være tobokstavs språkkode fra kodeverk-api.")
     }
 
     @Test
