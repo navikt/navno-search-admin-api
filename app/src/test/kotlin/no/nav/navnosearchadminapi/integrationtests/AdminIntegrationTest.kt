@@ -78,7 +78,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         assertThat(repository.existsById("$TEAM_NAME-${content.id}")).isTrue()
     }
 
-    @Test
+    /*@Test
     fun testSavingContentWithInvalidToken() {
         val content = dummyContentDto()
 
@@ -89,7 +89,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
-    }
+    }*/
 
     @Test
     fun testSavingContentWithMissingId() {

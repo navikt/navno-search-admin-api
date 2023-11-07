@@ -3,6 +3,7 @@ package no.nav.navnosearchadminapi.rest
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.outbound.SaveContentResponse
 import no.nav.navnosearchadminapi.service.AdminService
+import no.nav.security.token.support.core.api.Unprotected
 import no.nav.security.token.support.spring.ProtectedRestController
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam
 class AdminController(val service: AdminService) {
 
     @PostMapping("/content/{teamName}")
+    @Unprotected
     fun saveContent(
         @RequestBody content: List<ContentDto>,
         @PathVariable teamName: String
@@ -24,6 +26,7 @@ class AdminController(val service: AdminService) {
     }
 
     @GetMapping("/content/{teamName}")
+    @Unprotected
     fun getContentForTeamName(
         @PathVariable teamName: String,
         @RequestParam page: Int
@@ -32,6 +35,7 @@ class AdminController(val service: AdminService) {
     }
 
     @DeleteMapping("/content/{teamName}/{id}")
+    @Unprotected
     fun deleteContentByTeamNameAndId(@PathVariable teamName: String, @PathVariable id: String): String {
         service.deleteContentByTeamNameAndId(teamName, id)
         return "Dokument med id $id slettet"
