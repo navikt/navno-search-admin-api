@@ -1,6 +1,7 @@
-package no.nav.navnosearchadminapi
+package no.nav.navnosearchadminapi.integrationtests
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
@@ -14,7 +15,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.web.client.exchange
-import org.springframework.boot.test.web.client.getForEntity
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders.CONTENT_TYPE
 import org.springframework.http.HttpMethod
@@ -28,6 +28,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
 
     @BeforeEach
     fun setup() {
+        WireMock.reset()
         setupIndex()
         stubFor(
             get(urlPathMatching("/kodeverk")).willReturn(
@@ -40,10 +41,26 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
 
     @Test
     fun testFetchingContent() {
-        val response = restTemplate.getForEntity<Map<String, Any>>("${host()}/content/$TEAM_NAME?page=0")
+        val response: ResponseEntity<Map<String, Any>> = restTemplate.exchange(
+            "${host()}/content/$TEAM_NAME?page=0",
+            HttpMethod.GET,
+            HttpEntity<Any>(authHeader()),
+        )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(response.body?.get("totalElements")).isEqualTo(10)
+    }
+
+    @Test
+    fun testFetchingContentWithMissingRequestParam() {
+        val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
+            "${host()}/content/$TEAM_NAME",
+            HttpMethod.GET,
+            HttpEntity<Any>(authHeader()),
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
+        assertThat(response.body?.message).isEqualTo("Påkrevd request parameter mangler: page")
     }
 
     @Test
@@ -53,12 +70,25 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(content)),
+            HttpEntity(listOf(content), authHeader()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(indexCount()).isEqualTo(11L)
-        assertThat(!repository.existsById("$TEAM_NAME-${content.id}"))
+        assertThat(repository.existsById("$TEAM_NAME-${content.id}")).isTrue()
+    }
+
+    @Test
+    fun testSavingContentWithInvalidToken() {
+        val content = dummyContentDto()
+
+        val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
+            "${host()}/content/$TEAM_NAME",
+            HttpMethod.POST,
+            HttpEntity(listOf(content), authHeader(valid = false)),
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
     }
 
     @Test
@@ -66,7 +96,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(dummyContentDto(id = null))),
+            HttpEntity(listOf(dummyContentDto(id = null)), authHeader()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
@@ -80,7 +110,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(content)),
+            HttpEntity(listOf(content), authHeader()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
@@ -90,27 +120,53 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
     }
 
     @Test
-    fun testSavingContentWithNonSupportedLanguage() {
+    fun testSavingContentWithInvalidLanguage() {
         val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(dummyContentDto(language = "unsupported"))),
+            HttpEntity(listOf(dummyContentDto(language = "røverspråk")), authHeader()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(response.body!!.validationErrors["11"]!!.first()).isEqualTo("Ugyldig språkkode: unsupported. Må være tobokstavs språkkode fra kodeverk-api.")
+        assertThat(response.body!!.validationErrors["11"]!!.first()).isEqualTo("Ugyldig språkkode: røverspråk. Må være tobokstavs språkkode fra kodeverk-api.")
+    }
+
+    @Test
+    fun testSavingContentWithServerError() {
+        cacheManager.getCache("spraakkoder")?.clear()
+
+        stubFor(
+            get(urlPathMatching("/kodeverk")).willReturn(
+                aResponse().withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+            )
+        )
+
+        val content = dummyContentDto()
+
+        val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
+            "${host()}/content/$TEAM_NAME",
+            HttpMethod.POST,
+            HttpEntity(listOf(content), authHeader()),
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
+        assertThat(response.body?.message).isEqualTo("Ukjent feil")
     }
 
     @Test
     fun testDeletingContent() {
         val deletedId = "1"
         val response: ResponseEntity<String> =
-            restTemplate.exchange("${host()}/content/$TEAM_NAME/$deletedId", HttpMethod.DELETE)
+            restTemplate.exchange(
+                "${host()}/content/$TEAM_NAME/$deletedId",
+                HttpMethod.DELETE,
+                HttpEntity<Any>(authHeader()),
+            )
 
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(indexCount()).isEqualTo(9L)
-        assertThat(!repository.existsById("$TEAM_NAME-$deletedId"))
+        assertThat(repository.existsById("$TEAM_NAME-$deletedId")).isFalse()
     }
 
     @Test
@@ -118,7 +174,11 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val deletedId = "1"
         val teamName = "missing-team"
         val response: ResponseEntity<ErrorResponse> =
-            restTemplate.exchange("${host()}/content/$teamName/$deletedId", HttpMethod.DELETE)
+            restTemplate.exchange(
+                "${host()}/content/$teamName/$deletedId",
+                HttpMethod.DELETE,
+                HttpEntity<Any>(authHeader()),
+            )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
         assertThat(response.body?.message).isEqualTo("Dokument med ekstern id $deletedId finnes ikke for team $teamName")

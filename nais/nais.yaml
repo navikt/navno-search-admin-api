@@ -29,13 +29,16 @@ spec:
   openSearch:
     access: admin
     instance: navno-search
+  azure:
+    application:
+      enabled: true
   accessPolicy:
     outbound:
       external:
         - host: {{ kodeverk-host }}
-  inbound:
-    rules:
-      - application: navno-search-frontend
+    inbound:
+      rules:
+        - application: navno-search-frontend
   ingresses:
   {{#each ingresses}}
      - "{{this}}"

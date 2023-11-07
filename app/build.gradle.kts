@@ -9,7 +9,7 @@ plugins {
         val versions = "0.49.0"
     }
 
-    kotlin("jvm") version (versions.kotlin)
+    kotlin("jvm")
     kotlin("plugin.spring") version (versions.kotlin)
 
     id("org.springframework.boot") version (versions.springBoot)
@@ -28,25 +28,28 @@ repositories {
 dependencies {
     val versions = object {
         val coroutines = "1.7.3"
+        val navSecurity = "3.1.7"
         val logstash = "7.4"
         val opensearch = "1.2.0"
+        val jsoup = "1.10.2"
         val opensearchTestcontainers = "2.0.0"
         val testcontainers = "1.18.3"
     }
 
     implementation(project(":lib"))
+    implementation("no.nav.security:token-validation-spring:${versions.navSecurity}")
     implementation("org.opensearch.client:spring-data-opensearch-starter:${versions.opensearch}") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("net.logstash.logback:logstash-logback-encoder:${versions.logstash}")
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("org.jsoup:jsoup:${versions.jsoup}")
+    testImplementation("no.nav.security:token-validation-spring-test:${versions.navSecurity}")
     testImplementation("org.opensearch.client:spring-data-opensearch-test-autoconfigure:${versions.opensearch}") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
