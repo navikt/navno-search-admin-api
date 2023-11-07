@@ -8,12 +8,13 @@ import org.junit.jupiter.api.Test
 
 class ContentDtoMapperTest {
 
-    val externalId = "123"
     val mapper = ContentDtoMapper()
+
+    val externalId = "123"
 
     @Test
     fun testMapping() {
-        val contentDao = dummyContentDao(externalId = externalId, textPrefix = "test")
+        val contentDao = dummyContentDao(externalId = externalId)
         val mappedContent = mapper.toContentDto(contentDao)
 
         assertThat(mappedContent.id).isEqualTo(externalId)
@@ -34,7 +35,7 @@ class ContentDtoMapperTest {
 
     @Test
     fun testMappingWithNynorskLanguage() {
-        val contentDao = dummyContentDao(externalId = externalId, textPrefix = "test", language = NORWEGIAN_NYNORSK)
+        val contentDao = dummyContentDao(externalId = externalId, language = NORWEGIAN_NYNORSK)
         val mappedContent = mapper.toContentDto(contentDao)
 
         assertThat(mappedContent.title).isEqualTo(contentDao.title.no)
@@ -44,7 +45,7 @@ class ContentDtoMapperTest {
 
     @Test
     fun testMappingWithEnglishLanguage() {
-        val contentDao = dummyContentDao(externalId = externalId, textPrefix = "test", language = ENGLISH)
+        val contentDao = dummyContentDao(externalId = externalId, language = ENGLISH)
         val mappedContent = mapper.toContentDto(contentDao)
 
         assertThat(mappedContent.title).isEqualTo(contentDao.title.en)
@@ -54,7 +55,7 @@ class ContentDtoMapperTest {
 
     @Test
     fun testMappingWithUnsupportedLanguage() {
-        val contentDao = dummyContentDao(externalId = externalId, textPrefix = "test", language = "se")
+        val contentDao = dummyContentDao(externalId = externalId, language = "se")
         val mappedContent = mapper.toContentDto(contentDao)
 
         assertThat(mappedContent.title).isEqualTo(contentDao.title.other)

@@ -102,7 +102,7 @@ val initialTestData = listOf(
 fun dummyContentDao(
     teamName: String = TEAM_NAME,
     externalId: String,
-    textPrefix: String,
+    textPrefix: String = "",
     timestamp: ZonedDateTime = now,
     audience: List<String> = listOf(PRIVATPERSON),
     language: String = NORWEGIAN_BOKMAAL,
