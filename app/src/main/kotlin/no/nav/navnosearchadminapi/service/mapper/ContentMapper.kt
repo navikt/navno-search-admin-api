@@ -10,6 +10,7 @@ import no.nav.navnosearchadminapi.common.model.ContentDao
 import no.nav.navnosearchadminapi.common.model.MultiLangField
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.utils.createInternalId
+import org.jsoup.Jsoup
 import org.springframework.data.elasticsearch.core.suggest.Completion
 import org.springframework.stereotype.Component
 
@@ -23,7 +24,7 @@ class ContentMapper {
             autocomplete = Completion(listOf(content.title)),
             title = toMultiLangField(content.title!!, content.metadata!!.language!!),
             ingress = toMultiLangField(content.ingress!!, content.metadata.language!!),
-            text = toMultiLangField(content.text!!, content.metadata.language),
+            text = toMultiLangField(removeHtmlFromString(content.text!!), content.metadata.language),
             createdAt = content.metadata.createdAt!!,
             lastUpdated = content.metadata.lastUpdated!!,
             audience = content.metadata.audience!!,
@@ -33,6 +34,10 @@ class ContentMapper {
             metatags = resolveMetatags(content.metadata.metatags, content.metadata.fylke, content.metadata.isFile),
             keywords = content.metadata.keywords,
         )
+    }
+
+    fun removeHtmlFromString(string: String): String {
+        return Jsoup.parse(string).text()
     }
 
     fun resolveMetatags(metatags: List<String>, fylke: String?, isFile: Boolean): List<String> {

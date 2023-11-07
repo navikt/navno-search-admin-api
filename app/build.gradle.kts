@@ -31,6 +31,7 @@ dependencies {
         val navSecurity = "3.1.7"
         val logstash = "7.4"
         val opensearch = "1.2.0"
+        val jsoup = "1.10.2"
         val opensearchTestcontainers = "2.0.0"
         val testcontainers = "1.18.3"
     }
@@ -47,8 +48,7 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:${versions.logstash}")
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}")
+    implementation("org.jsoup:jsoup:${versions.jsoup}")
     testImplementation("no.nav.security:token-validation-spring-test:${versions.navSecurity}")
     testImplementation("org.opensearch.client:spring-data-opensearch-test-autoconfigure:${versions.opensearch}") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
