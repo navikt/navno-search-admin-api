@@ -24,7 +24,7 @@ class ContentMapper {
             autocomplete = Completion(listOf(content.title)),
             title = toMultiLangField(content.title!!, content.metadata!!.language!!),
             ingress = toMultiLangField(content.ingress!!, content.metadata.language!!),
-            text = toMultiLangField(removeHtmlFromString(content.text!!), content.metadata.language),
+            text = toMultiLangField(removeHtmlAndMacrosFromString(content.text!!), content.metadata.language),
             createdAt = content.metadata.createdAt!!,
             lastUpdated = content.metadata.lastUpdated!!,
             audience = content.metadata.audience!!,
@@ -36,8 +36,8 @@ class ContentMapper {
         )
     }
 
-    fun removeHtmlFromString(string: String): String {
-        return Jsoup.parse(string).text()
+    fun removeHtmlAndMacrosFromString(string: String): String {
+        return Jsoup.parse(string).text().replace(Regex("\\[.*?/]"), "")
     }
 
     fun resolveMetatags(metatags: List<String>, fylke: String?, isFile: Boolean): List<String> {
