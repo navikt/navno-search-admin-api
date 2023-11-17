@@ -4,9 +4,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     val versions = object {
         val kotlin = "1.9.0"
-        val springBoot = "3.1.4"
-        val springDepMgmt = "1.1.3"
-        val versions = "0.49.0"
+        val springBoot = "3.1.5"
+        val springDepMgmt = "1.1.4"
+        val versions = "0.50.0"
     }
 
     kotlin("jvm")
@@ -30,10 +30,10 @@ dependencies {
         val coroutines = "1.7.3"
         val navSecurity = "3.1.7"
         val logstash = "7.4"
-        val opensearch = "1.2.0"
+        val opensearch = "1.2.1"
         val jsoup = "1.10.2"
         val opensearchTestcontainers = "2.0.0"
-        val testcontainers = "1.18.3"
+        val testcontainers = "1.19.2"
     }
 
     implementation(project(":lib"))
