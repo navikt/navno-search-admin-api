@@ -29,7 +29,7 @@ class AdminService(
         val validationErrors = validator.validate(content)
 
         if (validationErrors.isNotEmpty()) {
-            logger.info("Fikk valideringsfeil ved indeksering av innhold: $validationErrors")
+            logger.warn("Fikk valideringsfeil ved indeksering av innhold: $validationErrors")
         }
 
         val mappedContent = content
