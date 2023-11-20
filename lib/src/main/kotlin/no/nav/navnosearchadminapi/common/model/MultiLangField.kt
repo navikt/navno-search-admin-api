@@ -7,9 +7,9 @@ import org.springframework.data.elasticsearch.annotations.Field
 import org.springframework.data.elasticsearch.annotations.FieldType
 
 data class MultiLangField(
-    @Field(type = FieldType.Text, analyzer = "english") val en: String? = null,
-    @Field(type = FieldType.Text, analyzer = "norwegian") val no: String? = null,
-    @Field(type = FieldType.Text, analyzer = "standard") val other: String? = null,
+    @Field(type = FieldType.Text, analyzer = "custom_english") val en: String? = null,
+    @Field(type = FieldType.Text, analyzer = "custom_norwegian") val no: String? = null,
+    @Field(type = FieldType.Text, analyzer = "custom_standard") val other: String? = null,
 ) {
     constructor(value: String, language: String) : this(
         en = if (ENGLISH == language) value else null,
