@@ -6,35 +6,43 @@
         "type": "pattern_replace",
         "pattern": "\u00AD",
         "replacement": ""
+      },
+      "remove_zero_width_space": {
+        "type": "pattern_replace",
+        "pattern": "\u200B",
+        "replacement": ""
       }
     },
     "filter": {
       "english_stop": {
-        "type":       "stop",
-        "stopwords":  "_english_"
+        "type": "stop",
+        "stopwords": "_english_"
       },
       "english_stemmer": {
-        "type":       "stemmer",
-        "language":   "english"
+        "type": "stemmer",
+        "language": "english"
       },
       "english_possessive_stemmer": {
-        "type":       "stemmer",
-        "language":   "possessive_english"
+        "type": "stemmer",
+        "language": "possessive_english"
       },
       "norwegian_stop": {
-        "type":       "stop",
-        "stopwords":  "_norwegian_"
+        "type": "stop",
+        "stopwords": "_norwegian_"
       },
       "norwegian_stemmer": {
-        "type":       "stemmer",
-        "language":   "norwegian"
+        "type": "stemmer",
+        "language": "norwegian"
       }
     },
     "analyzer": {
       "custom_norwegian": {
         "type": "custom",
-        "tokenizer":  "standard",
-        "char_filter": "remove_soft_hyphen",
+        "tokenizer": "standard",
+        "char_filter": [
+          "remove_soft_hyphen",
+          "remove_zero_width_space"
+        ],
         "filter": [
           "lowercase",
           "norwegian_stop",
@@ -43,8 +51,11 @@
       },
       "custom_english": {
         "type": "custom",
-        "tokenizer":  "standard",
-        "char_filter": "remove_soft_hyphen",
+        "tokenizer": "standard",
+        "char_filter": [
+          "remove_soft_hyphen",
+          "remove_zero_width_space"
+        ],
         "filter": [
           "english_possessive_stemmer",
           "lowercase",
@@ -54,9 +65,14 @@
       },
       "custom_standard": {
         "type": "custom",
-        "tokenizer":  "standard",
-        "char_filter": "remove_soft_hyphen",
-        "filter": ["lowercase"]
+        "tokenizer": "standard",
+        "char_filter": [
+          "remove_soft_hyphen",
+          "remove_zero_width_space"
+        ],
+        "filter": [
+          "lowercase"
+        ]
       }
     }
   }
