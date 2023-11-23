@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     val versions = object {
         val kotlin = "1.9.0"
-        val springBoot = "3.1.5"
+        val springBoot = "3.1.6"
         val springDepMgmt = "1.1.4"
         val versions = "0.50.0"
     }
@@ -28,7 +28,7 @@ repositories {
 dependencies {
     val versions = object {
         val coroutines = "1.7.3"
-        val navSecurity = "3.1.7"
+        val navSecurity = "3.1.9"
         val logstash = "7.4"
         val opensearch = "1.2.1"
         val jsoup = "1.10.2"
