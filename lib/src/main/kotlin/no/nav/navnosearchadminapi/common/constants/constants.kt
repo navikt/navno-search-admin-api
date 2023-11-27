@@ -4,9 +4,11 @@ val NORWEGIAN = "no"
 val NORWEGIAN_BOKMAAL = "nb"
 val NORWEGIAN_NYNORSK = "nn"
 val ENGLISH = "en"
+val OTHER = "other"
 
 val norwegianLanguageCodes = listOf(NORWEGIAN, NORWEGIAN_BOKMAAL, NORWEGIAN_NYNORSK)
 val supportedLanguages = norwegianLanguageCodes + ENGLISH
+val languageSubfields = listOf(NORWEGIAN, ENGLISH, OTHER)
 
 const val ID = "id"
 const val HREF = "href"
