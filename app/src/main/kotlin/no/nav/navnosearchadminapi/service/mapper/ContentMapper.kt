@@ -23,7 +23,7 @@ class ContentMapper {
             href = content.href!!,
             autocomplete = Completion(listOf(content.title)),
             title = toMultiLangField(content.title!!, content.metadata!!.language!!),
-            ingress = toMultiLangField(content.ingress!!, content.metadata.language!!),
+            ingress = toMultiLangField(removeHtmlAndMacrosFromString(content.ingress!!), content.metadata.language!!),
             text = toMultiLangField(removeHtmlAndMacrosFromString(content.text!!), content.metadata.language),
             createdAt = content.metadata.createdAt!!,
             lastUpdated = content.metadata.lastUpdated!!,
