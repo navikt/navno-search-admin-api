@@ -25,6 +25,7 @@ class ContentMapper {
             title = toMultiLangField(content.title!!, content.metadata!!.language!!),
             ingress = toMultiLangField(removeHtmlAndMacrosFromString(content.ingress!!), content.metadata.language!!),
             text = toMultiLangField(removeHtmlAndMacrosFromString(content.text!!), content.metadata.language),
+            type = content.metadata.type,
             createdAt = content.metadata.createdAt!!,
             lastUpdated = content.metadata.lastUpdated!!,
             audience = content.metadata.audience!!,

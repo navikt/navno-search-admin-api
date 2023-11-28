@@ -63,6 +63,16 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
+    fun testValidationWithInvalidType() {
+        val content = listOf(dummyContentDto(type = invalidValue))
+        val validationErrors = validator.validate(content)
+
+        assertThat(validationErrors).hasSize(1)
+        assertThat(validationErrors[id]).hasSize(1)
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.type: $invalidValue. Gyldige verdier: [produktside, temaside, situasjonsside, slik gjør du det, default]")
+    }
+
+    @Test
     fun testValidationWithInvalidFylke() {
         val content = listOf(dummyContentDto(fylke = invalidValue))
         val validationErrors = validator.validate(content)

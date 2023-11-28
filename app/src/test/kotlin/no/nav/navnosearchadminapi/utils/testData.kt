@@ -2,6 +2,7 @@ package no.nav.navnosearchadminapi.utils
 
 import no.nav.navnosearchadminapi.common.constants.ENGLISH
 import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
+import no.nav.navnosearchadminapi.common.enums.ValidTypes
 import no.nav.navnosearchadminapi.common.model.ContentDao
 import no.nav.navnosearchadminapi.common.model.MultiLangField
 import no.nav.navnosearchadminapi.consumer.kodeverk.dto.KodeverkResponse
@@ -118,6 +119,7 @@ fun dummyContentDao(
         MultiLangField(value = "$textPrefix title", language = language),
         MultiLangField(value = "$textPrefix ingress", language = language),
         MultiLangField(value = "$textPrefix text", language = language),
+        ValidTypes.DEFAULT.descriptor,
         timestamp,
         timestamp,
         audience,
@@ -134,6 +136,7 @@ fun dummyContentDto(
     title: String? = "Eleventh title",
     ingress: String? = "Eleventh ingress",
     text: String? = "Eleventh text",
+    type: String = ValidTypes.DEFAULT.descriptor,
     createdAt: ZonedDateTime? = now,
     lastUpdated: ZonedDateTime? = now,
     audience: List<String>? = listOf(SAMARBEIDSPARTNER),
@@ -148,6 +151,7 @@ fun dummyContentDto(
     ingress,
     text,
     ContentMetadata(
+        type,
         createdAt,
         lastUpdated,
         audience,

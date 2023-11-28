@@ -28,6 +28,7 @@ class ContentDtoMapper {
             text = languageSubfieldValue(content.text, content.language)
                 ?: handleMissingValue(content.id, TEXT),
             ContentMetadata(
+                type = content.type,
                 createdAt = content.createdAt,
                 lastUpdated = content.lastUpdated,
                 audience = content.audience,

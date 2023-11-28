@@ -23,6 +23,7 @@ class ContentDtoMapperTest {
         assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.no)
         assertThat(mappedContent.text).isEqualTo(contentDao.text.no)
         assertThat(mappedContent.metadata).isNotNull()
+        assertThat(mappedContent.metadata!!.type).isEqualTo(contentDao.type)
         assertThat(mappedContent.metadata!!.createdAt).isEqualTo(contentDao.createdAt)
         assertThat(mappedContent.metadata!!.lastUpdated).isEqualTo(contentDao.lastUpdated)
         assertThat(mappedContent.metadata!!.audience).isEqualTo(contentDao.audience)

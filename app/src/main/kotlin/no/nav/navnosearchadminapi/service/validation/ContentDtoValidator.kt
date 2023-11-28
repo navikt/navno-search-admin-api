@@ -10,12 +10,14 @@ import no.nav.navnosearchadminapi.common.constants.METADATA_FYLKE
 import no.nav.navnosearchadminapi.common.constants.METADATA_LANGUAGE
 import no.nav.navnosearchadminapi.common.constants.METADATA_LAST_UPDATED
 import no.nav.navnosearchadminapi.common.constants.METADATA_METATAGS
+import no.nav.navnosearchadminapi.common.constants.METADATA_TYPE
 import no.nav.navnosearchadminapi.common.constants.TEXT
 import no.nav.navnosearchadminapi.common.constants.TITLE
 import no.nav.navnosearchadminapi.common.enums.DescriptorProvider
 import no.nav.navnosearchadminapi.common.enums.ValidAudiences
 import no.nav.navnosearchadminapi.common.enums.ValidFylker
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
+import no.nav.navnosearchadminapi.common.enums.ValidTypes
 import no.nav.navnosearchadminapi.consumer.kodeverk.KodeverkConsumer
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.exception.MissingIdException
@@ -34,6 +36,7 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
 
             errorMessages.addAll(validateNotNull(requiredFieldsMap(it)))
 
+            it.metadata?.type?.let { type -> errorMessages.addAll(validateType(type)) }
             it.metadata?.audience?.let { audience -> errorMessages.addAll(validateAudience(audience)) }
             it.metadata?.language?.let { language -> errorMessages.addAll(validateLanguage(language)) }
             it.metadata?.fylke?.let { fylke -> errorMessages.addAll(validateFylke(fylke)) }
@@ -65,6 +68,10 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
 
     private fun validateNotNull(fields: Map<String, Any?>): List<String> {
         return fields.mapNotNull { entry -> if (entry.value == null) "Påkrevd felt mangler: ${entry.key}" else null }
+    }
+
+    private fun validateType(type: String): List<String> {
+        return listOfNotNull(validateValueIsValid<ValidTypes>(type, METADATA_TYPE))
     }
 
     private fun validateAudience(audience: List<String>): List<String> {
