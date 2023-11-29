@@ -38,7 +38,7 @@
     "analyzer": {
       "custom_norwegian": {
         "type": "custom",
-        "tokenizer": "standard",
+        "tokenizer": "letter",
         "char_filter": [
           "remove_soft_hyphen",
           "remove_zero_width_space"
