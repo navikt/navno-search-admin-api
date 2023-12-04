@@ -4,7 +4,7 @@ import no.nav.navnosearchadminapi.common.enums.ValidTypes
 import java.time.ZonedDateTime
 
 data class ContentMetadata(
-    val type: String = ValidTypes.DEFAULT.descriptor,
+    val type: String = ValidTypes.ANDRE.descriptor,
     val createdAt: ZonedDateTime? = null,
     val lastUpdated: ZonedDateTime? = null,
     val audience: List<String>? = null,

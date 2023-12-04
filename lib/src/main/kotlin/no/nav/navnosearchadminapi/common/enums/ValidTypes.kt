@@ -1,9 +1,20 @@
 package no.nav.navnosearchadminapi.common.enums
 
 enum class ValidTypes(override val descriptor: String) : DescriptorProvider {
+    LEGACY("legacy"),
+    KONTOR_LEGACY("kontor-legacy"),
+    KONTOR("kontor"),
+    TABELL("tabell"),
+    SKJEMA("skjema"),
     PRODUKTSIDE("produktside"),
     TEMASIDE("temaside"),
+    GUIDE("guide"),
+    AKTUELT("aktuelt"),
     SITUASJONSSIDE("situasjonsside"),
-    SLIK_GJOR_DU_DET("slik gjør du det"),
-    DEFAULT("default")
+    OVERSIKT("oversikt"),
+    SKJEMAOVERSIKT("skjemaoversikt"),
+    FIL_SPREADSHEET("fil-spreadsheet"),
+    FIL_DOCUMENT("fil-document"),
+    FIL_ANDRE("fil-andre"),
+    ANDRE("andre"),
 }
