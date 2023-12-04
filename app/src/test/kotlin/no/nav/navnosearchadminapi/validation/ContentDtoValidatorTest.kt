@@ -69,7 +69,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
 
         assertThat(validationErrors).hasSize(1)
         assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.type: $invalidValue. Gyldige verdier: [produktside, temaside, situasjonsside, slik gjør du det, default]")
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.type: $invalidValue. Gyldige verdier: [legacy, kontor-legacy, kontor, tabell, skjema, produktside, temaside, guide, aktuelt, situasjonsside, oversikt, skjemaoversikt, fil-spreadsheet, fil-document, fil-andre, andre]")
     }
 
     @Test
@@ -89,7 +89,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
 
         assertThat(validationErrors).hasSize(1)
         assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.metatags: $invalidValue. Gyldige verdier: [informasjon, kontor, skjema, nyhet, presse, pressemelding, nav-og-samfunn, analyse, statistikk]")
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.metatags: $invalidValue. Gyldige verdier: [informasjon, nyhet, presse, pressemelding, nav-og-samfunn, analyse, statistikk]")
     }
 
     @Test
