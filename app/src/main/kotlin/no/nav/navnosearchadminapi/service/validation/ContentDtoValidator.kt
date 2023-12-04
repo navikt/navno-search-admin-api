@@ -8,14 +8,17 @@ import no.nav.navnosearchadminapi.common.constants.METADATA_AUDIENCE
 import no.nav.navnosearchadminapi.common.constants.METADATA_CREATED_AT
 import no.nav.navnosearchadminapi.common.constants.METADATA_FYLKE
 import no.nav.navnosearchadminapi.common.constants.METADATA_LANGUAGE
+import no.nav.navnosearchadminapi.common.constants.METADATA_LANGUAGE_REFS
 import no.nav.navnosearchadminapi.common.constants.METADATA_LAST_UPDATED
 import no.nav.navnosearchadminapi.common.constants.METADATA_METATAGS
+import no.nav.navnosearchadminapi.common.constants.METADATA_TYPE
 import no.nav.navnosearchadminapi.common.constants.TEXT
 import no.nav.navnosearchadminapi.common.constants.TITLE
 import no.nav.navnosearchadminapi.common.enums.DescriptorProvider
 import no.nav.navnosearchadminapi.common.enums.ValidAudiences
 import no.nav.navnosearchadminapi.common.enums.ValidFylker
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
+import no.nav.navnosearchadminapi.common.enums.ValidTypes
 import no.nav.navnosearchadminapi.consumer.kodeverk.KodeverkConsumer
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.exception.MissingIdException
@@ -34,10 +37,12 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
 
             errorMessages.addAll(validateNotNull(requiredFieldsMap(it)))
 
+            it.metadata?.type?.let { type -> errorMessages.addAll(validateType(type)) }
             it.metadata?.audience?.let { audience -> errorMessages.addAll(validateAudience(audience)) }
-            it.metadata?.language?.let { language -> errorMessages.addAll(validateLanguage(language)) }
+            it.metadata?.language?.let { language -> errorMessages.addAll(validateLanguage(language, METADATA_LANGUAGE)) }
             it.metadata?.fylke?.let { fylke -> errorMessages.addAll(validateFylke(fylke)) }
             it.metadata?.metatags?.let { metatags -> errorMessages.addAll(validateMetatags(metatags)) }
+            it.metadata?.languageRefs?.let { languageRefs -> errorMessages.addAll(validateLanguageRefs(languageRefs)) }
 
             errorMessages.forEach { msg ->
                 validationErrors.putIfAbsent(it.id ?: throw MissingIdException(), mutableListOf())
@@ -67,16 +72,20 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
         return fields.mapNotNull { entry -> if (entry.value == null) "Påkrevd felt mangler: ${entry.key}" else null }
     }
 
+    private fun validateType(type: String): List<String> {
+        return listOfNotNull(validateValueIsValid<ValidTypes>(type, METADATA_TYPE))
+    }
+
     private fun validateAudience(audience: List<String>): List<String> {
         return if (audience.isEmpty()) {
             listOf("$METADATA_AUDIENCE må inneholde minst ett element")
         } else audience.mapNotNull { validateValueIsValid<ValidAudiences>(it, METADATA_AUDIENCE) }
     }
 
-    private fun validateLanguage(language: String): List<String> {
+    private fun validateLanguage(value: String, fieldName: String): List<String> {
         val validLanguages = kodeverkConsumer.fetchSpraakKoder().koder
-        return if (!validLanguages.contains(language.uppercase())) {
-            listOf("Ugyldig språkkode: $language. Må være tobokstavs språkkode fra kodeverk-api.")
+        return if (!validLanguages.contains(value.uppercase())) {
+            listOf("Ugyldig verdi for $fieldName: $value. Må være tobokstavs språkkode fra kodeverk-api.")
         } else emptyList()
     }
 
@@ -88,6 +97,10 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
 
     private fun validateMetatags(metatags: List<String>): List<String> {
         return metatags.mapNotNull { validateValueIsValid<ValidMetatags>(it, METADATA_METATAGS) }
+    }
+
+    private fun validateLanguageRefs(languageRefs: List<String>): List<String> {
+        return languageRefs.flatMap { validateLanguage(it, METADATA_LANGUAGE_REFS) }
     }
 
     private inline fun <reified T> validateValueIsValid(

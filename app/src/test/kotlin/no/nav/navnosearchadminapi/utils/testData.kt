@@ -2,6 +2,7 @@ package no.nav.navnosearchadminapi.utils
 
 import no.nav.navnosearchadminapi.common.constants.ENGLISH
 import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
+import no.nav.navnosearchadminapi.common.enums.ValidTypes
 import no.nav.navnosearchadminapi.common.model.ContentDao
 import no.nav.navnosearchadminapi.common.model.MultiLangField
 import no.nav.navnosearchadminapi.consumer.kodeverk.dto.KodeverkResponse
@@ -118,6 +119,7 @@ fun dummyContentDao(
         MultiLangField(value = "$textPrefix title", language = language),
         MultiLangField(value = "$textPrefix ingress", language = language),
         MultiLangField(value = "$textPrefix text", language = language),
+        ValidTypes.ANDRE.descriptor,
         timestamp,
         timestamp,
         audience,
@@ -134,6 +136,7 @@ fun dummyContentDto(
     title: String? = "Eleventh title",
     ingress: String? = "Eleventh ingress",
     text: String? = "Eleventh text",
+    type: String = ValidTypes.ANDRE.descriptor,
     createdAt: ZonedDateTime? = now,
     lastUpdated: ZonedDateTime? = now,
     audience: List<String>? = listOf(SAMARBEIDSPARTNER),
@@ -141,6 +144,7 @@ fun dummyContentDto(
     isFile: Boolean = false,
     fylke: String? = null,
     metatags: List<String> = emptyList(),
+    languageRefs: List<String> = emptyList(),
 ) = ContentDto(
     id,
     href,
@@ -148,6 +152,7 @@ fun dummyContentDto(
     ingress,
     text,
     ContentMetadata(
+        type,
         createdAt,
         lastUpdated,
         audience,
@@ -155,5 +160,6 @@ fun dummyContentDto(
         isFile,
         fylke,
         metatags,
+        languageRefs,
     )
 )

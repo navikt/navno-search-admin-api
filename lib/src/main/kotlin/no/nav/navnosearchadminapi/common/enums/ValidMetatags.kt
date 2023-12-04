@@ -2,8 +2,6 @@ package no.nav.navnosearchadminapi.common.enums
 
 enum class ValidMetatags(override val descriptor: String) : DescriptorProvider {
     INFORMASJON("informasjon"),
-    KONTOR("kontor"),
-    SKJEMA("skjema"),
     NYHET("nyhet"),
     PRESSE("presse"),
     PRESSEMELDING("pressemelding"),

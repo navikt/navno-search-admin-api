@@ -128,7 +128,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(response.body!!.validationErrors["11"]!!.first()).isEqualTo("Ugyldig språkkode: røverspråk. Må være tobokstavs språkkode fra kodeverk-api.")
+        assertThat(response.body!!.validationErrors["11"]!!.first()).isEqualTo("Ugyldig verdi for metadata.language: røverspråk. Må være tobokstavs språkkode fra kodeverk-api.")
     }
 
     @Test
