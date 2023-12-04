@@ -99,7 +99,17 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
 
         assertThat(validationErrors).hasSize(1)
         assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig språkkode: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.language: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
+    }
+
+    @Test
+    fun testValidationWithInvalidLanguageRef() {
+        val content = listOf(dummyContentDto(languageRefs = listOf(invalidValue)))
+        val validationErrors = validator.validate(content)
+
+        assertThat(validationErrors).hasSize(1)
+        assertThat(validationErrors[id]).hasSize(1)
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.languageRefs: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
     }
 
     @Test
@@ -116,7 +126,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
         assertThat(validationErrors).hasSize(2)
         assertThat(validationErrors[firstId]).hasSize(1)
         assertThat(validationErrors[secondId]).hasSize(2)
-        assertThat(validationErrors[firstId]!!.first()).isEqualTo("Ugyldig språkkode: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
+        assertThat(validationErrors[firstId]!!.first()).isEqualTo("Ugyldig verdi for metadata.language: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
         assertThat(validationErrors[secondId]!!).contains("Ugyldig verdi for metadata.audience: $invalidValue. Gyldige verdier: [privatperson, arbeidsgiver, samarbeidspartner, andre]")
         assertThat(validationErrors[secondId]!!).contains("Ugyldig verdi for metadata.fylke: $invalidValue. Gyldige verdier: [agder, innlandet, more-og-romsdal, nordland, oslo, rogaland, troms-og-finnmark, trondelag, vestfold-og-telemark, vestland, vest-viken, ost-viken]")
     }

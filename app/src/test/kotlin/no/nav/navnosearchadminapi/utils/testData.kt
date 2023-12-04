@@ -144,6 +144,7 @@ fun dummyContentDto(
     isFile: Boolean = false,
     fylke: String? = null,
     metatags: List<String> = emptyList(),
+    languageRefs: List<String> = emptyList(),
 ) = ContentDto(
     id,
     href,
@@ -159,5 +160,6 @@ fun dummyContentDto(
         isFile,
         fylke,
         metatags,
+        languageRefs,
     )
 )

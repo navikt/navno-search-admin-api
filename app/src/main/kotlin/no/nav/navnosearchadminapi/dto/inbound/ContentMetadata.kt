@@ -12,5 +12,6 @@ data class ContentMetadata(
     val isFile: Boolean = false,
     val fylke: String? = null,
     val metatags: List<String> = emptyList(),
-    val keywords: List<String> = emptyList(),
+    val languageRefs: List<String> = emptyList(),
+    val keywords: List<String> = emptyList()
 )

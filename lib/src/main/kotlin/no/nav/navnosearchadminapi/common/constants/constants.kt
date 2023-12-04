@@ -34,6 +34,7 @@ const val METADATA_AUDIENCE = "metadata.audience"
 const val METADATA_LANGUAGE = "metadata.language"
 const val METADATA_FYLKE = "metadata.fylke"
 const val METADATA_METATAGS = "metadata.metatags"
+const val METADATA_LANGUAGE_REFS = "metadata.languageRefs"
 
 const val TITLE_WILDCARD = "$TITLE.*"
 const val INGRESS_WILDCARD = "$INGRESS.*"

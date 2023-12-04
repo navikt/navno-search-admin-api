@@ -8,6 +8,7 @@ import no.nav.navnosearchadminapi.common.constants.METADATA_AUDIENCE
 import no.nav.navnosearchadminapi.common.constants.METADATA_CREATED_AT
 import no.nav.navnosearchadminapi.common.constants.METADATA_FYLKE
 import no.nav.navnosearchadminapi.common.constants.METADATA_LANGUAGE
+import no.nav.navnosearchadminapi.common.constants.METADATA_LANGUAGE_REFS
 import no.nav.navnosearchadminapi.common.constants.METADATA_LAST_UPDATED
 import no.nav.navnosearchadminapi.common.constants.METADATA_METATAGS
 import no.nav.navnosearchadminapi.common.constants.METADATA_TYPE
@@ -38,9 +39,10 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
 
             it.metadata?.type?.let { type -> errorMessages.addAll(validateType(type)) }
             it.metadata?.audience?.let { audience -> errorMessages.addAll(validateAudience(audience)) }
-            it.metadata?.language?.let { language -> errorMessages.addAll(validateLanguage(language)) }
+            it.metadata?.language?.let { language -> errorMessages.addAll(validateLanguage(language, METADATA_LANGUAGE)) }
             it.metadata?.fylke?.let { fylke -> errorMessages.addAll(validateFylke(fylke)) }
             it.metadata?.metatags?.let { metatags -> errorMessages.addAll(validateMetatags(metatags)) }
+            it.metadata?.languageRefs?.let { languageRefs -> errorMessages.addAll(validateLanguageRefs(languageRefs)) }
 
             errorMessages.forEach { msg ->
                 validationErrors.putIfAbsent(it.id ?: throw MissingIdException(), mutableListOf())
@@ -80,10 +82,10 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
         } else audience.mapNotNull { validateValueIsValid<ValidAudiences>(it, METADATA_AUDIENCE) }
     }
 
-    private fun validateLanguage(language: String): List<String> {
+    private fun validateLanguage(value: String, fieldName: String): List<String> {
         val validLanguages = kodeverkConsumer.fetchSpraakKoder().koder
-        return if (!validLanguages.contains(language.uppercase())) {
-            listOf("Ugyldig språkkode: $language. Må være tobokstavs språkkode fra kodeverk-api.")
+        return if (!validLanguages.contains(value.uppercase())) {
+            listOf("Ugyldig verdi for $fieldName: $value. Må være tobokstavs språkkode fra kodeverk-api.")
         } else emptyList()
     }
 
@@ -95,6 +97,10 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
 
     private fun validateMetatags(metatags: List<String>): List<String> {
         return metatags.mapNotNull { validateValueIsValid<ValidMetatags>(it, METADATA_METATAGS) }
+    }
+
+    private fun validateLanguageRefs(languageRefs: List<String>): List<String> {
+        return languageRefs.flatMap { validateLanguage(it, METADATA_LANGUAGE_REFS) }
     }
 
     private inline fun <reified T> validateValueIsValid(

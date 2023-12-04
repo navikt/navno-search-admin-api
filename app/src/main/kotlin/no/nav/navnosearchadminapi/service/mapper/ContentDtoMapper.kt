@@ -37,6 +37,7 @@ class ContentDtoMapper {
                 fylke = content.fylke,
                 metatags = content.metatags,
                 keywords = content.keywords,
+                languageRefs = content.languageRefs,
             )
         )
     }

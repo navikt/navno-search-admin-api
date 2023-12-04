@@ -34,6 +34,7 @@ class ContentMapper {
             fylke = content.metadata.fylke,
             metatags = resolveMetatags(content.metadata.metatags, content.metadata.fylke, content.metadata.isFile),
             keywords = content.metadata.keywords,
+            languageRefs = content.metadata.languageRefs,
         )
     }
 

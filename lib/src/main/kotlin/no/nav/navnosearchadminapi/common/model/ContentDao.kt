@@ -35,5 +35,6 @@ data class ContentDao(
     @Field(type = FieldType.Boolean) val isFile: Boolean,
     @Field(type = FieldType.Keyword) val fylke: String? = null,
     @Field(type = FieldType.Keyword) val metatags: List<String>,
+    @Field(type = FieldType.Keyword) val languageRefs: List<String> = emptyList(),
     @Field(type = FieldType.Text) val keywords: List<String> = emptyList(),
 )
