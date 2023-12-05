@@ -6,9 +6,11 @@ import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
 import no.nav.navnosearchadminapi.common.constants.norwegianLanguageCodes
 import no.nav.navnosearchadminapi.common.constants.supportedLanguages
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
+import no.nav.navnosearchadminapi.common.enums.ValidTypes
 import no.nav.navnosearchadminapi.common.model.ContentDao
 import no.nav.navnosearchadminapi.common.model.MultiLangField
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
+import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata
 import no.nav.navnosearchadminapi.utils.createInternalId
 import org.jsoup.Jsoup
 import org.springframework.data.elasticsearch.core.suggest.Completion
@@ -32,7 +34,7 @@ class ContentMapper {
             language = resolveLanguage(content.metadata.language),
             isFile = content.metadata.isFile,
             fylke = content.metadata.fylke,
-            metatags = resolveMetatags(content.metadata.metatags, content.metadata.fylke, content.metadata.isFile),
+            metatags = resolveMetatags(content.metadata),
             keywords = content.metadata.keywords,
             languageRefs = content.metadata.languageRefs,
         )
@@ -42,11 +44,11 @@ class ContentMapper {
         return Jsoup.parse(string).text().replace(Regex("\\[.*?/]"), "")
     }
 
-    fun resolveMetatags(metatags: List<String>, fylke: String?, isFile: Boolean): List<String> {
-        if (metatags.isEmpty() && fylke == null && !isFile) {
+    fun resolveMetatags(metadata: ContentMetadata): List<String> {
+        if (isInformasjon(metadata)) {
             return listOf(ValidMetatags.INFORMASJON.descriptor)
         }
-        return metatags
+        return metadata.metatags
     }
 
     fun resolveLanguage(language: String): String {
@@ -61,6 +63,14 @@ class ContentMapper {
             en = if (ENGLISH == language) value else null,
             no = if (norwegianLanguageCodes.contains(language)) value else null,
             other = if (!supportedLanguages.contains(language)) value else null,
+        )
+    }
+
+    private fun isInformasjon(metadata: ContentMetadata): Boolean {
+        return metadata.metatags.isEmpty() && metadata.fylke == null && !metadata.isFile && metadata.type !in listOf(
+            ValidTypes.SKJEMA.descriptor,
+            ValidTypes.KONTOR.descriptor,
+            ValidTypes.KONTOR_LEGACY.descriptor
         )
     }
 }
