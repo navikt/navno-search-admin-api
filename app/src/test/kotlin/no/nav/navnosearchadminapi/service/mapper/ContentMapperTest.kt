@@ -27,6 +27,7 @@ class ContentMapperTest {
         assertThat(mappedContent.title.en).isEqualTo(contentDto.title)
         assertThat(mappedContent.ingress.en).isEqualTo(contentDto.ingress)
         assertThat(mappedContent.text.en).isEqualTo(contentDto.text)
+        assertThat(mappedContent.type).isEqualTo(contentDto.metadata!!.type)
         assertThat(mappedContent.createdAt).isEqualTo(contentDto.metadata!!.createdAt)
         assertThat(mappedContent.lastUpdated).isEqualTo(contentDto.metadata!!.lastUpdated)
         assertThat(mappedContent.audience).isEqualTo(contentDto.metadata!!.audience)

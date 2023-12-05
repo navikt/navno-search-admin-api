@@ -63,6 +63,16 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
+    fun testValidationWithInvalidType() {
+        val content = listOf(dummyContentDto(type = invalidValue))
+        val validationErrors = validator.validate(content)
+
+        assertThat(validationErrors).hasSize(1)
+        assertThat(validationErrors[id]).hasSize(1)
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.type: $invalidValue. Gyldige verdier: [legacy, kontor-legacy, kontor, tabell, skjema, produktside, temaside, guide, aktuelt, situasjonsside, oversikt, skjemaoversikt, fil-spreadsheet, fil-document, fil-andre, andre]")
+    }
+
+    @Test
     fun testValidationWithInvalidFylke() {
         val content = listOf(dummyContentDto(fylke = invalidValue))
         val validationErrors = validator.validate(content)
@@ -79,7 +89,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
 
         assertThat(validationErrors).hasSize(1)
         assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.metatags: $invalidValue. Gyldige verdier: [informasjon, kontor, skjema, nyhet, presse, pressemelding, nav-og-samfunn, analyse, statistikk]")
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.metatags: $invalidValue. Gyldige verdier: [informasjon, nyhet, presse, pressemelding, nav-og-samfunn, analyse, statistikk]")
     }
 
     @Test
@@ -89,7 +99,17 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
 
         assertThat(validationErrors).hasSize(1)
         assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig språkkode: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.language: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
+    }
+
+    @Test
+    fun testValidationWithInvalidLanguageRef() {
+        val content = listOf(dummyContentDto(languageRefs = listOf(invalidValue)))
+        val validationErrors = validator.validate(content)
+
+        assertThat(validationErrors).hasSize(1)
+        assertThat(validationErrors[id]).hasSize(1)
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.languageRefs: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
     }
 
     @Test
@@ -106,7 +126,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
         assertThat(validationErrors).hasSize(2)
         assertThat(validationErrors[firstId]).hasSize(1)
         assertThat(validationErrors[secondId]).hasSize(2)
-        assertThat(validationErrors[firstId]!!.first()).isEqualTo("Ugyldig språkkode: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
+        assertThat(validationErrors[firstId]!!.first()).isEqualTo("Ugyldig verdi for metadata.language: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
         assertThat(validationErrors[secondId]!!).contains("Ugyldig verdi for metadata.audience: $invalidValue. Gyldige verdier: [privatperson, arbeidsgiver, samarbeidspartner, andre]")
         assertThat(validationErrors[secondId]!!).contains("Ugyldig verdi for metadata.fylke: $invalidValue. Gyldige verdier: [agder, innlandet, more-og-romsdal, nordland, oslo, rogaland, troms-og-finnmark, trondelag, vestfold-og-telemark, vestland, vest-viken, ost-viken]")
     }
