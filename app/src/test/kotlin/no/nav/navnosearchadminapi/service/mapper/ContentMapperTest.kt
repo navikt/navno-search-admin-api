@@ -32,7 +32,6 @@ class ContentMapperTest {
         assertThat(mappedContent.lastUpdated).isEqualTo(contentDto.metadata!!.lastUpdated)
         assertThat(mappedContent.audience).isEqualTo(contentDto.metadata!!.audience)
         assertThat(mappedContent.language).isEqualTo(contentDto.metadata!!.language)
-        assertThat(mappedContent.isFile).isEqualTo(contentDto.metadata!!.isFile)
         assertThat(mappedContent.fylke).isEqualTo(contentDto.metadata!!.fylke)
         assertThat(mappedContent.metatags).isEqualTo(contentDto.metadata!!.metatags)
         assertThat(mappedContent.keywords).isEqualTo(contentDto.metadata!!.keywords)
