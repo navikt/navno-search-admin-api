@@ -31,14 +31,12 @@ val initialTestData = listOf(
         externalId = "1",
         textPrefix = "First",
         audience = listOf(PRIVATPERSON, ARBEIDSGIVER, SAMARBEIDSPARTNER),
-        isFile = true,
         fylke = AGDER,
         metatags = listOf(STATISTIKK)
     ),
     dummyContentDao(
         externalId = "2",
         textPrefix = "Second",
-        isFile = true,
         fylke = AGDER,
         metatags = listOf(STATISTIKK)
     ),
@@ -46,7 +44,6 @@ val initialTestData = listOf(
         externalId = "3",
         textPrefix = "Third",
         timestamp = nowMinusTwoYears,
-        isFile = true,
         fylke = AGDER,
         metatags = listOf(STATISTIKK)
     ),
@@ -107,7 +104,6 @@ fun dummyContentDao(
     timestamp: ZonedDateTime = now,
     audience: List<String> = listOf(PRIVATPERSON),
     language: String = NORWEGIAN_BOKMAAL,
-    isFile: Boolean = false,
     fylke: String? = null,
     metatags: List<String> = emptyList()
 ): ContentDao {
@@ -124,7 +120,6 @@ fun dummyContentDao(
         timestamp,
         audience,
         language,
-        isFile,
         fylke,
         metatags
     )
@@ -141,7 +136,6 @@ fun dummyContentDto(
     lastUpdated: ZonedDateTime? = now,
     audience: List<String>? = listOf(SAMARBEIDSPARTNER),
     language: String? = ENGLISH,
-    isFile: Boolean = false,
     fylke: String? = null,
     metatags: List<String> = emptyList(),
     languageRefs: List<String> = emptyList(),
@@ -157,7 +151,6 @@ fun dummyContentDto(
         lastUpdated,
         audience,
         language,
-        isFile,
         fylke,
         metatags,
         languageRefs,

@@ -32,7 +32,6 @@ class ContentMapper {
             lastUpdated = content.metadata.lastUpdated!!,
             audience = content.metadata.audience!!,
             language = resolveLanguage(content.metadata.language),
-            isFile = content.metadata.isFile,
             fylke = content.metadata.fylke,
             metatags = resolveMetatags(content.metadata),
             keywords = content.metadata.keywords,
@@ -67,10 +66,13 @@ class ContentMapper {
     }
 
     private fun isInformasjon(metadata: ContentMetadata): Boolean {
-        return metadata.metatags.isEmpty() && metadata.fylke == null && !metadata.isFile && metadata.type !in listOf(
+        return metadata.metatags.isEmpty() && metadata.fylke == null && metadata.type !in listOf(
             ValidTypes.SKJEMA.descriptor,
             ValidTypes.KONTOR.descriptor,
-            ValidTypes.KONTOR_LEGACY.descriptor
+            ValidTypes.KONTOR_LEGACY.descriptor,
+            ValidTypes.FIL_DOCUMENT.descriptor,
+            ValidTypes.FIL_SPREADSHEET.descriptor,
+            ValidTypes.FIL_ANDRE.descriptor,
         )
     }
 }

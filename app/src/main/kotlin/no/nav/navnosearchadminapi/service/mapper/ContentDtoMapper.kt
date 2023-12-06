@@ -33,7 +33,6 @@ class ContentDtoMapper {
                 lastUpdated = content.lastUpdated,
                 audience = content.audience,
                 language = content.language,
-                isFile = content.isFile,
                 fylke = content.fylke,
                 metatags = content.metatags,
                 keywords = content.keywords,
