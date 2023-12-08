@@ -108,20 +108,20 @@ fun dummyContentDao(
     metatags: List<String> = emptyList()
 ): ContentDao {
     return ContentDao(
-        "$teamName-$externalId",
-        Completion(listOf("$textPrefix title")),
-        teamName,
-        "https://$textPrefix.com",
-        MultiLangField(value = "$textPrefix title", language = language),
-        MultiLangField(value = "$textPrefix ingress", language = language),
-        MultiLangField(value = "$textPrefix text", language = language),
-        ValidTypes.ANDRE.descriptor,
-        timestamp,
-        timestamp,
-        audience,
-        language,
-        fylke,
-        metatags
+        id = "$teamName-$externalId",
+        autocomplete = Completion(listOf("$textPrefix title")),
+        teamOwnedBy = teamName,
+        href = "https://$textPrefix.com",
+        title = MultiLangField(value = "$textPrefix title", language = language),
+        ingress = MultiLangField(value = "$textPrefix ingress", language = language),
+        text = MultiLangField(value = "$textPrefix text", language = language),
+        type = ValidTypes.ANDRE.descriptor,
+        createdAt = timestamp,
+        lastUpdated = timestamp,
+        audience = audience,
+        language = language,
+        fylke = fylke,
+        metatags = metatags
     )
 }
 
