@@ -19,14 +19,21 @@ import org.springframework.stereotype.Component
 @Component
 class ContentMapper {
     fun toContentDao(content: ContentDto, teamName: String): ContentDao {
+        val ingress = removeHtmlAndMacrosFromString(content.ingress!!)
+        val text = removeHtmlAndMacrosFromString(content.text!!)
+
         return ContentDao(
             id = createInternalId(teamName, content.id!!),
             teamOwnedBy = teamName,
             href = content.href!!,
             autocomplete = Completion(listOf(content.title)),
             title = toMultiLangField(content.title!!, content.metadata!!.language!!),
-            ingress = toMultiLangField(removeHtmlAndMacrosFromString(content.ingress!!), content.metadata.language!!),
-            text = toMultiLangField(removeHtmlAndMacrosFromString(content.text!!), content.metadata.language),
+            ingress = toMultiLangField(ingress, content.metadata.language!!),
+            text = toMultiLangField(text, content.metadata.language),
+            allText = toMultiLangField(
+                listOf(content.title, ingress, text).joinToString(" "),
+                content.metadata.language
+            ),
             type = content.metadata.type,
             createdAt = content.metadata.createdAt!!,
             lastUpdated = content.metadata.lastUpdated!!,
