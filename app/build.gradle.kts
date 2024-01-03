@@ -3,8 +3,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     val versions = object {
-        val kotlin = "1.9.0"
-        val springBoot = "3.1.6"
+        val kotlin = "1.9.22"
+        val springBoot = "3.2.1"
         val springDepMgmt = "1.1.4"
         val versions = "0.50.0"
     }
@@ -28,12 +28,12 @@ repositories {
 dependencies {
     val versions = object {
         val coroutines = "1.7.3"
-        val navSecurity = "3.1.9"
+        val navSecurity = "3.2.0"
         val logstash = "7.4"
-        val opensearch = "1.2.1"
+        val opensearch = "1.3.0"
         val jsoup = "1.10.2"
-        val opensearchTestcontainers = "2.0.0"
-        val testcontainers = "1.19.2"
+        val opensearchTestcontainers = "2.0.1"
+        val testcontainers = "1.19.3"
     }
 
     implementation(project(":lib"))
