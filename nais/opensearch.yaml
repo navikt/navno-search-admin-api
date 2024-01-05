@@ -1,0 +1,10 @@
+apiVersion: aiven.io/v1alpha1
+kind: OpenSearch
+metadata:
+  labels:
+    team: personbruker
+  name: opensearch-personbruker-navno-search
+  namespace: personbruker
+spec:
+  plan: {{opensearch-plan}}
+  project: {{opensearch-project}}
