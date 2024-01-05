@@ -6,5 +6,5 @@
   "min-replicas": 2,
   "max-replicas": 4,
   "opensearch-plan": "startup-56",
-  "opensearch-project": "nav-dev"
+  "opensearch-project": "nav-prod"
 }
