@@ -15,5 +15,5 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
-          RESOURCE: ./nais/personbruker.yaml
+          RESOURCE: ./nais/opensearch.yaml
           VARS: ./nais/prod-gcp/personbruker.json
