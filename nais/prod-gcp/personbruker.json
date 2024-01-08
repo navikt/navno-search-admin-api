@@ -5,6 +5,6 @@
   "kodeverk-host": "kodeverk.prod-fss-pub.nais.io",
   "min-replicas": 2,
   "max-replicas": 4,
-  "opensearch-plan": "startup-56",
+  "opensearch-plan": "startup-4",
   "opensearch-project": "nav-prod"
 }
