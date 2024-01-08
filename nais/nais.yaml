@@ -36,9 +36,6 @@ spec:
     outbound:
       external:
         - host: {{ kodeverk-host }}
-    inbound:
-      rules:
-        - application: navno-search-frontend
   ingresses:
   {{#each ingresses}}
      - "{{this}}"
