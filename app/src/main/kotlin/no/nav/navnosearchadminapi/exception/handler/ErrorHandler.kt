@@ -2,6 +2,7 @@ package no.nav.navnosearchadminapi.exception.handler
 
 import jakarta.servlet.http.HttpServletRequest
 import no.nav.navnosearchadminapi.exception.DocumentForTeamNameNotFoundException
+import no.nav.navnosearchadminapi.exception.InvalidApiKeyException
 import no.nav.navnosearchadminapi.exception.MissingIdException
 import no.nav.security.token.support.spring.validation.interceptor.JwtTokenUnauthorizedException
 import org.slf4j.Logger
@@ -28,6 +29,19 @@ class ErrorHandler {
         return handleException(
             status = HttpStatus.UNAUTHORIZED,
             message = "Validering av token feilet",
+            path = request.requestURI,
+            ex = ex
+        )
+    }
+
+    @ExceptionHandler(value = [InvalidApiKeyException::class])
+    fun invalidApiKeyHandler(
+        ex: InvalidApiKeyException,
+        request: HttpServletRequest
+    ): ResponseEntity<ErrorResponse> {
+        return handleException(
+            status = HttpStatus.UNAUTHORIZED,
+            message = "Invalid API key",
             path = request.requestURI,
             ex = ex
         )

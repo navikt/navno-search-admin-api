@@ -20,6 +20,8 @@ kodeverk:
   spraak:
     url: ${KODEVERK_SPRAAK_URL}
 
+api-key: ${API_KEY}
+
 no.nav.security.jwt:
   issuer:
     azuread:

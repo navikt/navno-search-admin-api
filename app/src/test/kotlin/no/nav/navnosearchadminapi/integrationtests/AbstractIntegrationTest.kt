@@ -3,12 +3,14 @@ package no.nav.navnosearchadminapi.integrationtests
 import com.nimbusds.jose.JOSEObjectType
 import no.nav.navnosearchadminapi.common.repository.ContentRepository
 import no.nav.navnosearchadminapi.integrationtests.config.OpensearchConfiguration
+import no.nav.navnosearchadminapi.rest.aspect.HeaderCheckAspect.Companion.API_KEY_HEADER
 import no.nav.navnosearchadminapi.utils.initialTestData
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
@@ -44,6 +46,8 @@ abstract class AbstractIntegrationTest {
     @LocalServerPort
     var serverPort: Int? = null
 
+    @Value("\${api-key}") lateinit var apiKey: String
+
     fun host() = "http://localhost:$serverPort"
 
     fun indexCount() = repository.count()
@@ -53,14 +57,19 @@ abstract class AbstractIntegrationTest {
         repository.saveAll(initialTestData)
     }
 
-    fun authHeader(valid: Boolean = true): HttpHeaders {
+    fun headers(isAuthValid: Boolean = true, isApiKeyValid: Boolean = true): HttpHeaders {
         val headers = HttpHeaders()
-        val token = if (valid) {
+        val token = if (isAuthValid) {
             token("azuread", "subject", "someaudience")
         } else {
             token("invalid", "invalid", "invalid")
         }
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer $token")
+
+        if (isApiKeyValid) {
+            headers.add(API_KEY_HEADER, apiKey)
+        }
+
         return headers
     }
 
