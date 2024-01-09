@@ -8,3 +8,5 @@ metadata:
 spec:
   plan: {{opensearch-plan}}
   project: {{opensearch-project}}
+  userconfig:
+    opensearch_version: 2
