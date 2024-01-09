@@ -22,6 +22,8 @@ no.nav.security.jwt:
       discoveryurl: http://localhost:${mock-oauth2-server.port}/azuread/.well-known/openid-configuration
       accepted-audience: someaudience
       cookie_name: azuread-idtoken
+      
+api-key: dummy
 ```
 
 ## Deploy til dev

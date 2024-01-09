@@ -44,7 +44,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<Map<String, Any>> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME?page=0",
             HttpMethod.GET,
-            HttpEntity<Any>(authHeader()),
+            HttpEntity<Any>(headers()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
@@ -56,7 +56,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.GET,
-            HttpEntity<Any>(authHeader()),
+            HttpEntity<Any>(headers()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
@@ -70,12 +70,25 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(content), authHeader()),
+            HttpEntity(listOf(content), headers()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(indexCount()).isEqualTo(11L)
         assertThat(repository.existsById("$TEAM_NAME-${content.id}")).isTrue()
+    }
+
+    @Test
+    fun testSavingContentWithInvalidApiKey() {
+        val content = dummyContentDto()
+
+        val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
+            "${host()}/content/$TEAM_NAME",
+            HttpMethod.POST,
+            HttpEntity(listOf(content), headers(isApiKeyValid = false)),
+        )
+
+        assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
     }
 
     /*@Test
@@ -96,7 +109,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(dummyContentDto(id = null)), authHeader()),
+            HttpEntity(listOf(dummyContentDto(id = null)), headers()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
@@ -110,7 +123,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(content), authHeader()),
+            HttpEntity(listOf(content), headers()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
@@ -124,7 +137,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(dummyContentDto(language = "røverspråk")), authHeader()),
+            HttpEntity(listOf(dummyContentDto(language = "røverspråk")), headers()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
@@ -146,7 +159,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
         val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
             "${host()}/content/$TEAM_NAME",
             HttpMethod.POST,
-            HttpEntity(listOf(content), authHeader()),
+            HttpEntity(listOf(content), headers()),
         )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -160,7 +173,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
             restTemplate.exchange(
                 "${host()}/content/$TEAM_NAME/$deletedId",
                 HttpMethod.DELETE,
-                HttpEntity<Any>(authHeader()),
+                HttpEntity<Any>(headers()),
             )
 
 
@@ -177,7 +190,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
             restTemplate.exchange(
                 "${host()}/content/$teamName/$deletedId",
                 HttpMethod.DELETE,
-                HttpEntity<Any>(authHeader()),
+                HttpEntity<Any>(headers()),
             )
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
