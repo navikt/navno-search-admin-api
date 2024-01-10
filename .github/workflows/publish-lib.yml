@@ -1,10 +1,6 @@
 name: Bygg og publiser bibliotek
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'lib/src/main/**'
+  workflow_dispatch
 jobs:
   publish-lib:
     runs-on: ubuntu-latest
