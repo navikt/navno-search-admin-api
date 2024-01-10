@@ -50,7 +50,8 @@ class ContentMapper {
     }
 
     private fun toSynonyms(value: String): String {
-        return synonyms.keys.filter { value.contains(it) }.joinToString(" ")
+        val words = value.split(" ")
+        return synonyms.keys.filter { words.contains(it) }.joinToString(" ")
     }
 
     fun removeHtmlAndMacrosFromString(string: String): String {
