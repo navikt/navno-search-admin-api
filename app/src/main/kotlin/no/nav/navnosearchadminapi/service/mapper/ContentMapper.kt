@@ -19,21 +19,24 @@ import org.springframework.stereotype.Component
 @Component
 class ContentMapper {
     fun toContentDao(content: ContentDto, teamName: String): ContentDao {
+        val title = content.title!!
         val ingress = removeHtmlAndMacrosFromString(content.ingress!!)
         val text = removeHtmlAndMacrosFromString(content.text!!)
+        val titleSynonyms = toSynonyms(title)
+        val ingressSynonyms = toSynonyms(ingress)
+        val allText = listOf(title, ingress, text, titleSynonyms, ingressSynonyms).joinToString(" ")
 
         return ContentDao(
             id = createInternalId(teamName, content.id!!),
             teamOwnedBy = teamName,
             href = content.href!!,
             autocomplete = Completion(listOf(content.title)),
-            title = toMultiLangField(content.title!!, content.metadata!!.language!!),
+            title = toMultiLangField(title, content.metadata!!.language!!),
             ingress = toMultiLangField(ingress, content.metadata.language!!),
             text = toMultiLangField(text, content.metadata.language),
-            allText = toMultiLangField(
-                listOf(content.title, ingress, text).joinToString(" "),
-                content.metadata.language
-            ),
+            titleSynonyms = toMultiLangField(titleSynonyms, content.metadata.language),
+            ingressSynonyms = toMultiLangField(ingressSynonyms, content.metadata.language),
+            allText = toMultiLangField(allText, content.metadata.language),
             type = content.metadata.type,
             createdAt = content.metadata.createdAt!!,
             lastUpdated = content.metadata.lastUpdated!!,
@@ -44,6 +47,10 @@ class ContentMapper {
             keywords = content.metadata.keywords,
             languageRefs = content.metadata.languageRefs.map { resolveLanguage(it) },
         )
+    }
+
+    private fun toSynonyms(value: String): String {
+        return synonyms.keys.filter { value.contains(it) }.joinToString(" ")
     }
 
     fun removeHtmlAndMacrosFromString(string: String): String {
