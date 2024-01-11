@@ -43,9 +43,9 @@ class ContentDtoMapper {
 
     private fun languageSubfieldValue(field: MultiLangField, language: String): String? {
         return when (language) {
-            NORWEGIAN_BOKMAAL, NORWEGIAN_NYNORSK -> field.no
-            ENGLISH -> field.en
-            else -> field.other
+            NORWEGIAN_BOKMAAL, NORWEGIAN_NYNORSK -> field.no.first()
+            ENGLISH -> field.en.first()
+            else -> field.other.first()
         }
     }
 

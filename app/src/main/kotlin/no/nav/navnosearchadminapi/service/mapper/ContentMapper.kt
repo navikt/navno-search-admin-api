@@ -1,10 +1,7 @@
 package no.nav.navnosearchadminapi.service.mapper
 
-import no.nav.navnosearchadminapi.common.constants.ENGLISH
 import no.nav.navnosearchadminapi.common.constants.NORWEGIAN
 import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
-import no.nav.navnosearchadminapi.common.constants.norwegianLanguageCodes
-import no.nav.navnosearchadminapi.common.constants.supportedLanguages
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
 import no.nav.navnosearchadminapi.common.enums.ValidTypes
 import no.nav.navnosearchadminapi.common.model.ContentDao
@@ -24,19 +21,19 @@ class ContentMapper {
         val text = removeHtmlAndMacrosFromString(content.text!!)
         val titleSynonyms = toSynonyms(title)
         val ingressSynonyms = toSynonyms(ingress)
-        val allText = listOf(title, ingress, text, titleSynonyms, ingressSynonyms).joinToString(" ")
 
         return ContentDao(
             id = createInternalId(teamName, content.id!!),
             teamOwnedBy = teamName,
             href = content.href!!,
             autocomplete = Completion(listOf(content.title)),
-            title = toMultiLangField(title, content.metadata!!.language!!),
-            ingress = toMultiLangField(ingress, content.metadata.language!!),
-            text = toMultiLangField(text, content.metadata.language),
-            titleSynonyms = toMultiLangField(titleSynonyms, content.metadata.language),
-            ingressSynonyms = toMultiLangField(ingressSynonyms, content.metadata.language),
-            allText = toMultiLangField(allText, content.metadata.language),
+            title = MultiLangField(listOfNotNull(title, titleSynonyms), content.metadata!!.language!!),
+            ingress = MultiLangField(listOfNotNull(ingress, ingressSynonyms), content.metadata.language!!),
+            text = MultiLangField(listOf(text), content.metadata.language),
+            allText = MultiLangField(
+                listOfNotNull(title, ingress, text, titleSynonyms, ingressSynonyms),
+                content.metadata.language
+            ),
             type = content.metadata.type,
             createdAt = content.metadata.createdAt!!,
             lastUpdated = content.metadata.lastUpdated!!,
@@ -49,9 +46,9 @@ class ContentMapper {
         )
     }
 
-    private fun toSynonyms(value: String): String {
+    private fun toSynonyms(value: String): String? {
         val words = value.filter { it.isLetterOrDigit() }.split(" ").map { it.lowercase() }
-        return synonyms.filter { words.contains(it.key) }.flatMap { it.value }.joinToString(" ")
+        return synonyms.filter { words.contains(it.key) }.flatMap { it.value }.joinToString(" ").ifBlank { null }
     }
 
     fun removeHtmlAndMacrosFromString(string: String): String {
@@ -70,14 +67,6 @@ class ContentMapper {
             return NORWEGIAN_BOKMAAL
         }
         return language.lowercase()
-    }
-
-    fun toMultiLangField(value: String, language: String): MultiLangField {
-        return MultiLangField(
-            en = if (ENGLISH == language) value else null,
-            no = if (norwegianLanguageCodes.contains(language)) value else null,
-            other = if (!supportedLanguages.contains(language)) value else null,
-        )
     }
 
     private fun isInformasjon(metadata: ContentMetadata): Boolean {
