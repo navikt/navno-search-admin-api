@@ -118,6 +118,8 @@ fun dummyContentDao(
         title = MultiLangField(values = listOf(title), language = language),
         ingress = MultiLangField(values = listOf(ingress), language = language),
         text = MultiLangField(values = listOf(text), language = language),
+        titleWithSynonyms = MultiLangField(values = listOf(title), language = language),
+        ingressWithSynonyms = MultiLangField(values = listOf(ingress), language = language),
         allText = MultiLangField(values = listOf(title, ingress, text), language = language),
         type = ValidTypes.ANDRE.descriptor,
         createdAt = timestamp,

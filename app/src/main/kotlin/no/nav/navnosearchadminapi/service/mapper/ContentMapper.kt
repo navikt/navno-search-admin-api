@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component
 @Component
 class ContentMapper {
     fun toContentDao(content: ContentDto, teamName: String): ContentDao {
+        val language = content.metadata!!.language!!
         val title = content.title!!
         val ingress = removeHtmlAndMacrosFromString(content.ingress!!)
         val text = removeHtmlAndMacrosFromString(content.text!!)
@@ -28,18 +29,17 @@ class ContentMapper {
             teamOwnedBy = teamName,
             href = content.href!!,
             autocomplete = Completion(listOf(content.title)),
-            title = MultiLangField(listOfNotBlank(title, titleSynonyms), content.metadata!!.language!!),
-            ingress = MultiLangField(listOfNotBlank(ingress, ingressSynonyms), content.metadata.language!!),
-            text = MultiLangField(listOfNotBlank(text), content.metadata.language),
-            allText = MultiLangField(
-                listOfNotBlank(title, ingress, text, titleSynonyms, ingressSynonyms),
-                content.metadata.language
-            ),
+            title = MultiLangField(listOfNotBlank(title), language),
+            ingress = MultiLangField(listOfNotBlank(ingress), language),
+            text = MultiLangField(listOfNotBlank(text), language),
+            titleWithSynonyms = MultiLangField(listOfNotBlank(title, titleSynonyms), language),
+            ingressWithSynonyms = MultiLangField(listOfNotBlank(ingress, ingressSynonyms), language),
+            allText = MultiLangField(listOfNotBlank(title, ingress, text, titleSynonyms, ingressSynonyms), language),
             type = content.metadata.type,
             createdAt = content.metadata.createdAt!!,
             lastUpdated = content.metadata.lastUpdated!!,
             audience = content.metadata.audience!!,
-            language = resolveLanguage(content.metadata.language),
+            language = resolveLanguage(language),
             fylke = content.metadata.fylke,
             metatags = resolveMetatags(content.metadata),
             keywords = content.metadata.keywords,

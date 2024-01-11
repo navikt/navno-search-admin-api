@@ -27,6 +27,8 @@ data class ContentDao(
     @Field(type = FieldType.Object) val title: MultiLangField,
     @Field(type = FieldType.Object) val ingress: MultiLangField,
     @Field(type = FieldType.Object) val text: MultiLangField,
+    @Field(type = FieldType.Object) val titleWithSynonyms: MultiLangField,
+    @Field(type = FieldType.Object) val ingressWithSynonyms: MultiLangField,
     @Field(type = FieldType.Object) val allText: MultiLangField,
     @Field(type = FieldType.Keyword) val type: String,
     @Field(type = FieldType.Date) val createdAt: ZonedDateTime,

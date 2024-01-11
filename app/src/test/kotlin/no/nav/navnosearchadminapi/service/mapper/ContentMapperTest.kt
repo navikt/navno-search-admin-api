@@ -45,7 +45,7 @@ class ContentMapperTest {
         val mappedContent = mapper.toContentDao(contentDto, teamName)
 
         assertThat(mappedContent.title.en.first()).isEqualTo(contentDto.title)
-        assertThat(mappedContent.title.en[1].contains(synonymValue))
+        assertThat(mappedContent.titleWithSynonyms.en[1].contains(synonymValue))
         assertThat(mappedContent.allText.en[1].contains(synonymValue))
     }
 
