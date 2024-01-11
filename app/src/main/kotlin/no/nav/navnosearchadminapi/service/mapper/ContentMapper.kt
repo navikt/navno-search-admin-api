@@ -9,6 +9,7 @@ import no.nav.navnosearchadminapi.common.model.MultiLangField
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata
 import no.nav.navnosearchadminapi.utils.createInternalId
+import no.nav.navnosearchadminapi.utils.listOfNotBlank
 import org.jsoup.Jsoup
 import org.springframework.data.elasticsearch.core.suggest.Completion
 import org.springframework.stereotype.Component
@@ -27,11 +28,11 @@ class ContentMapper {
             teamOwnedBy = teamName,
             href = content.href!!,
             autocomplete = Completion(listOf(content.title)),
-            title = MultiLangField(listOfNotNull(title, titleSynonyms), content.metadata!!.language!!),
-            ingress = MultiLangField(listOfNotNull(ingress, ingressSynonyms), content.metadata.language!!),
-            text = MultiLangField(listOf(text), content.metadata.language),
+            title = MultiLangField(listOfNotBlank(title, titleSynonyms), content.metadata!!.language!!),
+            ingress = MultiLangField(listOfNotBlank(ingress, ingressSynonyms), content.metadata.language!!),
+            text = MultiLangField(listOfNotBlank(text), content.metadata.language),
             allText = MultiLangField(
-                listOfNotNull(title, ingress, text, titleSynonyms, ingressSynonyms),
+                listOfNotBlank(title, ingress, text, titleSynonyms, ingressSynonyms),
                 content.metadata.language
             ),
             type = content.metadata.type,
@@ -46,9 +47,8 @@ class ContentMapper {
         )
     }
 
-    private fun toSynonyms(value: String): String? {
-        val words = value.filter { it.isLetterOrDigit() }.split(" ").map { it.lowercase() }
-        return synonyms.filter { words.contains(it.key) }.flatMap { it.value }.joinToString(" ").ifBlank { null }
+    private fun toSynonyms(value: String): String {
+        return synonyms.filter { value.lowercase().contains(it.key) }.flatMap { it.value }.joinToString(" ")
     }
 
     fun removeHtmlAndMacrosFromString(string: String): String {
