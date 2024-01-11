@@ -19,9 +19,9 @@ class ContentDtoMapperTest {
 
         assertThat(mappedContent.id).isEqualTo(externalId)
         assertThat(mappedContent.href).isEqualTo(contentDao.href)
-        assertThat(mappedContent.title).isEqualTo(contentDao.title.no)
-        assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.no)
-        assertThat(mappedContent.text).isEqualTo(contentDao.text.no)
+        assertThat(mappedContent.title).isEqualTo(contentDao.title.no.first())
+        assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.no.first())
+        assertThat(mappedContent.text).isEqualTo(contentDao.text.no.first())
         assertThat(mappedContent.metadata).isNotNull()
         assertThat(mappedContent.metadata!!.type).isEqualTo(contentDao.type)
         assertThat(mappedContent.metadata!!.createdAt).isEqualTo(contentDao.createdAt)
@@ -38,9 +38,9 @@ class ContentDtoMapperTest {
         val contentDao = dummyContentDao(externalId = externalId, language = NORWEGIAN_NYNORSK)
         val mappedContent = mapper.toContentDto(contentDao)
 
-        assertThat(mappedContent.title).isEqualTo(contentDao.title.no)
-        assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.no)
-        assertThat(mappedContent.text).isEqualTo(contentDao.text.no)
+        assertThat(mappedContent.title).isEqualTo(contentDao.title.no.first())
+        assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.no.first())
+        assertThat(mappedContent.text).isEqualTo(contentDao.text.no.first())
     }
 
     @Test
@@ -48,9 +48,9 @@ class ContentDtoMapperTest {
         val contentDao = dummyContentDao(externalId = externalId, language = ENGLISH)
         val mappedContent = mapper.toContentDto(contentDao)
 
-        assertThat(mappedContent.title).isEqualTo(contentDao.title.en)
-        assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.en)
-        assertThat(mappedContent.text).isEqualTo(contentDao.text.en)
+        assertThat(mappedContent.title).isEqualTo(contentDao.title.en.first())
+        assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.en.first())
+        assertThat(mappedContent.text).isEqualTo(contentDao.text.en.first())
     }
 
     @Test
@@ -58,8 +58,8 @@ class ContentDtoMapperTest {
         val contentDao = dummyContentDao(externalId = externalId, language = "se")
         val mappedContent = mapper.toContentDto(contentDao)
 
-        assertThat(mappedContent.title).isEqualTo(contentDao.title.other)
-        assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.other)
-        assertThat(mappedContent.text).isEqualTo(contentDao.text.other)
+        assertThat(mappedContent.title).isEqualTo(contentDao.title.other.first())
+        assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.other.first())
+        assertThat(mappedContent.text).isEqualTo(contentDao.text.other.first())
     }
 }
