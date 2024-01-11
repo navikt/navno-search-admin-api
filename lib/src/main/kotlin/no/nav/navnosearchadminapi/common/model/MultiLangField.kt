@@ -16,19 +16,19 @@ data class MultiLangField(
     @MultiField(
         mainField = Field(type = FieldType.Text, analyzer = "custom_english"),
         otherFields = [InnerField(suffix = "exact", type = FieldType.Text, analyzer = "custom_standard")]
-    ) val en: List<String> = emptyList(),
+    ) val en: String? = null,
     @MultiField(
         mainField = Field(type = FieldType.Text, analyzer = "custom_norwegian"),
         otherFields = [InnerField(suffix = "exact", type = FieldType.Text, analyzer = "custom_standard")]
-    ) val no: List<String> = emptyList(),
+    ) val no: String? = null,
     @MultiField(
         mainField = Field(type = FieldType.Text, analyzer = "custom_standard"),
         otherFields = [InnerField(suffix = "exact", type = FieldType.Text, analyzer = "custom_standard")]
-    ) val other: List<String> = emptyList(),
+    ) val other: String? = null,
 ) {
-    constructor(values: List<String>, language: String) : this(
-        en = if (ENGLISH == language) values else emptyList(),
-        no = if (norwegianLanguageCodes.contains(language)) values else emptyList(),
-        other = if (!supportedLanguages.contains(language)) values else emptyList(),
+    constructor(value: String, language: String) : this(
+        en = if (ENGLISH == language) value else null,
+        no = if (norwegianLanguageCodes.contains(language)) value else null,
+        other = if (!supportedLanguages.contains(language)) value else null,
     )
 }

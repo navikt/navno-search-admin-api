@@ -9,7 +9,6 @@ import no.nav.navnosearchadminapi.common.model.MultiLangField
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata
 import no.nav.navnosearchadminapi.utils.createInternalId
-import no.nav.navnosearchadminapi.utils.listOfNotBlank
 import org.jsoup.Jsoup
 import org.springframework.data.elasticsearch.core.suggest.Completion
 import org.springframework.stereotype.Component
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Component
 @Component
 class ContentMapper {
     fun toContentDao(content: ContentDto, teamName: String): ContentDao {
+        val language = content.metadata!!.language!!
         val title = content.title!!
         val ingress = removeHtmlAndMacrosFromString(content.ingress!!)
         val text = removeHtmlAndMacrosFromString(content.text!!)
@@ -27,19 +27,21 @@ class ContentMapper {
             id = createInternalId(teamName, content.id!!),
             teamOwnedBy = teamName,
             href = content.href!!,
-            autocomplete = Completion(listOf(content.title)),
-            title = MultiLangField(listOfNotBlank(title, titleSynonyms), content.metadata!!.language!!),
-            ingress = MultiLangField(listOfNotBlank(ingress, ingressSynonyms), content.metadata.language!!),
-            text = MultiLangField(listOfNotBlank(text), content.metadata.language),
+            autocomplete = Completion(listOf(title)),
+            title = MultiLangField(title, language),
+            ingress = MultiLangField(ingress, language),
+            text = MultiLangField(text, language),
+            titleSynonynyms = MultiLangField(titleSynonyms, language),
+            ingressSynonyms = MultiLangField(ingressSynonyms, language),
             allText = MultiLangField(
-                listOfNotBlank(title, ingress, text, titleSynonyms, ingressSynonyms),
-                content.metadata.language
+                listOf(content.title, ingress, text, titleSynonyms, ingressSynonyms).joinToString(" "),
+                language
             ),
             type = content.metadata.type,
             createdAt = content.metadata.createdAt!!,
             lastUpdated = content.metadata.lastUpdated!!,
             audience = content.metadata.audience!!,
-            language = resolveLanguage(content.metadata.language),
+            language = resolveLanguage(language),
             fylke = content.metadata.fylke,
             metatags = resolveMetatags(content.metadata),
             keywords = content.metadata.keywords,
