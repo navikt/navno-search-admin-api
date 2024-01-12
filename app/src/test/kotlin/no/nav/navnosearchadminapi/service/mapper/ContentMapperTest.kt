@@ -24,9 +24,9 @@ class ContentMapperTest {
         assertThat(mappedContent.autocomplete.input.contains(contentDto.title)).isTrue()
         assertThat(mappedContent.teamOwnedBy).isEqualTo(teamName)
         assertThat(mappedContent.href).isEqualTo(contentDto.href)
-        assertThat(mappedContent.title.en).isEqualTo(contentDto.title)
-        assertThat(mappedContent.ingress.en).isEqualTo(contentDto.ingress)
-        assertThat(mappedContent.text.en).isEqualTo(contentDto.text)
+        assertThat(mappedContent.title.en.first()).isEqualTo(contentDto.title)
+        assertThat(mappedContent.ingress.en.first()).isEqualTo(contentDto.ingress)
+        assertThat(mappedContent.text.en.first()).isEqualTo(contentDto.text)
         assertThat(mappedContent.type).isEqualTo(contentDto.metadata!!.type)
         assertThat(mappedContent.createdAt).isEqualTo(contentDto.metadata!!.createdAt)
         assertThat(mappedContent.lastUpdated).isEqualTo(contentDto.metadata!!.lastUpdated)
@@ -38,6 +38,18 @@ class ContentMapperTest {
     }
 
     @Test
+    fun testMappingWithSynonym() {
+        val synonymKey = synonyms.keys.first()
+        val synonymValue = synonyms.values.first().first()
+        val contentDto = dummyContentDto(metatags = listOf(STATISTIKK), title = synonymKey)
+        val mappedContent = mapper.toContentDao(contentDto, teamName)
+
+        assertThat(mappedContent.title.en.first()).isEqualTo(contentDto.title)
+        assertThat(mappedContent.titleWithSynonyms.en[1].contains(synonymValue))
+        assertThat(mappedContent.allText.en[1].contains(synonymValue))
+    }
+
+    @Test
     fun testMappingWithHtmlInText() {
         val textWithHtml = "<p>Text with</p> html <br/>"
         val expectedFilteredText = "Text with html"
@@ -45,7 +57,7 @@ class ContentMapperTest {
         val contentDto = dummyContentDto(text = textWithHtml)
         val mappedContent = mapper.toContentDao(contentDto, teamName)
 
-        assertThat(mappedContent.text.en).isEqualTo(expectedFilteredText)
+        assertThat(mappedContent.text.en.first()).isEqualTo(expectedFilteredText)
     }
 
     @Test
@@ -56,7 +68,7 @@ class ContentMapperTest {
         val contentDto = dummyContentDto(text = textWithMacros)
         val mappedContent = mapper.toContentDao(contentDto, teamName)
 
-        assertThat(mappedContent.text.en).isEqualTo(expectedFilteredText)
+        assertThat(mappedContent.text.en.first()).isEqualTo(expectedFilteredText)
     }
 
     @Test
@@ -74,15 +86,15 @@ class ContentMapperTest {
 
         assertThat(mappedContent.language).isEqualTo(contentDto.metadata!!.language)
 
-        assertThat(mappedContent.title.no).isEqualTo(contentDto.title)
-        assertThat(mappedContent.ingress.no).isEqualTo(contentDto.ingress)
-        assertThat(mappedContent.text.no).isEqualTo(contentDto.text)
-        assertThat(mappedContent.title.en).isNull()
-        assertThat(mappedContent.ingress.en).isNull()
-        assertThat(mappedContent.text.en).isNull()
-        assertThat(mappedContent.title.other).isNull()
-        assertThat(mappedContent.ingress.other).isNull()
-        assertThat(mappedContent.text.other).isNull()
+        assertThat(mappedContent.title.no.first()).isEqualTo(contentDto.title)
+        assertThat(mappedContent.ingress.no.first()).isEqualTo(contentDto.ingress)
+        assertThat(mappedContent.text.no.first()).isEqualTo(contentDto.text)
+        assertThat(mappedContent.title.en).isEmpty()
+        assertThat(mappedContent.ingress.en).isEmpty()
+        assertThat(mappedContent.text.en).isEmpty()
+        assertThat(mappedContent.title.other).isEmpty()
+        assertThat(mappedContent.ingress.other).isEmpty()
+        assertThat(mappedContent.text.other).isEmpty()
     }
 
     @Test
@@ -92,8 +104,8 @@ class ContentMapperTest {
 
         assertThat(mappedContent.language).isEqualTo(NORWEGIAN_BOKMAAL)
 
-        assertThat(mappedContent.title.no).isEqualTo(contentDto.title)
-        assertThat(mappedContent.ingress.no).isEqualTo(contentDto.ingress)
-        assertThat(mappedContent.text.no).isEqualTo(contentDto.text)
+        assertThat(mappedContent.title.no.first()).isEqualTo(contentDto.title)
+        assertThat(mappedContent.ingress.no.first()).isEqualTo(contentDto.ingress)
+        assertThat(mappedContent.text.no.first()).isEqualTo(contentDto.text)
     }
 }
