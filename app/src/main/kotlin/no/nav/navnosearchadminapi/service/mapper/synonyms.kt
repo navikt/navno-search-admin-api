@@ -7,4 +7,5 @@ val synonyms = mapOf(
     "uføretrygd" to listOf("ufør"),
     "utbetalingsdato" to listOf("utbetaling"),
     "saksbehandlingstider" to listOf("saksbehandling"),
+    "kontakt" to listOf("skriv til"),
 )
