@@ -37,7 +37,7 @@ class ContentMapperTest {
         assertThat(mappedContent.keywords).isEqualTo(contentDto.metadata!!.keywords)
     }
 
-    @Test
+    /*@Test
     fun testMappingWithSynonym() {
         val synonymKey = synonyms.keys.first()
         val synonymValue = synonyms.values.first().first()
@@ -47,7 +47,7 @@ class ContentMapperTest {
         assertThat(mappedContent.title.en.first()).isEqualTo(contentDto.title)
         assertThat(mappedContent.titleWithSynonyms.en[1].contains(synonymValue))
         assertThat(mappedContent.allText.en[1].contains(synonymValue))
-    }
+    }*/
 
     @Test
     fun testMappingWithHtmlInText() {

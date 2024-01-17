@@ -46,7 +46,8 @@
         "filter": [
           "lowercase",
           "norwegian_stop",
-          "norwegian_stemmer"
+          "norwegian_stemmer",
+          "ngram"
         ]
       },
       "custom_english": {
