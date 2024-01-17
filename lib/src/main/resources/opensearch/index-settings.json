@@ -34,15 +34,26 @@
         "type": "stemmer",
         "language": "norwegian"
       },
-      "4_5_grams": {
-        "type": "ngram",
+      "front_edge_ngram": {
+        "type": "edge_ngram",
         "min_gram": 4,
-        "max_gram": 5,
-        "preserve_original": true
+        "max_gram": 20,
+        "side": "front"
+      },
+      "back_edge_ngram": {
+        "type": "edge_ngram",
+        "min_gram": 6,
+        "max_gram": 20,
+        "side": "back"
+      },
+      "ngram_multiplexer": {
+        "type": "multiplexer",
+        "preserve_original": true,
+        "filters": [ "front_edge_ngram", "back_edge_ngram" ]
       }
     },
     "analyzer": {
-      "custom_norwegian": {
+      "custom_norwegian_with_ngrams": {
         "type": "custom",
         "tokenizer": "letter",
         "char_filter": [
@@ -53,7 +64,20 @@
           "lowercase",
           "norwegian_stop",
           "norwegian_stemmer",
-          "4_5_grams"
+          "ngram_multiplexer"
+        ]
+      },
+      "custom_norwegian": {
+        "type": "custom",
+        "tokenizer": "letter",
+        "char_filter": [
+          "remove_soft_hyphen",
+          "remove_zero_width_space"
+        ],
+        "filter": [
+          "lowercase",
+          "norwegian_stop",
+          "norwegian_stemmer"
         ]
       },
       "custom_english": {

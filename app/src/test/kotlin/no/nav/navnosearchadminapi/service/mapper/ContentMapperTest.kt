@@ -37,18 +37,6 @@ class ContentMapperTest {
         assertThat(mappedContent.keywords).isEqualTo(contentDto.metadata!!.keywords)
     }
 
-    /*@Test
-    fun testMappingWithSynonym() {
-        val synonymKey = synonyms.keys.first()
-        val synonymValue = synonyms.values.first().first()
-        val contentDto = dummyContentDto(metatags = listOf(STATISTIKK), title = synonymKey)
-        val mappedContent = mapper.toContentDao(contentDto, teamName)
-
-        assertThat(mappedContent.title.en.first()).isEqualTo(contentDto.title)
-        assertThat(mappedContent.titleWithSynonyms.en[1].contains(synonymValue))
-        assertThat(mappedContent.allText.en[1].contains(synonymValue))
-    }*/
-
     @Test
     fun testMappingWithHtmlInText() {
         val textWithHtml = "<p>Text with</p> html <br/>"

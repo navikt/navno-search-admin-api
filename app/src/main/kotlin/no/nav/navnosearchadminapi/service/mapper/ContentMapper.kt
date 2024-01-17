@@ -5,7 +5,8 @@ import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
 import no.nav.navnosearchadminapi.common.enums.ValidTypes
 import no.nav.navnosearchadminapi.common.model.ContentDao
-import no.nav.navnosearchadminapi.common.model.MultiLangField
+import no.nav.navnosearchadminapi.common.model.MultiLangFieldLong
+import no.nav.navnosearchadminapi.common.model.MultiLangFieldShort
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata
 import no.nav.navnosearchadminapi.utils.createInternalId
@@ -21,20 +22,16 @@ class ContentMapper {
         val title = content.title!!
         val ingress = removeHtmlAndMacrosFromString(content.ingress!!)
         val text = removeHtmlAndMacrosFromString(content.text!!)
-        val titleSynonyms = toSynonyms(title)
-        val ingressSynonyms = toSynonyms(ingress)
 
         return ContentDao(
             id = createInternalId(teamName, content.id!!),
             teamOwnedBy = teamName,
             href = content.href!!,
             autocomplete = Completion(listOf(content.title)),
-            title = MultiLangField(listOfNotBlank(title), language),
-            ingress = MultiLangField(listOfNotBlank(ingress), language),
-            text = MultiLangField(listOfNotBlank(text), language),
-            titleWithSynonyms = MultiLangField(listOfNotBlank(title, titleSynonyms), language),
-            ingressWithSynonyms = MultiLangField(listOfNotBlank(ingress, ingressSynonyms), language),
-            allText = MultiLangField(listOfNotBlank(title, ingress, text, titleSynonyms, ingressSynonyms), language),
+            title = MultiLangFieldShort(listOfNotBlank(title), language),
+            ingress = MultiLangFieldShort(listOfNotBlank(ingress), language),
+            text = MultiLangFieldLong(listOfNotBlank(text), language),
+            allText = MultiLangFieldLong(listOfNotBlank(title, ingress, text), language),
             type = content.metadata.type,
             createdAt = content.metadata.createdAt!!,
             lastUpdated = content.metadata.lastUpdated!!,
@@ -45,10 +42,6 @@ class ContentMapper {
             keywords = content.metadata.keywords,
             languageRefs = content.metadata.languageRefs.map { resolveLanguage(it) },
         )
-    }
-
-    private fun toSynonyms(value: String): String {
-        return synonyms.filter { value.lowercase().contains(it.key) }.flatMap { it.value }.joinToString(" ")
     }
 
     fun removeHtmlAndMacrosFromString(string: String): String {
