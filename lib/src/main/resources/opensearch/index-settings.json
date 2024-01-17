@@ -33,6 +33,12 @@
       "norwegian_stemmer": {
         "type": "stemmer",
         "language": "norwegian"
+      },
+      "4_5_grams": {
+        "type": "ngram",
+        "min_gram": 4,
+        "max_gram": 5,
+        "preserve_original": true
       }
     },
     "analyzer": {
@@ -47,7 +53,7 @@
           "lowercase",
           "norwegian_stop",
           "norwegian_stemmer",
-          "ngram"
+          "4_5_grams"
         ]
       },
       "custom_english": {
