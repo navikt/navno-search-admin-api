@@ -6,12 +6,15 @@ import org.springframework.data.elasticsearch.annotations.InnerField
 import org.springframework.data.elasticsearch.annotations.MultiField
 
 @MultiField(
-    mainField = Field(
-        type = FieldType.Text,
-        analyzer = "custom_norwegian_with_ngrams",
-        searchAnalyzer = "custom_norwegian"
-    ),
-    otherFields = [InnerField(suffix = "exact", type = FieldType.Text, analyzer = "custom_standard")]
+    mainField = Field(type = FieldType.Text, analyzer = "custom_norwegian"),
+    otherFields = [
+        InnerField(suffix = "exact", type = FieldType.Text, analyzer = "custom_standard"),
+        InnerField(
+            suffix = "ngrams", type = FieldType.Text,
+            analyzer = "custom_norwegian_with_ngrams",
+            searchAnalyzer = "custom_norwegian"
+        )
+    ]
 )
 @Target(AnnotationTarget.FIELD)
 annotation class NorwegianShortTextField

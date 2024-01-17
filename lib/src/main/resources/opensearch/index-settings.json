@@ -48,7 +48,6 @@
       },
       "ngram_multiplexer": {
         "type": "multiplexer",
-        "preserve_original": true,
         "filters": [ "front_edge_ngram", "back_edge_ngram" ]
       }
     },
