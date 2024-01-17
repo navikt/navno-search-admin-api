@@ -9,4 +9,5 @@ import org.springframework.data.elasticsearch.annotations.MultiField
     mainField = Field(type = FieldType.Text, analyzer = "custom_english"),
     otherFields = [InnerField(suffix = "exact", type = FieldType.Text, analyzer = "custom_standard")]
 )
-annotation class EnglishTextField()
+@Target(AnnotationTarget.FIELD)
+annotation class EnglishTextField

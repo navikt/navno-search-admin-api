@@ -7,11 +7,11 @@ import no.nav.navnosearchadminapi.common.model.annotations.EnglishTextField
 import no.nav.navnosearchadminapi.common.model.annotations.NorwegianLongTextField
 import no.nav.navnosearchadminapi.common.model.annotations.StandardTextField
 
-// Fir longer text fields
+// For longer text fields
 data class MultiLangFieldLong(
-    @EnglishTextField override val en: List<String> = emptyList(),
-    @NorwegianLongTextField override val no: List<String> = emptyList(),
-    @StandardTextField override val other: List<String> = emptyList(),
+    @field:EnglishTextField override val en: List<String> = emptyList(),
+    @field:NorwegianLongTextField override val no: List<String> = emptyList(),
+    @field:StandardTextField override val other: List<String> = emptyList(),
 ) : MultiLangField {
     constructor(values: List<String>, language: String) : this(
         en = if (ENGLISH == language) values else emptyList(),

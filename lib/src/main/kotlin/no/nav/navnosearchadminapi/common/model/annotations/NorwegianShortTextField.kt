@@ -13,4 +13,5 @@ import org.springframework.data.elasticsearch.annotations.MultiField
     ),
     otherFields = [InnerField(suffix = "exact", type = FieldType.Text, analyzer = "custom_standard")]
 )
-annotation class NorwegianShortTextField()
+@Target(AnnotationTarget.FIELD)
+annotation class NorwegianShortTextField

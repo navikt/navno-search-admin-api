@@ -9,9 +9,9 @@ import no.nav.navnosearchadminapi.common.model.annotations.StandardTextField
 
 // For title and ingress
 data class MultiLangFieldShort(
-    @EnglishTextField override val en: List<String> = emptyList(),
-    @NorwegianShortTextField override val no: List<String> = emptyList(),
-    @StandardTextField override val other: List<String> = emptyList(),
+    @field:EnglishTextField override val en: List<String> = emptyList(),
+    @field:NorwegianShortTextField override val no: List<String> = emptyList(),
+    @field:StandardTextField override val other: List<String> = emptyList(),
 ) : MultiLangField {
     constructor(values: List<String>, language: String) : this(
         en = if (ENGLISH == language) values else emptyList(),
