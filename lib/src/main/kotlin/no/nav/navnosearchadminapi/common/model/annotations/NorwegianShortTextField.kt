@@ -4,6 +4,7 @@ import org.springframework.data.elasticsearch.annotations.Field
 import org.springframework.data.elasticsearch.annotations.FieldType
 import org.springframework.data.elasticsearch.annotations.InnerField
 import org.springframework.data.elasticsearch.annotations.MultiField
+import org.springframework.data.elasticsearch.annotations.Similarity
 
 @MultiField(
     mainField = Field(type = FieldType.Text, analyzer = "custom_norwegian"),
@@ -12,7 +13,8 @@ import org.springframework.data.elasticsearch.annotations.MultiField
         InnerField(
             suffix = "ngrams", type = FieldType.Text,
             analyzer = "custom_norwegian_with_ngrams",
-            searchAnalyzer = "custom_norwegian"
+            searchAnalyzer = "custom_norwegian",
+            similarity = Similarity.Boolean,
         )
     ]
 )
