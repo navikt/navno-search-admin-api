@@ -63,7 +63,8 @@
           "lowercase",
           "norwegian_stop",
           "norwegian_stemmer",
-          "ngram_multiplexer"
+          "ngram_multiplexer",
+          "remove_duplicates"
         ]
       },
       "custom_norwegian": {
