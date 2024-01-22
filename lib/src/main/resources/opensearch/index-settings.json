@@ -49,6 +49,10 @@
       "ngram_multiplexer": {
         "type": "multiplexer",
         "filters": [ "front_edge_ngram", "back_edge_ngram" ]
+      },
+      "norwegian_synonyms": {
+        "type": "synonym",
+        "synonyms":  ["søk, søknad", "skriv, kontakt", "utbetalingsdato, utbetalingsoversikt, utbetaling"]
       }
     },
     "analyzer": {
@@ -77,7 +81,8 @@
         "filter": [
           "lowercase",
           "norwegian_stop",
-          "norwegian_stemmer"
+          "norwegian_stemmer",
+          "norwegian_synonyms"
         ]
       },
       "custom_english": {
