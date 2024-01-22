@@ -9,13 +9,13 @@ import no.nav.navnosearchadminapi.common.model.annotations.StandardTextField
 
 // For title and ingress
 data class MultiLangFieldShort(
-    @field:EnglishTextField override val en: List<String> = emptyList(),
-    @field:NorwegianShortTextField override val no: List<String> = emptyList(),
-    @field:StandardTextField override val other: List<String> = emptyList(),
+    @field:EnglishTextField override val en: String? = null,
+    @field:NorwegianShortTextField override val no: String? = null,
+    @field:StandardTextField override val other: String? = null,
 ) : MultiLangField {
-    constructor(values: List<String>, language: String) : this(
-        en = if (ENGLISH == language) values else emptyList(),
-        no = if (norwegianLanguageCodes.contains(language)) values else emptyList(),
-        other = if (!supportedLanguages.contains(language)) values else emptyList(),
+    constructor(value: String, language: String) : this(
+        en = if (ENGLISH == language) value else null,
+        no = if (norwegianLanguageCodes.contains(language)) value else null,
+        other = if (!supportedLanguages.contains(language)) value else null,
     )
 }

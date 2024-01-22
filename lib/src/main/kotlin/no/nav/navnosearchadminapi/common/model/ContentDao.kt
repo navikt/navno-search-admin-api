@@ -27,7 +27,7 @@ data class ContentDao(
     @Field(type = FieldType.Object) val title: MultiLangFieldShort,
     @Field(type = FieldType.Object) val ingress: MultiLangFieldShort,
     @Field(type = FieldType.Object) val text: MultiLangFieldLong,
-    @Field(type = FieldType.Object) val allText: MultiLangFieldLong,
+    @Field(type = FieldType.Object) val allText: MultiLangFieldLong = text,
     @Field(type = FieldType.Keyword) val type: String,
     @Field(type = FieldType.Date) val createdAt: ZonedDateTime,
     @Field(type = FieldType.Date) val lastUpdated: ZonedDateTime,
