@@ -6,7 +6,11 @@ import org.springframework.data.elasticsearch.annotations.InnerField
 import org.springframework.data.elasticsearch.annotations.MultiField
 
 @MultiField(
-    mainField = Field(type = FieldType.Text, analyzer = "custom_norwegian"),
+    mainField = Field(
+        type = FieldType.Text,
+        analyzer = "custom_norwegian_with_synonyms",
+        searchAnalyzer = "custom_norwegian"
+    ),
     otherFields = [InnerField(suffix = "exact", type = FieldType.Text, analyzer = "custom_standard")]
 )
 @Target(AnnotationTarget.FIELD)
