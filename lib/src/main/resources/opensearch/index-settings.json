@@ -64,7 +64,7 @@
           "norwegian_stop",
           "norwegian_stemmer",
           "ngram_multiplexer",
-          "remove_duplicates"
+          "unique"
         ]
       },
       "custom_norwegian": {

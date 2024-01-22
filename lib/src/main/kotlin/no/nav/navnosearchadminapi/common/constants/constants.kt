@@ -26,6 +26,9 @@ const val METATAGS = "metatags"
 const val KEYWORDS = "keywords"
 const val LANGUAGE_REFS = "languageRefs"
 
+const val EXACT_INNER_FIELD = "exact"
+const val NGRAMS_INNER_FIELD = "ngrams"
+
 const val AUTOCOMPLETE = "autocomplete"
 
 const val METADATA = "metadata"
