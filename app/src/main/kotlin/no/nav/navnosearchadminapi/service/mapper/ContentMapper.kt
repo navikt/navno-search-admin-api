@@ -22,6 +22,7 @@ class ContentMapper {
         val title = content.title!!
         val ingress = removeHtmlAndMacrosFromString(content.ingress!!)
         val text = removeHtmlAndMacrosFromString(content.text!!)
+        val type = content.metadata.type
 
         return ContentDao(
             id = createInternalId(teamName, content.id!!),
@@ -31,8 +32,8 @@ class ContentMapper {
             title = MultiLangFieldShort(listOfNotBlank(title), language),
             ingress = MultiLangFieldShort(listOfNotBlank(ingress), language),
             text = MultiLangFieldLong(listOfNotBlank(text), language),
-            allText = MultiLangFieldLong(listOfNotBlank(title, ingress, text), language),
-            type = content.metadata.type,
+            allText = MultiLangFieldLong(listOfNotBlank(title, ingress, text, type), language),
+            type = type,
             createdAt = content.metadata.createdAt!!,
             lastUpdated = content.metadata.lastUpdated!!,
             audience = content.metadata.audience!!,
