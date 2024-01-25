@@ -53,12 +53,28 @@
           "back_edge_ngram"
         ]
       },
-      "norwegian_synonyms": {
+      "norwegian_index_only_synonyms": {
         "type": "synonym",
         "synonyms": [
           "søk, søknad",
           "utbetalingsdato, utbetalingsoversikt, utbetaling",
           "kontakt => kontakt skriv"
+        ]
+      },
+      "norwegian_synonyms": {
+        "type": "synonym",
+        "synonyms": [
+          "attlev, gjenlev",
+          "eins, ens",
+          "heim, hjem",
+          "månad, måned",
+          "rettlei, veiled, veil",
+          "rettleiing, veiledning",
+          "sjuk, syk",
+          "skul, skol",
+          "tilskot, tilskudd",
+          "vek, uke",
+          "verksemd, virksom"
         ]
       }
     },
@@ -75,10 +91,26 @@
           "norwegian_stop",
           "norwegian_stemmer",
           "ngram_multiplexer",
+          "norwegian_synonyms",
           "unique"
         ]
       },
-      "custom_norwegian_with_synonyms": {
+      "custom_norwegian_index": {
+        "type": "custom",
+        "tokenizer": "letter",
+        "char_filter": [
+          "remove_soft_hyphen",
+          "remove_zero_width_space"
+        ],
+        "filter": [
+          "lowercase",
+          "norwegian_stop",
+          "norwegian_stemmer",
+          "norwegian_synonyms",
+          "norwegian_index_only_synonyms"
+        ]
+      },
+      "custom_norwegian_search": {
         "type": "custom",
         "tokenizer": "letter",
         "char_filter": [
@@ -90,19 +122,6 @@
           "norwegian_stop",
           "norwegian_stemmer",
           "norwegian_synonyms"
-        ]
-      },
-      "custom_norwegian": {
-        "type": "custom",
-        "tokenizer": "letter",
-        "char_filter": [
-          "remove_soft_hyphen",
-          "remove_zero_width_space"
-        ],
-        "filter": [
-          "lowercase",
-          "norwegian_stop",
-          "norwegian_stemmer"
         ]
       },
       "custom_english": {

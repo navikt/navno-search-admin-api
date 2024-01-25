@@ -8,14 +8,14 @@ import org.springframework.data.elasticsearch.annotations.MultiField
 @MultiField(
     mainField = Field(
         type = FieldType.Text,
-        analyzer = "custom_norwegian_with_synonyms",
-        searchAnalyzer = "custom_norwegian"
+        analyzer = "custom_norwegian_index",
+        searchAnalyzer = "custom_norwegian_search"
     ), otherFields = [
         InnerField(suffix = "exact", type = FieldType.Text, analyzer = "custom_standard"),
         InnerField(
             suffix = "ngrams", type = FieldType.Text,
             analyzer = "custom_norwegian_with_ngrams",
-            searchAnalyzer = "custom_norwegian"
+            searchAnalyzer = "custom_norwegian_search"
         )
     ]
 )
