@@ -79,22 +79,6 @@
       }
     },
     "analyzer": {
-      "custom_norwegian_with_ngrams": {
-        "type": "custom",
-        "tokenizer": "letter",
-        "char_filter": [
-          "remove_soft_hyphen",
-          "remove_zero_width_space"
-        ],
-        "filter": [
-          "lowercase",
-          "norwegian_stop",
-          "norwegian_stemmer",
-          "ngram_multiplexer",
-          "norwegian_synonyms",
-          "unique"
-        ]
-      },
       "custom_norwegian_index": {
         "type": "custom",
         "tokenizer": "letter",
@@ -108,6 +92,21 @@
           "norwegian_stemmer",
           "norwegian_synonyms",
           "norwegian_index_only_synonyms"
+        ]
+      },
+      "custom_norwegian_ngrams": {
+        "type": "custom",
+        "tokenizer": "letter",
+        "char_filter": [
+          "remove_soft_hyphen",
+          "remove_zero_width_space"
+        ],
+        "filter": [
+          "lowercase",
+          "norwegian_stop",
+          "norwegian_stemmer",
+          "ngram_multiplexer",
+          "unique"
         ]
       },
       "custom_norwegian_search": {
