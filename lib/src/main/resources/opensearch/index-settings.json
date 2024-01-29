@@ -33,10 +33,53 @@
       "norwegian_stemmer": {
         "type": "stemmer",
         "language": "norwegian"
+      },
+      "front_edge_ngram": {
+        "type": "edge_ngram",
+        "min_gram": 4,
+        "max_gram": 20,
+        "side": "front"
+      },
+      "back_edge_ngram": {
+        "type": "edge_ngram",
+        "min_gram": 6,
+        "max_gram": 20,
+        "side": "back"
+      },
+      "ngram_multiplexer": {
+        "type": "multiplexer",
+        "filters": [
+          "front_edge_ngram",
+          "back_edge_ngram"
+        ]
+      },
+      "norwegian_index_only_synonyms": {
+        "type": "synonym",
+        "synonyms": [
+          "søk, søknad",
+          "utbetalingsdato, utbetalingsoversikt, utbetaling",
+          "kontakt => kontakt skriv"
+        ]
+      },
+      "norwegian_synonyms": {
+        "type": "synonym",
+        "synonyms": [
+          "attlev, gjenlev",
+          "eins, ens",
+          "heim, hjem",
+          "månad, måned",
+          "rettlei, veiled, veil",
+          "rettleiing, veiledning",
+          "sjuk, syk",
+          "skul, skol",
+          "tilskot, tilskudd",
+          "vek, uke",
+          "verksemd, virksom"
+        ]
       }
     },
     "analyzer": {
-      "custom_norwegian": {
+      "custom_norwegian_index": {
         "type": "custom",
         "tokenizer": "letter",
         "char_filter": [
@@ -46,7 +89,38 @@
         "filter": [
           "lowercase",
           "norwegian_stop",
-          "norwegian_stemmer"
+          "norwegian_stemmer",
+          "norwegian_synonyms",
+          "norwegian_index_only_synonyms"
+        ]
+      },
+      "custom_norwegian_ngrams": {
+        "type": "custom",
+        "tokenizer": "letter",
+        "char_filter": [
+          "remove_soft_hyphen",
+          "remove_zero_width_space"
+        ],
+        "filter": [
+          "lowercase",
+          "norwegian_stop",
+          "norwegian_stemmer",
+          "ngram_multiplexer",
+          "unique"
+        ]
+      },
+      "custom_norwegian_search": {
+        "type": "custom",
+        "tokenizer": "letter",
+        "char_filter": [
+          "remove_soft_hyphen",
+          "remove_zero_width_space"
+        ],
+        "filter": [
+          "lowercase",
+          "norwegian_stop",
+          "norwegian_stemmer",
+          "norwegian_synonyms"
         ]
       },
       "custom_english": {

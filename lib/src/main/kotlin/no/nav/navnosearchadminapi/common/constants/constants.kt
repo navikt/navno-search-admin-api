@@ -15,8 +15,6 @@ const val HREF = "href"
 const val TITLE = "title"
 const val INGRESS = "ingress"
 const val TEXT = "text"
-const val TITLE_WITH_SYNONYMS = "titleWithSynonyms"
-const val INGRESS_WITH_SYNONYMS = "ingressWithSynonyms"
 const val ALL_TEXT = "allText"
 const val CREATED_AT = "createdAt"
 const val LAST_UPDATED = "lastUpdated"
@@ -27,6 +25,9 @@ const val FYLKE = "fylke"
 const val METATAGS = "metatags"
 const val KEYWORDS = "keywords"
 const val LANGUAGE_REFS = "languageRefs"
+
+const val EXACT_INNER_FIELD = "exact"
+const val NGRAMS_INNER_FIELD = "ngrams"
 
 const val AUTOCOMPLETE = "autocomplete"
 

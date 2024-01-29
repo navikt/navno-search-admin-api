@@ -34,6 +34,7 @@ dependencies {
         val jsoup = "1.10.2"
         val opensearchTestcontainers = "2.0.1"
         val testcontainers = "1.19.3"
+        val wiremock = "4.0.4"
     }
 
     implementation(project(":lib"))
@@ -55,7 +56,7 @@ dependencies {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:4.0.4")
+    testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:${versions.wiremock}")
     testImplementation("org.testcontainers:junit-jupiter:${versions.testcontainers}")
     testImplementation("org.opensearch:opensearch-testcontainers:${versions.opensearchTestcontainers}")
 }
