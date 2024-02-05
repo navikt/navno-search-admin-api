@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     val versions = object {
-        val versions = "0.50.0"
+        val versions = "0.51.0"
     }
 
     kotlin("jvm")
