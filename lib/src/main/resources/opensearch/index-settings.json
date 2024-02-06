@@ -58,7 +58,9 @@
         "synonyms": [
           "søk, søknad",
           "utbetalingsdato, utbetalingsoversikt, utbetaling",
-          "kontakt => kontakt skriv"
+          "kontakt, skriv",
+          "pensjon, pensjonist",
+          "jobb, stilling"
         ]
       },
       "norwegian_synonyms": {
@@ -74,9 +76,7 @@
           "skul, skol",
           "tilskot, tilskudd",
           "vek, uke",
-          "verksemd, virksom",
-          "pensjon, pensjonist",
-          "jobb, stilling"
+          "verksemd, virksom"
         ]
       }
     },
