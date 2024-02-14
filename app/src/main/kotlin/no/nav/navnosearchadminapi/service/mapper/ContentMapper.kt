@@ -79,9 +79,6 @@ class ContentMapper {
             ValidTypes.SKJEMA.descriptor,
             ValidTypes.KONTOR.descriptor,
             ValidTypes.KONTOR_LEGACY.descriptor,
-            ValidTypes.FIL_DOCUMENT.descriptor,
-            ValidTypes.FIL_SPREADSHEET.descriptor,
-            ValidTypes.FIL_ANDRE.descriptor,
         )
     }
 }
