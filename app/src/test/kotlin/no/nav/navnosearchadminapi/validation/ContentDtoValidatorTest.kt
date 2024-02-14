@@ -69,7 +69,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
 
         assertThat(validationErrors).hasSize(1)
         assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.type: $invalidValue. Gyldige verdier: [legacy, kontor-legacy, kontor, tabell, skjema, produktside, temaside, guide, aktuelt, situasjonsside, oversikt, skjemaoversikt, fil-spreadsheet, fil-document, fil-andre, andre]")
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.type: $invalidValue. Gyldige verdier: [legacy, kontor-legacy, kontor, tabell, skjema, produktside, temaside, guide, aktuelt, situasjonsside, oversikt, skjemaoversikt, andre]")
     }
 
     @Test

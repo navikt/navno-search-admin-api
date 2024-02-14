@@ -13,8 +13,5 @@ enum class ValidTypes(override val descriptor: String) : DescriptorProvider {
     SITUASJONSSIDE("situasjonsside"),
     OVERSIKT("oversikt"),
     SKJEMAOVERSIKT("skjemaoversikt"),
-    FIL_SPREADSHEET("fil-spreadsheet"),
-    FIL_DOCUMENT("fil-document"),
-    FIL_ANDRE("fil-andre"),
     ANDRE("andre"),
 }

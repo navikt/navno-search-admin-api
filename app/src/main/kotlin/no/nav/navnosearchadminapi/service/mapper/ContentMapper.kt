@@ -48,7 +48,8 @@ class ContentMapper {
             fylke = content.metadata.fylke,
             metatags = resolveMetatags(content.metadata),
             keywords = content.metadata.keywords,
-            languageRefs = content.metadata.languageRefs.map { resolveLanguage(it) },
+            languageRefs = content.metadata.languageRefs.map { resolveLanguage(it) }
+                .filter { it != resolveLanguage(language) },
         )
     }
 
@@ -79,9 +80,6 @@ class ContentMapper {
             ValidTypes.SKJEMA.descriptor,
             ValidTypes.KONTOR.descriptor,
             ValidTypes.KONTOR_LEGACY.descriptor,
-            ValidTypes.FIL_DOCUMENT.descriptor,
-            ValidTypes.FIL_SPREADSHEET.descriptor,
-            ValidTypes.FIL_ANDRE.descriptor,
         )
     }
 }
