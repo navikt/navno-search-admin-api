@@ -53,19 +53,14 @@
           "back_edge_ngram"
         ]
       },
-      "norwegian_index_only_synonyms": {
+      "norwegian_synonyms": {
         "type": "synonym",
         "synonyms": [
           "søk, søknad",
           "utbetalingsdato, utbetalingsoversikt, utbetaling",
           "kontakt, skriv",
           "pensjon, pensjonist",
-          "jobb, stilling"
-        ]
-      },
-      "norwegian_synonyms": {
-        "type": "synonym",
-        "synonyms": [
+          "jobb, stilling",
           "attlev, gjenlev",
           "eins, ens",
           "heim, hjem",
@@ -92,8 +87,7 @@
           "lowercase",
           "norwegian_stop",
           "norwegian_stemmer",
-          "norwegian_synonyms",
-          "norwegian_index_only_synonyms"
+          "norwegian_synonyms"
         ]
       },
       "custom_norwegian_ngrams": {
@@ -121,8 +115,7 @@
         "filter": [
           "lowercase",
           "norwegian_stop",
-          "norwegian_stemmer",
-          "norwegian_synonyms"
+          "norwegian_stemmer"
         ]
       },
       "custom_english": {
