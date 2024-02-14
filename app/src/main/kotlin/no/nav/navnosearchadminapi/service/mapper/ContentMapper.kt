@@ -48,7 +48,8 @@ class ContentMapper {
             fylke = content.metadata.fylke,
             metatags = resolveMetatags(content.metadata),
             keywords = content.metadata.keywords,
-            languageRefs = content.metadata.languageRefs.map { resolveLanguage(it) },
+            languageRefs = content.metadata.languageRefs.map { resolveLanguage(it) }
+                .filter { it != resolveLanguage(language) },
         )
     }
 
