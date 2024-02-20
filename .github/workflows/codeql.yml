@@ -32,6 +32,8 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
+      - name: Setup gradle
+        uses: gradle/actions/setup-gradle@v3
       - name: Build
         run: ./gradlew clean build
       - name: Perform CodeQL Analysis
