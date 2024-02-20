@@ -20,7 +20,7 @@ class ContentMapper {
     fun toContentDao(content: ContentDto, teamName: String): ContentDao {
         val language = content.metadata!!.language!!
         val title = content.title!!
-        val ingress = removeHtmlAndMacrosFromString(content.ingress!!)
+        val ingress = toIngress(content.ingress!!, content.metadata.type)
         val text = removeHtmlAndMacrosFromString(content.text!!)
         val type = content.metadata.type
 
@@ -53,6 +53,14 @@ class ContentMapper {
         )
     }
 
+    private fun toIngress(ingress: String, type: String): String {
+        return if (kontorTypes.contains(type)) {
+            ingress
+        } else {
+            removeHtmlAndMacrosFromString(ingress)
+        }
+    }
+
     private fun shouldBeIncludedInAllTextField(type: String): Boolean {
         return type in listOf(ValidTypes.SKJEMA.descriptor)
     }
@@ -81,5 +89,9 @@ class ContentMapper {
             ValidTypes.KONTOR.descriptor,
             ValidTypes.KONTOR_LEGACY.descriptor,
         )
+    }
+
+    companion object {
+        private val kontorTypes = listOf(ValidTypes.KONTOR.descriptor, ValidTypes.KONTOR_LEGACY.descriptor)
     }
 }
