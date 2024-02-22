@@ -37,9 +37,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
         val content = listOf(dummyContentDto(audience = emptyList()))
         val validationErrors = validator.validate(content)
 
-        assertThat(validationErrors).hasSize(1)
-        assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("metadata.audience må inneholde minst ett element")
+        assertThat(validationErrors).isEmpty()
     }
 
     @Test

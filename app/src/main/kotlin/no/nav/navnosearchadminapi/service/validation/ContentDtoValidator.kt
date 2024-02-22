@@ -77,9 +77,7 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
     }
 
     private fun validateAudience(audience: List<String>): List<String> {
-        return if (audience.isEmpty()) {
-            listOf("$METADATA_AUDIENCE må inneholde minst ett element")
-        } else audience.mapNotNull { validateValueIsValid<ValidAudiences>(it, METADATA_AUDIENCE) }
+        return audience.mapNotNull { validateValueIsValid<ValidAudiences>(it, METADATA_AUDIENCE) }
     }
 
     private fun validateLanguage(value: String, fieldName: String): List<String> {
