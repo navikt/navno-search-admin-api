@@ -1,8 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    val versionsVersion = "0.51.0"
+
     kotlin("jvm")
-    id("com.github.ben-manes.versions") version "0.51.0" // ./gradlew dependencyUpdates to check for new versions
+    id("com.github.ben-manes.versions") version versionsVersion // ./gradlew dependencyUpdates to check for new versions
     `java-library`
     `maven-publish`
 }
@@ -15,9 +17,9 @@ repositories {
     mavenCentral()
 }
 
-val opensearchVersion = "1.3.0"
-
 dependencies {
+    val opensearchVersion = "1.3.0"
+
     implementation("org.opensearch.client:spring-data-opensearch-starter:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }

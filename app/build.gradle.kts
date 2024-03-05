@@ -2,12 +2,17 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm")
-    kotlin("plugin.spring") version "1.9.22"
+    val kotlinVersion = "1.9.22"
+    val springBootVersion = "3.2.3"
+    val springDepMgmtVersion = "1.1.4"
+    val versionsVersion = "0.51.0"
 
-    id("org.springframework.boot") version "3.2.3"
-    id("io.spring.dependency-management") version "1.1.4"
-    id("com.github.ben-manes.versions") version "0.51.0" // ./gradlew dependencyUpdates to check for new versions
+    kotlin("jvm")
+    kotlin("plugin.spring") version kotlinVersion
+
+    id("org.springframework.boot") version springBootVersion
+    id("io.spring.dependency-management") version springDepMgmtVersion
+    id("com.github.ben-manes.versions") version versionsVersion // ./gradlew dependencyUpdates to check for new versions
 }
 
 java {
@@ -18,16 +23,15 @@ repositories {
     mavenCentral()
 }
 
-val coroutinesVersion = "1.7.3"
-val navSecurityVersion = "4.1.3"
-val logstashVersion = "7.4"
-val opensearchVersion = "1.3.0"
-val jsoupVersion = "1.17.2"
-val opensearchTestcontainersVersion = "2.0.1"
-val testcontainersVersion = "1.19.6"
-val wiremockVersion = "4.1.1"
-
 dependencies {
+    val navSecurityVersion = "4.1.3"
+    val logstashVersion = "7.4"
+    val opensearchVersion = "1.3.0"
+    val jsoupVersion = "1.17.2"
+    val opensearchTestcontainersVersion = "2.0.1"
+    val testcontainersVersion = "1.19.6"
+    val wiremockVersion = "4.1.1"
+
     implementation(project(":lib"))
     implementation("no.nav.security:token-validation-spring:$navSecurityVersion")
     implementation("org.opensearch.client:spring-data-opensearch-starter:$opensearchVersion") {
