@@ -19,7 +19,7 @@ repositories {
 }
 
 val coroutinesVersion = "1.7.3"
-val navSecurityVersion = "3.2.0"
+val navSecurityVersion = "4.1.3"
 val logstashVersion = "7.4"
 val opensearchVersion = "1.3.0"
 val jsoupVersion = "1.10.2"
