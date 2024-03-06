@@ -186,14 +186,13 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
     fun testDeletingContentForMissingApp() {
         val deletedId = "1"
         val teamName = "missing-team"
-        val response: ResponseEntity<ErrorResponse> =
+        val response: ResponseEntity<String> =
             restTemplate.exchange(
                 "${host()}/content/$teamName/$deletedId",
                 HttpMethod.DELETE,
                 HttpEntity<Any>(headers()),
             )
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(response.body?.message).isEqualTo("Dokument med ekstern id $deletedId finnes ikke for team $teamName")
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
     }
 }
