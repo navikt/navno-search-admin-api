@@ -3,7 +3,6 @@ package no.nav.navnosearchadminapi.service
 import no.nav.navnosearchadminapi.common.repository.ContentRepository
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.outbound.SaveContentResponse
-import no.nav.navnosearchadminapi.exception.DocumentForTeamNameNotFoundException
 import no.nav.navnosearchadminapi.service.mapper.ContentDtoMapper
 import no.nav.navnosearchadminapi.service.mapper.ContentMapper
 import no.nav.navnosearchadminapi.service.validation.ContentDtoValidator
@@ -45,12 +44,7 @@ class AdminService(
     }
 
     fun deleteContentByTeamNameAndId(teamName: String, externalId: String) {
-        val id = createInternalId(teamName, externalId)
-        if (repository.existsById(id)) {
-            repository.deleteById(id)
-        } else {
-            throw DocumentForTeamNameNotFoundException("Dokument med ekstern id $externalId finnes ikke for team $teamName")
-        }
+        repository.deleteById(createInternalId(teamName, externalId))
     }
 
     fun getContentForTeamName(teamName: String, page: Int): Page<ContentDto> {
