@@ -1,7 +1,6 @@
 package no.nav.navnosearchadminapi.exception.handler
 
 import jakarta.servlet.http.HttpServletRequest
-import no.nav.navnosearchadminapi.exception.DocumentForTeamNameNotFoundException
 import no.nav.navnosearchadminapi.exception.InvalidApiKeyException
 import no.nav.navnosearchadminapi.exception.MissingIdException
 import no.nav.security.token.support.spring.validation.interceptor.JwtTokenUnauthorizedException
@@ -68,18 +67,6 @@ class ErrorHandler {
         return handleException(
             status = HttpStatus.BAD_REQUEST,
             message = "id er påkrevd for alle dokumenter",
-            path = request.requestURI,
-            ex = ex
-        )
-    }
-
-    @ExceptionHandler(value = [DocumentForTeamNameNotFoundException::class])
-    fun documentForTeamNameNotFoundHandler(
-        ex: DocumentForTeamNameNotFoundException,
-        request: HttpServletRequest
-    ): ResponseEntity<ErrorResponse> {
-        return handleException(
-            status = HttpStatus.BAD_REQUEST,
             path = request.requestURI,
             ex = ex
         )
