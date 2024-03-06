@@ -186,7 +186,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
     fun testDeletingContentForMissingApp() {
         val deletedId = "1"
         val teamName = "missing-team"
-        val response: ResponseEntity<ErrorResponse> =
+        val response: ResponseEntity<String> =
             restTemplate.exchange(
                 "${host()}/content/$teamName/$deletedId",
                 HttpMethod.DELETE,
