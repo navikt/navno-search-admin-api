@@ -193,7 +193,6 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
                 HttpEntity<Any>(headers()),
             )
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(response.body?.message).isEqualTo("Dokument med ekstern id $deletedId finnes ikke for team $teamName")
+        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
     }
 }

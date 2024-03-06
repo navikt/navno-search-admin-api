@@ -44,7 +44,12 @@ class AdminService(
     }
 
     fun deleteContentByTeamNameAndId(teamName: String, externalId: String) {
-        repository.deleteById(createInternalId(teamName, externalId))
+        val id = createInternalId(teamName, externalId)
+        if (repository.existsById(id)) {
+            repository.deleteById(id)
+        } else {
+            logger.info("Forsøkte å slette dokument med ekstern id $externalId, men dette finnes ikke for team $teamName")
+        }
     }
 
     fun getContentForTeamName(teamName: String, page: Int): Page<ContentDto> {
