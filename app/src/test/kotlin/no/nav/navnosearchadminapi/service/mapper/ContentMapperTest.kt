@@ -4,7 +4,6 @@ import no.nav.navnosearchadminapi.common.constants.NORWEGIAN
 import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
 import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_NYNORSK
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
-import no.nav.navnosearchadminapi.utils.STATISTIKK
 import no.nav.navnosearchadminapi.utils.dummyContentDto
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -17,7 +16,7 @@ class ContentMapperTest {
 
     @Test
     fun testMapping() {
-        val contentDto = dummyContentDto(metatags = listOf(STATISTIKK))
+        val contentDto = dummyContentDto(metatags = listOf(ValidMetatags.STATISTIKK.descriptor))
         val mappedContent = mapper.toContentDao(contentDto, teamName)
 
         assertThat(mappedContent.id).isEqualTo("$teamName-${contentDto.id}")

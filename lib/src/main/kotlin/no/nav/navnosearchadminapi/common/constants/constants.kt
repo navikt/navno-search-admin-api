@@ -41,19 +41,3 @@ const val METADATA_FYLKE = "$METADATA.$FYLKE"
 const val METADATA_METATAGS = "$METADATA.$METATAGS"
 const val METADATA_KEYWORDS = "$METADATA.$KEYWORDS"
 const val METADATA_LANGUAGE_REFS = "$METADATA.$LANGUAGE_REFS"
-
-const val TITLE_WILDCARD = "$TITLE.*"
-const val INGRESS_WILDCARD = "$INGRESS.*"
-const val TEXT_WILDCARD = "$TEXT.*"
-const val ALL_TEXT_WILDCARD = "$ALL_TEXT.*"
-
-const val TOTAL_COUNT = "Total count"
-
-const val LAST_UPDATED_FROM = "lastUpdatedFrom"
-const val LAST_UPDATED_TO = "lastUpdatedTo"
-const val DATE_RANGE_LAST_7_DAYS = "Siste 7 dager"
-const val DATE_RANGE_LAST_30_DAYS = "Siste 30 dager"
-const val DATE_RANGE_LAST_12_MONTHS = "Siste 12 måneder"
-const val DATE_RANGE_OLDER_THAN_12_MONTHS = "Eldre enn 12 måneder"
-
-const val MISSING_FYLKE = "Uten fylke"
