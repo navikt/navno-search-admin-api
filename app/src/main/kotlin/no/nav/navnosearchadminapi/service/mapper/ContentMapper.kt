@@ -12,11 +12,15 @@ import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata
 import no.nav.navnosearchadminapi.utils.createInternalId
 import no.nav.navnosearchadminapi.utils.listOfNotNullOrBlank
 import org.jsoup.Jsoup
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.data.elasticsearch.core.suggest.Completion
 import org.springframework.stereotype.Component
 
 @Component
 class ContentMapper {
+    val logger: Logger = LoggerFactory.getLogger(ContentMapper::class.java)
+
     fun toContentDao(content: ContentDto, teamName: String): ContentDao {
         val language = content.metadata!!.language!!
         val title = content.title!!
@@ -46,7 +50,7 @@ class ContentMapper {
             audience = content.metadata.audience!!,
             language = resolveLanguage(language),
             fylke = content.metadata.fylke,
-            metatags = resolveMetatags(content.metadata),
+            metatags = resolveMetatags(content.metadata, content.id),
             keywords = content.metadata.keywords,
             languageRefs = content.metadata.languageRefs.map { resolveLanguage(it) }
                 .filter { it != resolveLanguage(language) },
@@ -69,8 +73,9 @@ class ContentMapper {
         return Jsoup.parse(string).text().replace(Regex("\\[.*?/]"), "")
     }
 
-    private fun resolveMetatags(metadata: ContentMetadata): List<String> {
+    private fun resolveMetatags(metadata: ContentMetadata, id: String): List<String> {
         if (isInformasjon(metadata)) {
+            logger.info("Setter default metatag informasjon for dokument med id $id")
             return listOf(ValidMetatags.INFORMASJON.descriptor)
         }
         return metadata.metatags
