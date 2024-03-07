@@ -1,8 +1,13 @@
 package no.nav.navnosearchadminapi.validation
 
+import no.nav.navnosearchadminapi.common.enums.ValidAudiences
+import no.nav.navnosearchadminapi.common.enums.ValidFylker
+import no.nav.navnosearchadminapi.common.enums.ValidMetatags
+import no.nav.navnosearchadminapi.common.enums.ValidTypes
 import no.nav.navnosearchadminapi.consumer.kodeverk.KodeverkConsumer
 import no.nav.navnosearchadminapi.service.validation.ContentDtoValidator
 import no.nav.navnosearchadminapi.utils.dummyContentDto
+import no.nav.navnosearchadminapi.utils.enumDescriptors
 import no.nav.navnosearchadminapi.utils.mockedKodeverkResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -57,7 +62,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
 
         assertThat(validationErrors).hasSize(1)
         assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.audience: $invalidValue. Gyldige verdier: [privatperson, arbeidsgiver, samarbeidspartner, andre]")
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.audience: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidAudiences>()}")
     }
 
     @Test
@@ -67,7 +72,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
 
         assertThat(validationErrors).hasSize(1)
         assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.type: $invalidValue. Gyldige verdier: [legacy, kontor-legacy, kontor, tabell, skjema, produktside, temaside, guide, aktuelt, situasjonsside, oversikt, skjemaoversikt, andre]")
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.type: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidTypes>()}")
     }
 
     @Test
@@ -77,7 +82,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
 
         assertThat(validationErrors).hasSize(1)
         assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.fylke: $invalidValue. Gyldige verdier: [agder, innlandet, more-og-romsdal, nordland, oslo, rogaland, troms-og-finnmark, trondelag, vestfold-og-telemark, vestland, vest-viken, ost-viken]")
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.fylke: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidFylker>()}")
     }
 
     @Test
@@ -87,7 +92,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
 
         assertThat(validationErrors).hasSize(1)
         assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.metatags: $invalidValue. Gyldige verdier: [informasjon, nyhet, presse, pressemelding, nav-og-samfunn, analyse, statistikk]")
+        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.metatags: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidMetatags>()}")
     }
 
     @Test
@@ -125,7 +130,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
         assertThat(validationErrors[firstId]).hasSize(1)
         assertThat(validationErrors[secondId]).hasSize(2)
         assertThat(validationErrors[firstId]!!.first()).isEqualTo("Ugyldig verdi for metadata.language: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
-        assertThat(validationErrors[secondId]!!).contains("Ugyldig verdi for metadata.audience: $invalidValue. Gyldige verdier: [privatperson, arbeidsgiver, samarbeidspartner, andre]")
-        assertThat(validationErrors[secondId]!!).contains("Ugyldig verdi for metadata.fylke: $invalidValue. Gyldige verdier: [agder, innlandet, more-og-romsdal, nordland, oslo, rogaland, troms-og-finnmark, trondelag, vestfold-og-telemark, vestland, vest-viken, ost-viken]")
+        assertThat(validationErrors[secondId]!!).contains("Ugyldig verdi for metadata.audience: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidAudiences>()}")
+        assertThat(validationErrors[secondId]!!).contains("Ugyldig verdi for metadata.fylke: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidFylker>()}")
     }
 }

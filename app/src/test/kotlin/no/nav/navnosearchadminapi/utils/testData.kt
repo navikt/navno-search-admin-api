@@ -2,6 +2,9 @@ package no.nav.navnosearchadminapi.utils
 
 import no.nav.navnosearchadminapi.common.constants.ENGLISH
 import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
+import no.nav.navnosearchadminapi.common.enums.ValidAudiences
+import no.nav.navnosearchadminapi.common.enums.ValidFylker
+import no.nav.navnosearchadminapi.common.enums.ValidMetatags
 import no.nav.navnosearchadminapi.common.enums.ValidTypes
 import no.nav.navnosearchadminapi.common.model.ContentDao
 import no.nav.navnosearchadminapi.common.model.MultiLangFieldLong
@@ -13,11 +16,6 @@ import org.springframework.data.elasticsearch.core.suggest.Completion
 import java.time.ZonedDateTime
 
 const val TEAM_NAME = "test-team"
-const val PRIVATPERSON = "privatperson"
-const val ARBEIDSGIVER = "arbeidsgiver"
-const val SAMARBEIDSPARTNER = "samarbeidspartner"
-const val AGDER = "agder"
-const val STATISTIKK = "statistikk"
 const val HINDI = "hi"
 
 val mockedKodeverkResponse = KodeverkResponse(listOf("NB", "NN", "EN", "SE", "PL", "UK", "RU"))
@@ -31,22 +29,22 @@ val initialTestData = listOf(
     dummyContentDao(
         externalId = "1",
         textPrefix = "First",
-        audience = listOf(PRIVATPERSON, ARBEIDSGIVER, SAMARBEIDSPARTNER),
-        fylke = AGDER,
-        metatags = listOf(STATISTIKK)
+        audience = listOf(ValidAudiences.PERSON.descriptor, ValidAudiences.EMPLOYER.descriptor, ValidAudiences.PROVIDER.descriptor),
+        fylke = ValidFylker.AGDER.descriptor,
+        metatags = listOf(ValidMetatags.STATISTIKK.descriptor)
     ),
     dummyContentDao(
         externalId = "2",
         textPrefix = "Second",
-        fylke = AGDER,
-        metatags = listOf(STATISTIKK)
+        fylke = ValidFylker.AGDER.descriptor,
+        metatags = listOf(ValidMetatags.STATISTIKK.descriptor)
     ),
     dummyContentDao(
         externalId = "3",
         textPrefix = "Third",
         timestamp = nowMinusTwoYears,
-        fylke = AGDER,
-        metatags = listOf(STATISTIKK)
+        fylke = ValidFylker.AGDER.descriptor,
+        metatags = listOf(ValidMetatags.STATISTIKK.descriptor)
     ),
     dummyContentDao(
         externalId = "4",
@@ -58,42 +56,42 @@ val initialTestData = listOf(
         externalId = "5",
         textPrefix = "Fifth",
         timestamp = nowMinus10Days,
-        audience = listOf(ARBEIDSGIVER),
+        audience = listOf(ValidAudiences.EMPLOYER.descriptor),
         language = ENGLISH,
     ),
     dummyContentDao(
         externalId = "6",
         textPrefix = "Sixth",
         timestamp = nowMinus10Days,
-        audience = listOf(ARBEIDSGIVER),
+        audience = listOf(ValidAudiences.EMPLOYER.descriptor),
         language = ENGLISH,
     ),
     dummyContentDao(
         externalId = "7",
         textPrefix = "Seventh",
         timestamp = nowMinus50Days,
-        audience = listOf(ARBEIDSGIVER),
+        audience = listOf(ValidAudiences.EMPLOYER.descriptor),
         language = HINDI,
     ),
     dummyContentDao(
         externalId = "8",
         textPrefix = "Eighth",
         timestamp = nowMinus50Days,
-        audience = listOf(SAMARBEIDSPARTNER),
+        audience = listOf(ValidAudiences.PROVIDER.descriptor),
         language = HINDI,
     ),
     dummyContentDao(
         externalId = "9",
         textPrefix = "Ninth",
         timestamp = nowMinus50Days,
-        audience = listOf(SAMARBEIDSPARTNER),
+        audience = listOf(ValidAudiences.PROVIDER.descriptor),
         language = HINDI,
     ),
     dummyContentDao(
         externalId = "10",
         textPrefix = "Tenth",
         timestamp = nowMinus50Days,
-        audience = listOf(SAMARBEIDSPARTNER),
+        audience = listOf(ValidAudiences.PROVIDER.descriptor),
         language = HINDI,
     ),
 )
@@ -103,7 +101,7 @@ fun dummyContentDao(
     externalId: String,
     textPrefix: String = "",
     timestamp: ZonedDateTime = now,
-    audience: List<String> = listOf(PRIVATPERSON),
+    audience: List<String> = listOf(ValidAudiences.PERSON.descriptor),
     language: String = NORWEGIAN_BOKMAAL,
     fylke: String? = null,
     metatags: List<String> = emptyList()
@@ -139,7 +137,7 @@ fun dummyContentDto(
     type: String = ValidTypes.ANDRE.descriptor,
     createdAt: ZonedDateTime? = now,
     lastUpdated: ZonedDateTime? = now,
-    audience: List<String>? = listOf(SAMARBEIDSPARTNER),
+    audience: List<String>? = listOf(ValidAudiences.PROVIDER.descriptor),
     language: String? = ENGLISH,
     fylke: String? = null,
     metatags: List<String> = emptyList(),
