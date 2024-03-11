@@ -91,6 +91,7 @@ class ContentMapper {
     private fun isInformasjon(metadata: ContentMetadata): Boolean {
         return metadata.metatags.isEmpty() && metadata.fylke == null && metadata.type !in listOf(
             ValidTypes.SKJEMA.descriptor,
+            ValidTypes.SKJEMAOVERSIKT.descriptor,
             ValidTypes.KONTOR.descriptor,
             ValidTypes.KONTOR_LEGACY.descriptor,
         )
