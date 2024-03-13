@@ -35,7 +35,7 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: {{ kodeverk-host }}
+        - host: kodeverk-api.nav.no
   ingresses:
   {{#each ingresses}}
      - "{{this}}"
