@@ -121,6 +121,7 @@ fun dummyContentDao(
         type = ValidTypes.ANDRE.descriptor,
         createdAt = timestamp,
         lastUpdated = timestamp,
+        sortByDate = timestamp,
         audience = audience,
         language = language,
         fylke = fylke,
