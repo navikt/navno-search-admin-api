@@ -27,6 +27,8 @@ class ContentMapper {
         val ingress = toIngress(content.ingress!!, content.metadata.type)
         val text = removeHtmlAndMacrosFromString(content.text!!)
         val type = content.metadata.type
+        val createdAt = content.metadata.createdAt!!
+        val lastUpdated = content.metadata.lastUpdated!!
 
         return ContentDao(
             id = createInternalId(teamName, content.id!!),
@@ -45,8 +47,9 @@ class ContentMapper {
                 ).joinToString(), language
             ),
             type = type,
-            createdAt = content.metadata.createdAt!!,
-            lastUpdated = content.metadata.lastUpdated!!,
+            createdAt = createdAt,
+            lastUpdated = lastUpdated,
+            sortByDate = if (isNyhet(content.metadata.metatags)) createdAt else lastUpdated,
             audience = content.metadata.audience!!,
             language = resolveLanguage(language),
             fylke = content.metadata.fylke,
@@ -96,6 +99,8 @@ class ContentMapper {
             ValidTypes.KONTOR_LEGACY.descriptor,
         )
     }
+
+    private fun isNyhet(metatags: List<String>) = metatags.contains(ValidMetatags.NYHET.descriptor)
 
     companion object {
         private val kontorTypes = listOf(ValidTypes.KONTOR.descriptor, ValidTypes.KONTOR_LEGACY.descriptor)
