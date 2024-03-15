@@ -73,7 +73,7 @@ class ContentMapper {
     }
 
     private fun removeHtmlAndMacrosFromString(string: String): String {
-        return Jsoup.parse(string).text().replace(Regex("\\[.*?/]"), "")
+        return Jsoup.parse(string).text().replace(Regex("""\[.*?]"""), "")
     }
 
     private fun resolveMetatags(metadata: ContentMetadata, id: String): List<String> {
