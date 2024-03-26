@@ -12,7 +12,7 @@ import org.springframework.data.elasticsearch.core.suggest.Completion
 import java.time.ZonedDateTime
 
 @Document(
-    indexName = "search-content-v1",
+    indexName = "search-content-v2",
     dynamic = Dynamic.STRICT,
     /* Disabler type hints da det lager et _class-felt i mappingen som gir problemer for wildcard-søk.
        Bør skrives om dersom vi trenger polymorfisk data. */
@@ -23,7 +23,7 @@ data class ContentDao(
     @Id @Field(type = FieldType.Keyword) val id: String,
     @CompletionField val autocomplete: Completion,
     @Field(type = FieldType.Keyword) val teamOwnedBy: String,
-    @Field(type = FieldType.Text) val href: String,
+    @Field(type = FieldType.Keyword) val href: String,
     @Field(type = FieldType.Object) val title: MultiLangFieldShort,
     @Field(type = FieldType.Object) val ingress: MultiLangFieldShort,
     @Field(type = FieldType.Object) val text: MultiLangFieldLong,
