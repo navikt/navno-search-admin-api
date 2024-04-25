@@ -24,7 +24,7 @@ class ContentMapper {
     fun toContentDao(content: ContentDto, teamName: String): ContentDao {
         val language = content.metadata!!.language!!
         val title = content.title!!
-        val ingress = toIngress(content.ingress!!, content.metadata.type)
+        val ingress = removeHtmlAndMacrosFromString(content.ingress!!)
         val text = removeHtmlAndMacrosFromString(content.text!!)
         val type = content.metadata.type
         val createdAt = content.metadata.createdAt!!
@@ -60,14 +60,6 @@ class ContentMapper {
         )
     }
 
-    private fun toIngress(ingress: String, type: String): String {
-        return if (kontorTypes.contains(type)) {
-            ingress
-        } else {
-            removeHtmlAndMacrosFromString(ingress)
-        }
-    }
-
     private fun shouldBeIncludedInAllTextField(type: String): Boolean {
         return type in listOf(ValidTypes.SKJEMA.descriptor)
     }
@@ -101,8 +93,4 @@ class ContentMapper {
     }
 
     private fun isNyhet(metatags: List<String>) = metatags.contains(ValidMetatags.NYHET.descriptor)
-
-    companion object {
-        private val kontorTypes = listOf(ValidTypes.KONTOR.descriptor, ValidTypes.KONTOR_LEGACY.descriptor)
-    }
 }
