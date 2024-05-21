@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    val opensearchVersion = "1.3.0"
+    val opensearchVersion = "1.4.0"
 
     implementation("org.opensearch.client:spring-data-opensearch-starter:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
