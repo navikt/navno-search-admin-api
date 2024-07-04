@@ -4,7 +4,7 @@ import no.nav.navnosearchadminapi.common.constants.NORWEGIAN
 import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
 import no.nav.navnosearchadminapi.common.enums.ValidTypes
-import no.nav.navnosearchadminapi.common.model.ContentDao
+import no.nav.navnosearchadminapi.common.model.Content
 import no.nav.navnosearchadminapi.common.model.MultiLangFieldLong
 import no.nav.navnosearchadminapi.common.model.MultiLangFieldShort
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
@@ -21,20 +21,20 @@ import org.springframework.stereotype.Component
 class ContentMapper {
     val logger: Logger = LoggerFactory.getLogger(ContentMapper::class.java)
 
-    fun toContentDao(content: ContentDto, teamName: String): ContentDao {
-        val language = content.metadata!!.language!!
-        val title = content.title!!
-        val ingress = removeHtmlAndMacrosFromString(content.ingress!!)
-        val text = removeHtmlAndMacrosFromString(content.text!!)
-        val type = content.metadata.type
-        val createdAt = content.metadata.createdAt!!
-        val lastUpdated = content.metadata.lastUpdated!!
+    fun toContent(content: ContentDto, teamName: String) = with(content) {
+        val language = metadata!!.language!!
+        val title = title!!
+        val ingress = removeHtmlAndMacrosFromString(ingress!!)
+        val text = removeHtmlAndMacrosFromString(text!!)
+        val type = metadata.type
+        val createdAt = metadata.createdAt!!
+        val lastUpdated = metadata.lastUpdated!!
 
-        return ContentDao(
-            id = createInternalId(teamName, content.id!!),
+        Content(
+            id = createInternalId(teamName, id!!),
             teamOwnedBy = teamName,
-            href = content.href!!,
-            autocomplete = Completion(listOf(content.title)),
+            href = href!!,
+            autocomplete = Completion(listOf(title)),
             title = MultiLangFieldShort(title, language),
             ingress = MultiLangFieldShort(ingress, language),
             text = MultiLangFieldLong(text, language),
@@ -49,13 +49,13 @@ class ContentMapper {
             type = type,
             createdAt = createdAt,
             lastUpdated = lastUpdated,
-            sortByDate = if (isNyhet(content.metadata.metatags)) createdAt else lastUpdated,
-            audience = content.metadata.audience!!,
+            sortByDate = if (isNyhet(metadata.metatags)) createdAt else lastUpdated,
+            audience = metadata.audience!!,
             language = resolveLanguage(language),
-            fylke = content.metadata.fylke,
-            metatags = resolveMetatags(content.metadata, content.id),
-            keywords = content.metadata.keywords,
-            languageRefs = content.metadata.languageRefs.map { resolveLanguage(it) }
+            fylke = metadata.fylke,
+            metatags = resolveMetatags(metadata, id),
+            keywords = metadata.keywords,
+            languageRefs = metadata.languageRefs.map { resolveLanguage(it) }
                 .filter { it != resolveLanguage(language) },
         )
     }
@@ -69,18 +69,20 @@ class ContentMapper {
     }
 
     private fun resolveMetatags(metadata: ContentMetadata, id: String): List<String> {
-        if (isInformasjon(metadata)) {
+        return if (isInformasjon(metadata)) {
             logger.info("Setter default metatag informasjon for dokument med id $id")
-            return listOf(ValidMetatags.INFORMASJON.descriptor)
+            listOf(ValidMetatags.INFORMASJON.descriptor)
+        } else {
+            metadata.metatags
         }
-        return metadata.metatags
     }
 
     private fun resolveLanguage(language: String): String {
-        if (language.equals(NORWEGIAN, ignoreCase = true)) {
-            return NORWEGIAN_BOKMAAL
+        return if (language.equals(NORWEGIAN, ignoreCase = true)) {
+            NORWEGIAN_BOKMAAL
+        } else {
+            language.lowercase()
         }
-        return language.lowercase()
     }
 
     private fun isInformasjon(metadata: ContentMetadata): Boolean {

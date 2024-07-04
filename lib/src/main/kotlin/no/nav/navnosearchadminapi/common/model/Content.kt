@@ -19,7 +19,7 @@ import java.time.ZonedDateTime
     writeTypeHint = WriteTypeHint.FALSE,
 )
 @Setting(settingPath = "opensearch/index-settings.json")
-data class ContentDao(
+data class Content(
     @Id @Field(type = FieldType.Keyword) val id: String,
     @CompletionField val autocomplete: Completion,
     @Field(type = FieldType.Keyword) val teamOwnedBy: String,

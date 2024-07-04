@@ -6,7 +6,7 @@ import no.nav.navnosearchadminapi.common.enums.ValidAudiences
 import no.nav.navnosearchadminapi.common.enums.ValidFylker
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
 import no.nav.navnosearchadminapi.common.enums.ValidTypes
-import no.nav.navnosearchadminapi.common.model.ContentDao
+import no.nav.navnosearchadminapi.common.model.Content
 import no.nav.navnosearchadminapi.common.model.MultiLangFieldLong
 import no.nav.navnosearchadminapi.common.model.MultiLangFieldShort
 import no.nav.navnosearchadminapi.consumer.kodeverk.dto.KodeverkResponse
@@ -26,68 +26,68 @@ val nowMinus10Days: ZonedDateTime = ZonedDateTime.now().minusDays(10)
 val nowMinus50Days: ZonedDateTime = ZonedDateTime.now().minusDays(50)
 
 val initialTestData = listOf(
-    dummyContentDao(
+    dummyContent(
         externalId = "1",
         textPrefix = "First",
         audience = listOf(ValidAudiences.PERSON.descriptor, ValidAudiences.EMPLOYER.descriptor, ValidAudiences.PROVIDER.descriptor),
         fylke = ValidFylker.AGDER.descriptor,
         metatags = listOf(ValidMetatags.STATISTIKK.descriptor)
     ),
-    dummyContentDao(
+    dummyContent(
         externalId = "2",
         textPrefix = "Second",
         fylke = ValidFylker.AGDER.descriptor,
         metatags = listOf(ValidMetatags.STATISTIKK.descriptor)
     ),
-    dummyContentDao(
+    dummyContent(
         externalId = "3",
         textPrefix = "Third",
         timestamp = nowMinusTwoYears,
         fylke = ValidFylker.AGDER.descriptor,
         metatags = listOf(ValidMetatags.STATISTIKK.descriptor)
     ),
-    dummyContentDao(
+    dummyContent(
         externalId = "4",
         textPrefix = "Fourth",
         timestamp = nowMinusTwoYears,
         language = ENGLISH
     ),
-    dummyContentDao(
+    dummyContent(
         externalId = "5",
         textPrefix = "Fifth",
         timestamp = nowMinus10Days,
         audience = listOf(ValidAudiences.EMPLOYER.descriptor),
         language = ENGLISH,
     ),
-    dummyContentDao(
+    dummyContent(
         externalId = "6",
         textPrefix = "Sixth",
         timestamp = nowMinus10Days,
         audience = listOf(ValidAudiences.EMPLOYER.descriptor),
         language = ENGLISH,
     ),
-    dummyContentDao(
+    dummyContent(
         externalId = "7",
         textPrefix = "Seventh",
         timestamp = nowMinus50Days,
         audience = listOf(ValidAudiences.EMPLOYER.descriptor),
         language = HINDI,
     ),
-    dummyContentDao(
+    dummyContent(
         externalId = "8",
         textPrefix = "Eighth",
         timestamp = nowMinus50Days,
         audience = listOf(ValidAudiences.PROVIDER.descriptor),
         language = HINDI,
     ),
-    dummyContentDao(
+    dummyContent(
         externalId = "9",
         textPrefix = "Ninth",
         timestamp = nowMinus50Days,
         audience = listOf(ValidAudiences.PROVIDER.descriptor),
         language = HINDI,
     ),
-    dummyContentDao(
+    dummyContent(
         externalId = "10",
         textPrefix = "Tenth",
         timestamp = nowMinus50Days,
@@ -96,7 +96,7 @@ val initialTestData = listOf(
     ),
 )
 
-fun dummyContentDao(
+fun dummyContent(
     teamName: String = TEAM_NAME,
     externalId: String,
     textPrefix: String = "",
@@ -105,11 +105,11 @@ fun dummyContentDao(
     language: String = NORWEGIAN_BOKMAAL,
     fylke: String? = null,
     metatags: List<String> = emptyList()
-): ContentDao {
+): Content {
     val title = "$textPrefix title"
     val ingress = "$textPrefix ingress"
     val text = "$textPrefix text"
-    return ContentDao(
+    return Content(
         id = "$teamName-$externalId",
         autocomplete = Completion(listOf("$textPrefix title")),
         teamOwnedBy = teamName,

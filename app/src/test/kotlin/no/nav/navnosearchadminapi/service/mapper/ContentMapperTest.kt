@@ -17,7 +17,7 @@ class ContentMapperTest {
     @Test
     fun testMapping() {
         val contentDto = dummyContentDto(metatags = listOf(ValidMetatags.STATISTIKK.descriptor))
-        val mappedContent = mapper.toContentDao(contentDto, teamName)
+        val mappedContent = mapper.toContent(contentDto, teamName)
 
         assertThat(mappedContent.id).isEqualTo("$teamName-${contentDto.id}")
         assertThat(mappedContent.autocomplete.input.contains(contentDto.title)).isTrue()
@@ -42,7 +42,7 @@ class ContentMapperTest {
         val expectedFilteredText = "Text with html"
 
         val contentDto = dummyContentDto(text = textWithHtml)
-        val mappedContent = mapper.toContentDao(contentDto, teamName)
+        val mappedContent = mapper.toContent(contentDto, teamName)
 
         assertThat(mappedContent.text.en).isEqualTo(expectedFilteredText)
     }
@@ -53,7 +53,7 @@ class ContentMapperTest {
         val expectedFilteredText = "Text with macro"
 
         val contentDto = dummyContentDto(text = textWithMacros)
-        val mappedContent = mapper.toContentDao(contentDto, teamName)
+        val mappedContent = mapper.toContent(contentDto, teamName)
 
         assertThat(mappedContent.text.en).isEqualTo(expectedFilteredText)
     }
@@ -61,7 +61,7 @@ class ContentMapperTest {
     @Test
     fun testMappingWithoutMetatags() {
         val contentDto = dummyContentDto()
-        val mappedContent = mapper.toContentDao(contentDto, teamName)
+        val mappedContent = mapper.toContent(contentDto, teamName)
 
         assertThat(mappedContent.metatags).isEqualTo(listOf(ValidMetatags.INFORMASJON.descriptor))
     }
@@ -69,7 +69,7 @@ class ContentMapperTest {
     @Test
     fun testMappingWithNorwegianNynorskLanguage() {
         val contentDto = dummyContentDto(language = NORWEGIAN_NYNORSK)
-        val mappedContent = mapper.toContentDao(contentDto, teamName)
+        val mappedContent = mapper.toContent(contentDto, teamName)
 
         assertThat(mappedContent.language).isEqualTo(contentDto.metadata!!.language)
 
@@ -87,7 +87,7 @@ class ContentMapperTest {
     @Test
     fun testMappingWithGenericNorwegianLanguageShouldMapToBokmaal() {
         val contentDto = dummyContentDto(language = NORWEGIAN)
-        val mappedContent = mapper.toContentDao(contentDto, teamName)
+        val mappedContent = mapper.toContent(contentDto, teamName)
 
         assertThat(mappedContent.language).isEqualTo(NORWEGIAN_BOKMAAL)
 

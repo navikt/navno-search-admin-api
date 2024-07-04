@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 
 @UnprotectedRestController
-//@ProtectedRestController(issuer = "azuread")
 class AdminController(val service: AdminService) {
 
     @PostMapping("/content/{teamName}")

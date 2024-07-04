@@ -3,7 +3,7 @@ package no.nav.navnosearchadminapi.service.mapper
 import no.nav.navnosearchadminapi.common.constants.ENGLISH
 import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
 import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_NYNORSK
-import no.nav.navnosearchadminapi.common.model.ContentDao
+import no.nav.navnosearchadminapi.common.model.Content
 import no.nav.navnosearchadminapi.common.model.MultiLangField
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata
@@ -17,26 +17,26 @@ class ContentDtoMapper {
 
     val logger: Logger = LoggerFactory.getLogger(ContentDtoMapper::class.java)
 
-    fun toContentDto(content: ContentDao): ContentDto {
-        return ContentDto(
-            id = extractExternalId(content.id, content.teamOwnedBy),
-            href = content.href,
-            title = languageSubfieldValue(content.title, content.language)
-                ?: handleMissingValue(content.id, TITLE),
-            ingress = languageSubfieldValue(content.ingress, content.language)
-                ?: handleMissingValue(content.id, INGRESS),
-            text = languageSubfieldValue(content.text, content.language)
-                ?: handleMissingValue(content.id, TEXT),
+    fun toContentDto(content: Content) = with(content) {
+        ContentDto(
+            id = extractExternalId(id, teamOwnedBy),
+            href = href,
+            title = languageSubfieldValue(title, language)
+                ?: handleMissingValue(id, TITLE),
+            ingress = languageSubfieldValue(ingress, language)
+                ?: handleMissingValue(id, INGRESS),
+            text = languageSubfieldValue(text, language)
+                ?: handleMissingValue(id, TEXT),
             ContentMetadata(
-                type = content.type,
-                createdAt = content.createdAt,
-                lastUpdated = content.lastUpdated,
-                audience = content.audience,
-                language = content.language,
-                fylke = content.fylke,
-                metatags = content.metatags,
-                keywords = content.keywords,
-                languageRefs = content.languageRefs,
+                type = type,
+                createdAt = createdAt,
+                lastUpdated = lastUpdated,
+                audience = audience,
+                language = language,
+                fylke = fylke,
+                metatags = metatags,
+                keywords = keywords,
+                languageRefs = languageRefs,
             )
         )
     }

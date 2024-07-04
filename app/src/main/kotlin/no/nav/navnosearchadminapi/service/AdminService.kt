@@ -33,7 +33,7 @@ class AdminService(
 
         val mappedContent = content
             .filter { !validationErrors.containsKey(it.id) }
-            .map { contentMapper.toContentDao(it, teamName) }
+            .map { contentMapper.toContent(it, teamName) }
         repository.saveAll(mappedContent)
 
         val numberOfIndexedDocuments = mappedContent.size
