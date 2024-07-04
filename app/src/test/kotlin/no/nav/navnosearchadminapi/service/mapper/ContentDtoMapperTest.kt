@@ -2,7 +2,7 @@ package no.nav.navnosearchadminapi.service.mapper
 
 import no.nav.navnosearchadminapi.common.constants.ENGLISH
 import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_NYNORSK
-import no.nav.navnosearchadminapi.utils.dummyContentDao
+import no.nav.navnosearchadminapi.utils.dummyContent
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -14,52 +14,52 @@ class ContentDtoMapperTest {
 
     @Test
     fun testMapping() {
-        val contentDao = dummyContentDao(externalId = externalId)
-        val mappedContent = mapper.toContentDto(contentDao)
+        val content = dummyContent(externalId = externalId)
+        val mappedContent = mapper.toContentDto(content)
 
         assertThat(mappedContent.id).isEqualTo(externalId)
-        assertThat(mappedContent.href).isEqualTo(contentDao.href)
-        assertThat(mappedContent.title).isEqualTo(contentDao.title.no)
-        assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.no)
-        assertThat(mappedContent.text).isEqualTo(contentDao.text.no)
+        assertThat(mappedContent.href).isEqualTo(content.href)
+        assertThat(mappedContent.title).isEqualTo(content.title.no)
+        assertThat(mappedContent.ingress).isEqualTo(content.ingress.no)
+        assertThat(mappedContent.text).isEqualTo(content.text.no)
         assertThat(mappedContent.metadata).isNotNull()
-        assertThat(mappedContent.metadata!!.type).isEqualTo(contentDao.type)
-        assertThat(mappedContent.metadata!!.createdAt).isEqualTo(contentDao.createdAt)
-        assertThat(mappedContent.metadata!!.lastUpdated).isEqualTo(contentDao.lastUpdated)
-        assertThat(mappedContent.metadata!!.audience).isEqualTo(contentDao.audience)
-        assertThat(mappedContent.metadata!!.language).isEqualTo(contentDao.language)
-        assertThat(mappedContent.metadata!!.fylke).isEqualTo(contentDao.fylke)
-        assertThat(mappedContent.metadata!!.metatags).isEqualTo(contentDao.metatags)
-        assertThat(mappedContent.metadata!!.keywords).isEqualTo(contentDao.keywords)
+        assertThat(mappedContent.metadata!!.type).isEqualTo(content.type)
+        assertThat(mappedContent.metadata!!.createdAt).isEqualTo(content.createdAt)
+        assertThat(mappedContent.metadata!!.lastUpdated).isEqualTo(content.lastUpdated)
+        assertThat(mappedContent.metadata!!.audience).isEqualTo(content.audience)
+        assertThat(mappedContent.metadata!!.language).isEqualTo(content.language)
+        assertThat(mappedContent.metadata!!.fylke).isEqualTo(content.fylke)
+        assertThat(mappedContent.metadata!!.metatags).isEqualTo(content.metatags)
+        assertThat(mappedContent.metadata!!.keywords).isEqualTo(content.keywords)
     }
 
     @Test
     fun testMappingWithNynorskLanguage() {
-        val contentDao = dummyContentDao(externalId = externalId, language = NORWEGIAN_NYNORSK)
-        val mappedContent = mapper.toContentDto(contentDao)
+        val content = dummyContent(externalId = externalId, language = NORWEGIAN_NYNORSK)
+        val mappedContent = mapper.toContentDto(content)
 
-        assertThat(mappedContent.title).isEqualTo(contentDao.title.no)
-        assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.no)
-        assertThat(mappedContent.text).isEqualTo(contentDao.text.no)
+        assertThat(mappedContent.title).isEqualTo(content.title.no)
+        assertThat(mappedContent.ingress).isEqualTo(content.ingress.no)
+        assertThat(mappedContent.text).isEqualTo(content.text.no)
     }
 
     @Test
     fun testMappingWithEnglishLanguage() {
-        val contentDao = dummyContentDao(externalId = externalId, language = ENGLISH)
-        val mappedContent = mapper.toContentDto(contentDao)
+        val content = dummyContent(externalId = externalId, language = ENGLISH)
+        val mappedContent = mapper.toContentDto(content)
 
-        assertThat(mappedContent.title).isEqualTo(contentDao.title.en)
-        assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.en)
-        assertThat(mappedContent.text).isEqualTo(contentDao.text.en)
+        assertThat(mappedContent.title).isEqualTo(content.title.en)
+        assertThat(mappedContent.ingress).isEqualTo(content.ingress.en)
+        assertThat(mappedContent.text).isEqualTo(content.text.en)
     }
 
     @Test
     fun testMappingWithUnsupportedLanguage() {
-        val contentDao = dummyContentDao(externalId = externalId, language = "se")
-        val mappedContent = mapper.toContentDto(contentDao)
+        val content = dummyContent(externalId = externalId, language = "se")
+        val mappedContent = mapper.toContentDto(content)
 
-        assertThat(mappedContent.title).isEqualTo(contentDao.title.other)
-        assertThat(mappedContent.ingress).isEqualTo(contentDao.ingress.other)
-        assertThat(mappedContent.text).isEqualTo(contentDao.text.other)
+        assertThat(mappedContent.title).isEqualTo(content.title.other)
+        assertThat(mappedContent.ingress).isEqualTo(content.ingress.other)
+        assertThat(mappedContent.text).isEqualTo(content.text.other)
     }
 }

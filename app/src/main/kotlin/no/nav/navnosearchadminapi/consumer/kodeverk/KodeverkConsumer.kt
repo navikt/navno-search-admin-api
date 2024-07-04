@@ -31,10 +31,10 @@ class KodeverkConsumer(val restTemplate: RestTemplate, @Value("\${kodeverk.spraa
     }
 
     private fun headers(): HttpHeaders {
-        val headers = HttpHeaders()
-        headers.set(NAV_CALL_ID, UUID.randomUUID().toString())
-        headers.set(NAV_CONSUMER_ID, NAVNO_SEARCH_ADMIN_API)
-        return headers
+        return HttpHeaders().apply {
+            set(NAV_CALL_ID, UUID.randomUUID().toString())
+            set(NAV_CONSUMER_ID, NAVNO_SEARCH_ADMIN_API)
+        }
     }
 
     companion object {

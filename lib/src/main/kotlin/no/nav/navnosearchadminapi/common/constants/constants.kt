@@ -1,14 +1,11 @@
 package no.nav.navnosearchadminapi.common.constants
 
-val NORWEGIAN = "no"
-val NORWEGIAN_BOKMAAL = "nb"
-val NORWEGIAN_NYNORSK = "nn"
-val ENGLISH = "en"
-val OTHER = "other"
+const val NORWEGIAN = "no"
 
-val norwegianLanguageCodes = listOf(NORWEGIAN, NORWEGIAN_BOKMAAL, NORWEGIAN_NYNORSK)
-val supportedLanguages = norwegianLanguageCodes + ENGLISH
-val languageSubfields = listOf(NORWEGIAN, ENGLISH, OTHER)
+const val NORWEGIAN_BOKMAAL = "nb"
+const val NORWEGIAN_NYNORSK = "nn"
+const val ENGLISH = "en"
+const val OTHER = "other"
 
 const val ID = "id"
 const val HREF = "href"
@@ -42,3 +39,8 @@ const val METADATA_FYLKE = "$METADATA.$FYLKE"
 const val METADATA_METATAGS = "$METADATA.$METATAGS"
 const val METADATA_KEYWORDS = "$METADATA.$KEYWORDS"
 const val METADATA_LANGUAGE_REFS = "$METADATA.$LANGUAGE_REFS"
+
+
+val norwegianLanguageCodes = listOf(NORWEGIAN, NORWEGIAN_BOKMAAL, NORWEGIAN_NYNORSK)
+val supportedLanguages = norwegianLanguageCodes + ENGLISH
+val languageSubfields = listOf(NORWEGIAN, ENGLISH, OTHER)
