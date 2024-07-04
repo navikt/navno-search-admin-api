@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     val kotlinVersion = "2.0.0"
-    val springBootVersion = "3.3.0"
+    val springBootVersion = "3.3.1"
     val springDepMgmtVersion = "1.1.5"
     val versionsVersion = "0.51.0"
 
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    val navSecurityVersion = "4.1.8"
+    val navSecurityVersion = "5.0.1"
     val logstashVersion = "7.4"
     val opensearchVersion = "1.5.0"
     val jsoupVersion = "1.17.2"
