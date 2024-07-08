@@ -20,7 +20,7 @@ class ContentMapperTest {
         val mappedContent = mapper.toContent(contentDto, teamName)
 
         assertThat(mappedContent.id).isEqualTo("$teamName-${contentDto.id}")
-        assertThat(mappedContent.autocomplete.input.contains(contentDto.title)).isTrue()
+        assertThat(mappedContent.didYouMean).isEqualTo(contentDto.title)
         assertThat(mappedContent.teamOwnedBy).isEqualTo(teamName)
         assertThat(mappedContent.href).isEqualTo(contentDto.href)
         assertThat(mappedContent.title.en).isEqualTo(contentDto.title)

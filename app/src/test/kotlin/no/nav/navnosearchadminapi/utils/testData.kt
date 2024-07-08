@@ -12,7 +12,6 @@ import no.nav.navnosearchadminapi.common.model.MultiLangFieldShort
 import no.nav.navnosearchadminapi.consumer.kodeverk.dto.KodeverkResponse
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata
-import org.springframework.data.elasticsearch.core.suggest.Completion
 import java.time.ZonedDateTime
 
 const val TEAM_NAME = "test-team"
@@ -111,7 +110,7 @@ fun dummyContent(
     val text = "$textPrefix text"
     return Content(
         id = "$teamName-$externalId",
-        autocomplete = Completion(listOf("$textPrefix title")),
+        didYouMean = title,
         teamOwnedBy = teamName,
         href = "https://$textPrefix.com",
         title = MultiLangFieldShort(value = title, language = language),

@@ -53,6 +53,11 @@
           "back_edge_ngram"
         ]
       },
+      "shingle": {
+        "type": "shingle",
+        "min_shingle_size": 1,
+        "max_shingle_size": 3
+      },
       "norwegian_synonyms": {
         "type": "synonym",
         "synonyms": [
@@ -145,6 +150,14 @@
         ],
         "filter": [
           "lowercase"
+        ]
+      },
+      "custom_shingle": {
+        "type": "custom",
+        "tokenizer": "standard",
+        "filter": [
+          "lowercase",
+          "shingle"
         ]
       }
     }

@@ -14,7 +14,6 @@ import no.nav.navnosearchadminapi.utils.listOfNotNullOrBlank
 import org.jsoup.Jsoup
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.data.elasticsearch.core.suggest.Completion
 import org.springframework.stereotype.Component
 
 @Component
@@ -34,7 +33,7 @@ class ContentMapper {
             id = createInternalId(teamName, id!!),
             teamOwnedBy = teamName,
             href = href!!,
-            autocomplete = Completion(listOf(title)),
+            didYouMean = title,
             title = MultiLangFieldShort(title, language),
             ingress = MultiLangFieldShort(ingress, language),
             text = MultiLangFieldLong(text, language),
