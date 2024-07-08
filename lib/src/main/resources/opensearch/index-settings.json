@@ -55,7 +55,7 @@
       },
       "shingle": {
         "type": "shingle",
-        "min_shingle_size": 1,
+        "min_shingle_size": 2,
         "max_shingle_size": 3
       },
       "norwegian_synonyms": {
