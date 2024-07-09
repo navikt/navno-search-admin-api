@@ -27,7 +27,7 @@ const val LANGUAGE_REFS = "languageRefs"
 const val EXACT_INNER_FIELD = "exact"
 const val NGRAMS_INNER_FIELD = "ngrams"
 
-const val AUTOCOMPLETE = "autocomplete"
+const val DID_YOU_MEAN = "didYouMean"
 
 const val METADATA = "metadata"
 const val METADATA_CREATED_AT = "$METADATA.$CREATED_AT"
