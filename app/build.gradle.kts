@@ -30,7 +30,7 @@ dependencies {
     val jsoupVersion = "1.17.2"
     val opensearchTestcontainersVersion = "2.0.1"
     val testcontainersVersion = "1.19.7"
-    val wiremockVersion = "4.1.3"
+    val wiremockVersion = "4.1.4"
 
     implementation(project(":lib"))
     implementation("no.nav.security:token-validation-spring:$navSecurityVersion")
