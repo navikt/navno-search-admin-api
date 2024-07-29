@@ -28,7 +28,7 @@ dependencies {
     val logstashVersion = "7.4"
     val opensearchVersion = "1.5.1"
     val jsoupVersion = "1.18.1"
-    val opensearchTestcontainersVersion = "2.0.1"
+    val opensearchTestcontainersVersion = "2.1.0"
     val testcontainersVersion = "1.20.0"
     val wiremockVersion = "4.1.4"
 
