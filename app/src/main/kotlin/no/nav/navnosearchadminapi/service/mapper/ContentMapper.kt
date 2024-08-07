@@ -21,6 +21,10 @@ class ContentMapper {
     val logger: Logger = LoggerFactory.getLogger(ContentMapper::class.java)
 
     fun toContent(content: ContentDto, teamName: String) = with(content) {
+        if (content.id == "73435f7d-c18a-4453-958e-7305064439bc-no") {
+            logger.info(content.text!!)
+        }
+
         val language = metadata!!.language!!
         val title = title!!
         val ingress = removeHtmlAndMacrosFromString(ingress!!)
