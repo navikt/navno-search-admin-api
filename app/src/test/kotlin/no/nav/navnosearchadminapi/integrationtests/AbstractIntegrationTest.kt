@@ -1,7 +1,13 @@
 package no.nav.navnosearchadminapi.integrationtests
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.tomakehurst.wiremock.client.WireMock.aResponse
+import com.github.tomakehurst.wiremock.client.WireMock.post
+import com.github.tomakehurst.wiremock.client.WireMock.stubFor
+import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
 import com.nimbusds.jose.JOSEObjectType
 import no.nav.navnosearchadminapi.common.repository.ContentRepository
+import no.nav.navnosearchadminapi.consumer.azuread.dto.outbound.TokenResponse
 import no.nav.navnosearchadminapi.integrationtests.config.OpensearchConfiguration
 import no.nav.navnosearchadminapi.rest.aspect.HeaderCheckAspect.Companion.API_KEY_HEADER
 import no.nav.navnosearchadminapi.utils.initialTestData
@@ -18,6 +24,9 @@ import org.springframework.cache.CacheManager
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 import org.springframework.context.annotation.Import
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpHeaders.CONTENT_TYPE
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -30,6 +39,9 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @AutoConfigureWireMock(port = 0)
 @EnableMockOAuth2Server
 abstract class AbstractIntegrationTest {
+
+    @Autowired
+    lateinit var objectMapper: ObjectMapper
 
     @Autowired
     lateinit var restTemplate: TestRestTemplate
@@ -46,7 +58,8 @@ abstract class AbstractIntegrationTest {
     @LocalServerPort
     var serverPort: Int? = null
 
-    @Value("\${api-key}") lateinit var apiKey: String
+    @Value("\${api-key}")
+    lateinit var apiKey: String
 
     fun host() = "http://localhost:$serverPort"
 
@@ -55,6 +68,16 @@ abstract class AbstractIntegrationTest {
     fun setupIndex() {
         repository.deleteAll()
         repository.saveAll(initialTestData)
+    }
+
+    fun mockAzuread() {
+        stubFor(
+            post(urlPathMatching("/azuread")).willReturn(
+                aResponse().withStatus(HttpStatus.OK.value())
+                    .withBody(objectMapper.writeValueAsString(TokenResponse(accessToken = "token")))
+                    .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            )
+        )
     }
 
     fun headers(isAuthValid: Boolean = true, isApiKeyValid: Boolean = true): HttpHeaders {

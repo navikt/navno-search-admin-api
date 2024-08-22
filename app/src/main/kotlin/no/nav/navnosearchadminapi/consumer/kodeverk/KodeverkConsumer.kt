@@ -1,5 +1,6 @@
 package no.nav.navnosearchadminapi.consumer.kodeverk
 
+import no.nav.navnosearchadminapi.consumer.azuread.AzureADConsumer
 import no.nav.navnosearchadminapi.consumer.kodeverk.dto.KodeverkResponse
 import no.nav.navnosearchadminapi.exception.KodeverkConsumerException
 import org.springframework.beans.factory.annotation.Value
@@ -13,7 +14,12 @@ import org.springframework.web.client.RestTemplate
 import java.util.*
 
 @Component
-class KodeverkConsumer(val restTemplate: RestTemplate, @Value("\${kodeverk.spraak.url}") val kodeverkUrl: String) {
+class KodeverkConsumer(
+    val restTemplate: RestTemplate,
+    val azureADConsumer: AzureADConsumer,
+    @Value("\${kodeverk.spraak.url}") val kodeverkUrl: String,
+    @Value("\${kodeverk.scope}") val kodeverkScope: String,
+) {
 
     @Cacheable("spraakkoder")
     fun fetchSpraakKoder(): KodeverkResponse {
@@ -31,9 +37,12 @@ class KodeverkConsumer(val restTemplate: RestTemplate, @Value("\${kodeverk.spraa
     }
 
     private fun headers(): HttpHeaders {
-        return HttpHeaders().apply {
-            set(NAV_CALL_ID, UUID.randomUUID().toString())
-            set(NAV_CONSUMER_ID, NAVNO_SEARCH_ADMIN_API)
+        return azureADConsumer.getAccessToken(kodeverkScope).let { accessToken ->
+            HttpHeaders().apply {
+                setBearerAuth(accessToken)
+                set(NAV_CALL_ID, UUID.randomUUID().toString())
+                set(NAV_CONSUMER_ID, NAVNO_SEARCH_ADMIN_API)
+            }
         }
     }
 
