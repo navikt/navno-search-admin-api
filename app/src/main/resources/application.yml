@@ -19,6 +19,7 @@ management:
 kodeverk:
   spraak:
     url: ${KODEVERK_SPRAAK_URL}
+  scope: ${KODEVERK_SCOPE}
 
 api-key: ${API_KEY}
 
@@ -27,3 +28,5 @@ no.nav.security.jwt:
     azuread:
       discoveryurl: ${AZURE_APP_WELL_KNOWN_URL}
       accepted-audience: ${AZURE_APP_CLIENT_ID}
+      client-secret: ${AZURE_APP_CLIENT_SECRET}
+      token-endpoint: ${AZURE_OPENID_CONFIG_TOKEN_ENDPOINT}

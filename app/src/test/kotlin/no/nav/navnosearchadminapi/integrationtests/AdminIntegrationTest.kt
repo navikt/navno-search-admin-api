@@ -1,6 +1,5 @@
 package no.nav.navnosearchadminapi.integrationtests
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.get
@@ -24,12 +23,11 @@ import org.springframework.http.ResponseEntity
 
 class AdminIntegrationTest : AbstractIntegrationTest() {
 
-    val objectMapper = ObjectMapper()
-
     @BeforeEach
     fun setup() {
         WireMock.reset()
         setupIndex()
+        mockAzuread()
         stubFor(
             get(urlPathMatching("/kodeverk")).willReturn(
                 aResponse().withStatus(HttpStatus.OK.value())

@@ -1,11 +1,14 @@
 kodeverk:
   spraak:
     url: http://localhost:${wiremock.server.port}/kodeverk
+  scope: kodeverk-scope
 
 no.nav.security.jwt:
   issuer:
     azuread:
       discoveryurl: http://localhost:${mock-oauth2-server.port}/azuread/.well-known/openid-configuration
       accepted-audience: someaudience
+      client-secret: somesecret
+      token-endpoint: http://localhost:${wiremock.server.port}/azuread
 
 api-key: dummy
