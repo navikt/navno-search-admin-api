@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
+import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
 
@@ -22,9 +23,7 @@ class AzureADConsumer(
         return restTemplate.exchange<TokenResponse>(
             tokenEndpoint,
             HttpMethod.POST,
-            HttpEntity(
-                TokenRequest(clientId = clientId, clientSecret = clientSecret, scope = scope),
-                HttpHeaders().apply { contentType = MediaType.APPLICATION_FORM_URLENCODED }),
+            createRequestEntity(scope),
             TokenResponse::class
         ).let { response ->
             if (response.statusCode.is2xxSuccessful) {
@@ -33,5 +32,12 @@ class AzureADConsumer(
                 throw RuntimeException()
             }
         }
+    }
+
+    private fun createRequestEntity(scope: String): HttpEntity<MultiValueMap<String, String>> {
+        return HttpEntity(
+            TokenRequest(clientId = clientId, clientSecret = clientSecret, scope = scope).asMultiValueMap(),
+            HttpHeaders().apply { contentType = MediaType.APPLICATION_FORM_URLENCODED }
+        )
     }
 }

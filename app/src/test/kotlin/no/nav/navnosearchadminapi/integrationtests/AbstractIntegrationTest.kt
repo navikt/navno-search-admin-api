@@ -40,7 +40,8 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @EnableMockOAuth2Server
 abstract class AbstractIntegrationTest {
 
-    val objectMapper = ObjectMapper()
+    @Autowired
+    lateinit var objectMapper: ObjectMapper
 
     @Autowired
     lateinit var restTemplate: TestRestTemplate
