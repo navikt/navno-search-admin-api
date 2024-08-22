@@ -19,7 +19,7 @@ data class TokenRequest(
     }
 
     companion object {
-        private const val CLIENT_ID = "client-id"
+        private const val CLIENT_ID = "client_id"
         private const val CLIENT_SECRET = "client_secret"
         private const val GRANT_TYPE = "grant_type"
         private const val SCOPE = "scope"
