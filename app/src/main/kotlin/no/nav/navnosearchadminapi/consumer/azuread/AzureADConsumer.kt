@@ -2,6 +2,7 @@ package no.nav.navnosearchadminapi.consumer.azuread
 
 import no.nav.navnosearchadminapi.consumer.azuread.dto.inbound.TokenRequest
 import no.nav.navnosearchadminapi.consumer.azuread.dto.outbound.TokenResponse
+import no.nav.navnosearchadminapi.exception.TokenFetchException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -9,6 +10,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.util.MultiValueMap
+import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
 
@@ -20,17 +22,15 @@ class AzureADConsumer(
     @Value("\${no.nav.security.jwt.issuer.azuread.token-endpoint}") val tokenEndpoint: String,
 ) {
     fun getAccessToken(scope: String): String {
-        return restTemplate.exchange<TokenResponse>(
-            tokenEndpoint,
-            HttpMethod.POST,
-            createRequestEntity(scope),
-            TokenResponse::class
-        ).let { response ->
-            if (response.statusCode.is2xxSuccessful) {
-                response.body!!.accessToken
-            } else {
-                throw RuntimeException()
-            }
+        try {
+            return restTemplate.exchange<TokenResponse>(
+                tokenEndpoint,
+                HttpMethod.POST,
+                createRequestEntity(scope),
+                TokenResponse::class
+            ).body!!.accessToken
+        } catch (e: HttpStatusCodeException) {
+            throw TokenFetchException("Henting av Azure AD access token feilet. ${e.message}", e)
         }
     }
 
