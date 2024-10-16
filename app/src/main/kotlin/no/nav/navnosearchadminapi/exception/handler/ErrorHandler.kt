@@ -3,7 +3,6 @@ package no.nav.navnosearchadminapi.exception.handler
 import jakarta.servlet.http.HttpServletRequest
 import no.nav.navnosearchadminapi.exception.InvalidApiKeyException
 import no.nav.navnosearchadminapi.exception.MissingIdException
-import no.nav.security.token.support.spring.validation.interceptor.JwtTokenUnauthorizedException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.event.Level
@@ -19,19 +18,6 @@ import java.time.LocalDateTime
 class ErrorHandler {
 
     val logger: Logger = LoggerFactory.getLogger(ErrorHandler::class.java)
-
-    @ExceptionHandler(value = [JwtTokenUnauthorizedException::class])
-    fun jwtTokenUnauthorizedHandler(
-        ex: JwtTokenUnauthorizedException,
-        request: HttpServletRequest
-    ): ResponseEntity<ErrorResponse> {
-        return handleException(
-            status = HttpStatus.UNAUTHORIZED,
-            message = "Validering av token feilet",
-            path = request.requestURI,
-            ex = ex
-        )
-    }
 
     @ExceptionHandler(value = [InvalidApiKeyException::class])
     fun invalidApiKeyHandler(

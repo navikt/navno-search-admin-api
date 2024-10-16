@@ -24,7 +24,6 @@ repositories {
 }
 
 dependencies {
-    val navSecurityVersion = "5.0.5"
     val logstashVersion = "8.0"
     val opensearchVersion = "1.5.3"
     val jsoupVersion = "1.18.1"
@@ -34,7 +33,6 @@ dependencies {
     val kotestVersion = "5.9.1"
 
     implementation(project(":lib"))
-    implementation("no.nav.security:token-validation-spring:$navSecurityVersion")
     implementation("org.opensearch.client:spring-data-opensearch-starter:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
@@ -47,7 +45,6 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jsoup:jsoup:$jsoupVersion")
-    testImplementation("no.nav.security:token-validation-spring-test:$navSecurityVersion")
     testImplementation("org.opensearch.client:spring-data-opensearch-test-autoconfigure:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
