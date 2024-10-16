@@ -82,10 +82,9 @@ abstract class AbstractIntegrationTest {
 
     fun headers(isAuthValid: Boolean = true, isApiKeyValid: Boolean = true): HttpHeaders {
         val headers = HttpHeaders()
-        val token = if (isAuthValid) {
-            token("azuread", "subject", "someaudience")
-        } else {
-            token("invalid", "invalid", "invalid")
+        val token = when {
+            isAuthValid -> token("azuread", "subject", "someaudience")
+            else -> token("invalid", "invalid", "invalid")
         }
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer $token")
 

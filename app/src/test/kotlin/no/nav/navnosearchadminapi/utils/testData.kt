@@ -12,7 +12,6 @@ import no.nav.navnosearchadminapi.common.model.MultiLangFieldShort
 import no.nav.navnosearchadminapi.consumer.kodeverk.dto.KodeverkResponse
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata
-import org.springframework.data.elasticsearch.core.suggest.Completion
 import java.time.ZonedDateTime
 
 const val TEAM_NAME = "test-team"
@@ -29,7 +28,11 @@ val initialTestData = listOf(
     dummyContent(
         externalId = "1",
         textPrefix = "First",
-        audience = listOf(ValidAudiences.PERSON.descriptor, ValidAudiences.EMPLOYER.descriptor, ValidAudiences.PROVIDER.descriptor),
+        audience = listOf(
+            ValidAudiences.PERSON.descriptor,
+            ValidAudiences.EMPLOYER.descriptor,
+            ValidAudiences.PROVIDER.descriptor
+        ),
         fylke = ValidFylker.AGDER.descriptor,
         metatags = listOf(ValidMetatags.STATISTIKK.descriptor)
     ),
@@ -98,7 +101,7 @@ val initialTestData = listOf(
 
 fun dummyContent(
     teamName: String = TEAM_NAME,
-    externalId: String,
+    externalId: String = "123",
     textPrefix: String = "",
     timestamp: ZonedDateTime = now,
     audience: List<String> = listOf(ValidAudiences.PERSON.descriptor),
@@ -111,7 +114,6 @@ fun dummyContent(
     val text = "$textPrefix text"
     return Content(
         id = "$teamName-$externalId",
-        autocomplete = Completion(listOf("$textPrefix title")),
         teamOwnedBy = teamName,
         href = "https://$textPrefix.com",
         title = MultiLangFieldShort(value = title, language = language),
@@ -144,19 +146,19 @@ fun dummyContentDto(
     metatags: List<String> = emptyList(),
     languageRefs: List<String> = emptyList(),
 ) = ContentDto(
-    id,
-    href,
-    title,
-    ingress,
-    text,
-    ContentMetadata(
-        type,
-        createdAt,
-        lastUpdated,
-        audience,
-        language,
-        fylke,
-        metatags,
-        languageRefs,
+    id = id,
+    href = href,
+    title = title,
+    ingress = ingress,
+    text = text,
+    metadata = ContentMetadata(
+        type = type,
+        createdAt = createdAt,
+        lastUpdated = lastUpdated,
+        audience = audience,
+        language = language,
+        fylke = fylke,
+        metatags = metatags,
+        languageRefs = languageRefs,
     )
 )

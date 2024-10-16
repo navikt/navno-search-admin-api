@@ -5,12 +5,14 @@ import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import no.nav.navnosearchadminapi.dto.outbound.SaveContentResponse
 import no.nav.navnosearchadminapi.exception.handler.ErrorResponse
 import no.nav.navnosearchadminapi.utils.TEAM_NAME
 import no.nav.navnosearchadminapi.utils.dummyContentDto
 import no.nav.navnosearchadminapi.utils.mockedKodeverkResponse
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.web.client.exchange
@@ -45,8 +47,8 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
             HttpEntity<Any>(headers()),
         )
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(response.body?.get("totalElements")).isEqualTo(10)
+        response.statusCode shouldBe HttpStatus.OK
+        response.body?.get("totalElements") shouldBe 10
     }
 
     @Test
@@ -57,8 +59,8 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
             HttpEntity<Any>(headers()),
         )
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(response.body?.message).isEqualTo("Påkrevd request parameter mangler: page")
+        response.statusCode shouldBe HttpStatus.BAD_REQUEST
+        response.body?.message shouldBe "Påkrevd request parameter mangler: page"
     }
 
     @Test
@@ -71,9 +73,9 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
             HttpEntity(listOf(content), headers()),
         )
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(indexCount()).isEqualTo(11L)
-        assertThat(repository.existsById("$TEAM_NAME-${content.id}")).isTrue()
+        response.statusCode shouldBe HttpStatus.OK
+        indexCount() shouldBe 11L
+        repository.existsById("$TEAM_NAME-${content.id}").shouldBeTrue()
     }
 
     @Test
@@ -86,21 +88,8 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
             HttpEntity(listOf(content), headers(isApiKeyValid = false)),
         )
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
+        response.statusCode shouldBe HttpStatus.UNAUTHORIZED
     }
-
-    /*@Test
-    fun testSavingContentWithInvalidToken() {
-        val content = dummyContentDto()
-
-        val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
-            "${host()}/content/$TEAM_NAME",
-            HttpMethod.POST,
-            HttpEntity(listOf(content), authHeader(valid = false)),
-        )
-
-        assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
-    }*/
 
     @Test
     fun testSavingContentWithMissingId() {
@@ -110,8 +99,8 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
             HttpEntity(listOf(dummyContentDto(id = null)), headers()),
         )
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(response.body?.message).isEqualTo("id er påkrevd for alle dokumenter")
+        response.statusCode shouldBe HttpStatus.BAD_REQUEST
+        response.body?.message shouldBe "id er påkrevd for alle dokumenter"
     }
 
     @Test
@@ -124,10 +113,10 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
             HttpEntity(listOf(content), headers()),
         )
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(response.body?.numberOfIndexedDocuments).isEqualTo(0)
-        assertThat(response.body?.numberOfFailedDocuments).isEqualTo(1)
-        assertThat(response.body!!.validationErrors[content.id]!!.first()).isEqualTo("Påkrevd felt mangler: ingress")
+        response.statusCode shouldBe HttpStatus.OK
+        response.body?.numberOfIndexedDocuments shouldBe 0
+        response.body?.numberOfFailedDocuments shouldBe 1
+        response.body!!.validationErrors[content.id]!!.first() shouldBe "Påkrevd felt mangler: ingress"
     }
 
     @Test
@@ -138,8 +127,8 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
             HttpEntity(listOf(dummyContentDto(language = "røverspråk")), headers()),
         )
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(response.body!!.validationErrors["11"]!!.first()).isEqualTo("Ugyldig verdi for metadata.language: røverspråk. Må være tobokstavs språkkode fra kodeverk-api.")
+        response.statusCode shouldBe HttpStatus.OK
+        response.body!!.validationErrors["11"]!!.first() shouldBe "Ugyldig verdi for metadata.language: røverspråk. Må være tobokstavs språkkode fra kodeverk-api."
     }
 
     @Test
@@ -160,8 +149,8 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
             HttpEntity(listOf(content), headers()),
         )
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
-        assertThat(response.body?.message).isEqualTo("Ukjent feil")
+        response.statusCode shouldBe HttpStatus.INTERNAL_SERVER_ERROR
+        response.body?.message shouldBe "Ukjent feil"
     }
 
     @Test
@@ -175,9 +164,9 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
             )
 
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(indexCount()).isEqualTo(9L)
-        assertThat(repository.existsById("$TEAM_NAME-$deletedId")).isFalse()
+        response.statusCode shouldBe HttpStatus.OK
+        indexCount() shouldBe 9L
+        repository.existsById("$TEAM_NAME-$deletedId").shouldBeFalse()
     }
 
     @Test
@@ -191,6 +180,6 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
                 HttpEntity<Any>(headers()),
             )
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        response.statusCode shouldBe HttpStatus.OK
     }
 }

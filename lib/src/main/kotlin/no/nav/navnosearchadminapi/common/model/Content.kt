@@ -1,18 +1,16 @@
 package no.nav.navnosearchadminapi.common.model
 
 import org.springframework.data.annotation.Id
-import org.springframework.data.elasticsearch.annotations.CompletionField
 import org.springframework.data.elasticsearch.annotations.Document
 import org.springframework.data.elasticsearch.annotations.Dynamic
 import org.springframework.data.elasticsearch.annotations.Field
 import org.springframework.data.elasticsearch.annotations.FieldType
 import org.springframework.data.elasticsearch.annotations.Setting
 import org.springframework.data.elasticsearch.annotations.WriteTypeHint
-import org.springframework.data.elasticsearch.core.suggest.Completion
 import java.time.ZonedDateTime
 
 @Document(
-    indexName = "search-content-v4",
+    indexName = "search-content-v5",
     dynamic = Dynamic.STRICT,
     /* Disabler type hints da det lager et _class-felt i mappingen som gir problemer for wildcard-søk.
        Bør skrives om dersom vi trenger polymorfisk data. */
@@ -21,7 +19,6 @@ import java.time.ZonedDateTime
 @Setting(settingPath = "opensearch/index-settings.json")
 data class Content(
     @Id @Field(type = FieldType.Keyword) val id: String,
-    @CompletionField val autocomplete: Completion,
     @Field(type = FieldType.Keyword) val teamOwnedBy: String,
     @Field(type = FieldType.Keyword) val href: String,
     @Field(type = FieldType.Object) val title: MultiLangFieldShort,
