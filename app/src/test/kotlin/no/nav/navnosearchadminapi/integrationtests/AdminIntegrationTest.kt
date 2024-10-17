@@ -83,7 +83,7 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
     }
 
     @Test
-    fun `should return 200 with validation error when saving content with missing request param`() {
+    fun `should return 200 with validation error when saving content with missing required field`() {
         val response = post("/content/$TEAM_NAME", dummyContentDto(ingress = null))
 
         response.statusCode shouldBe HttpStatus.OK

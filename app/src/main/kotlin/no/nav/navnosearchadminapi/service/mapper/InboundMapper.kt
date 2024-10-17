@@ -19,7 +19,7 @@ private val logger: Logger = LoggerFactory.getLogger("InboundMapper")
 
 private const val MACROS_PATTERN = """\[.*?]"""
 
-fun ContentDto.toInbound(teamName: String) = with(this) {
+fun ContentDto.toInbound(teamName: String): Content {
     // todo: sjekke om jeg kan gjøre noe med disse feltene som er nullable pga validering men som bør være non-null
     val language = metadata!!.language!!
     val title = title!!
@@ -29,7 +29,7 @@ fun ContentDto.toInbound(teamName: String) = with(this) {
     val createdAt = metadata.createdAt!!
     val lastUpdated = metadata.lastUpdated!!
 
-    Content(
+    return Content(
         id = createInternalId(teamName, id!!),
         teamOwnedBy = teamName,
         href = href!!,
