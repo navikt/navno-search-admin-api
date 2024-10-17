@@ -1,9 +1,9 @@
 package no.nav.navnosearchadminapi.exception.handler
 
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 data class ErrorResponse(
-    val timestamp: LocalDateTime,
+    val timestamp: ZonedDateTime,
     val status: Int,
     val error: String,
     val message: String?,

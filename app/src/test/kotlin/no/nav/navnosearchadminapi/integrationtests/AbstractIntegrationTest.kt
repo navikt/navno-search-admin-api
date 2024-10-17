@@ -1,15 +1,18 @@
 package no.nav.navnosearchadminapi.integrationtests
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.post
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
 import no.nav.navnosearchadminapi.common.repository.ContentRepository
 import no.nav.navnosearchadminapi.consumer.azuread.dto.outbound.TokenResponse
-import no.nav.navnosearchadminapi.integrationtests.config.OpensearchConfiguration
+import no.nav.navnosearchadminapi.integrationtests.config.ClockConfig
+import no.nav.navnosearchadminapi.integrationtests.config.OpensearchConfig
 import no.nav.navnosearchadminapi.rest.aspect.HeaderCheckAspect.Companion.API_KEY_HEADER
 import no.nav.navnosearchadminapi.utils.initialTestData
+import no.nav.navnosearchadminapi.utils.mockedKodeverkResponse
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -28,7 +31,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.testcontainers.junit.jupiter.Testcontainers
 
 @Testcontainers(disabledWithoutDocker = true)
-@Import(OpensearchConfiguration::class)
+@Import(OpensearchConfig::class, ClockConfig::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension::class)
@@ -53,16 +56,16 @@ abstract class AbstractIntegrationTest {
     @Value("\${api-key}")
     lateinit var apiKey: String
 
-    fun host() = "http://localhost:$serverPort"
+    protected fun host() = "http://localhost:$serverPort"
 
-    fun indexCount() = repository.count()
+    protected fun indexCount() = repository.count()
 
-    fun setupIndex() {
+    protected fun setupIndex() {
         repository.deleteAll()
         repository.saveAll(initialTestData)
     }
 
-    fun mockAzuread() {
+    protected fun mockAzuread() {
         stubFor(
             post(urlPathMatching("/azuread")).willReturn(
                 aResponse().withStatus(HttpStatus.OK.value())
@@ -72,13 +75,21 @@ abstract class AbstractIntegrationTest {
         )
     }
 
-    fun headers(isAuthValid: Boolean = true, isApiKeyValid: Boolean = true): HttpHeaders {
-        val headers = HttpHeaders()
+    protected fun mockKodeverk() {
+        stubFor(
+            WireMock.get(urlPathMatching("/kodeverk")).willReturn(
+                aResponse().withStatus(HttpStatus.OK.value())
+                    .withBody(objectMapper.writeValueAsString(mockedKodeverkResponse))
+                    .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+            )
+        )
+    }
 
-        if (isApiKeyValid) {
-            headers.add(API_KEY_HEADER, apiKey)
-        }
+    protected fun headers(isAuthValid: Boolean = true, isApiKeyValid: Boolean = true): HttpHeaders {
+        return HttpHeaders().apply { if (isApiKeyValid) add(API_KEY_HEADER, apiKey) }
+    }
 
-        return headers
+    protected fun readFile(name: String): String {
+        return {}.javaClass.getResource(name)!!.readText()
     }
 }

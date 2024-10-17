@@ -12,6 +12,8 @@ import no.nav.navnosearchadminapi.common.model.MultiLangFieldShort
 import no.nav.navnosearchadminapi.consumer.kodeverk.dto.KodeverkResponse
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.ZonedDateTime
 
 const val TEAM_NAME = "test-team"
@@ -19,10 +21,13 @@ const val HINDI = "hi"
 
 val mockedKodeverkResponse = KodeverkResponse(listOf("NB", "NN", "EN", "SE", "PL", "UK", "RU"))
 
-val now: ZonedDateTime = ZonedDateTime.now()
-val nowMinusTwoYears: ZonedDateTime = ZonedDateTime.now().minusYears(2)
-val nowMinus10Days: ZonedDateTime = ZonedDateTime.now().minusDays(10)
-val nowMinus50Days: ZonedDateTime = ZonedDateTime.now().minusDays(50)
+val fixedNow: ZonedDateTime = ZonedDateTime.of(
+    LocalDateTime.of(2020, 1, 1, 12, 0),
+    ZoneId.of("Europe/Oslo")
+)
+val fixedNowMinusTwoYears: ZonedDateTime = fixedNow.minusYears(2)
+val fixedNowMinus10Days: ZonedDateTime = fixedNow.minusDays(10)
+val fixedNowMinus50Days: ZonedDateTime = fixedNow.minusDays(50)
 
 val initialTestData = listOf(
     dummyContent(
@@ -45,55 +50,55 @@ val initialTestData = listOf(
     dummyContent(
         externalId = "3",
         textPrefix = "Third",
-        timestamp = nowMinusTwoYears,
+        timestamp = fixedNowMinusTwoYears,
         fylke = ValidFylker.AGDER.descriptor,
         metatags = listOf(ValidMetatags.STATISTIKK.descriptor)
     ),
     dummyContent(
         externalId = "4",
         textPrefix = "Fourth",
-        timestamp = nowMinusTwoYears,
+        timestamp = fixedNowMinusTwoYears,
         language = ENGLISH
     ),
     dummyContent(
         externalId = "5",
         textPrefix = "Fifth",
-        timestamp = nowMinus10Days,
+        timestamp = fixedNowMinus10Days,
         audience = listOf(ValidAudiences.EMPLOYER.descriptor),
         language = ENGLISH,
     ),
     dummyContent(
         externalId = "6",
         textPrefix = "Sixth",
-        timestamp = nowMinus10Days,
+        timestamp = fixedNowMinus10Days,
         audience = listOf(ValidAudiences.EMPLOYER.descriptor),
         language = ENGLISH,
     ),
     dummyContent(
         externalId = "7",
         textPrefix = "Seventh",
-        timestamp = nowMinus50Days,
+        timestamp = fixedNowMinus50Days,
         audience = listOf(ValidAudiences.EMPLOYER.descriptor),
         language = HINDI,
     ),
     dummyContent(
         externalId = "8",
         textPrefix = "Eighth",
-        timestamp = nowMinus50Days,
+        timestamp = fixedNowMinus50Days,
         audience = listOf(ValidAudiences.PROVIDER.descriptor),
         language = HINDI,
     ),
     dummyContent(
         externalId = "9",
         textPrefix = "Ninth",
-        timestamp = nowMinus50Days,
+        timestamp = fixedNowMinus50Days,
         audience = listOf(ValidAudiences.PROVIDER.descriptor),
         language = HINDI,
     ),
     dummyContent(
         externalId = "10",
         textPrefix = "Tenth",
-        timestamp = nowMinus50Days,
+        timestamp = fixedNowMinus50Days,
         audience = listOf(ValidAudiences.PROVIDER.descriptor),
         language = HINDI,
     ),
@@ -103,7 +108,7 @@ fun dummyContent(
     teamName: String = TEAM_NAME,
     externalId: String = "123",
     textPrefix: String = "",
-    timestamp: ZonedDateTime = now,
+    timestamp: ZonedDateTime = fixedNow,
     audience: List<String> = listOf(ValidAudiences.PERSON.descriptor),
     language: String = NORWEGIAN_BOKMAAL,
     fylke: String? = null,
@@ -138,8 +143,8 @@ fun dummyContentDto(
     ingress: String? = "Eleventh ingress",
     text: String? = "Eleventh text",
     type: String = ValidTypes.ANDRE.descriptor,
-    createdAt: ZonedDateTime? = now,
-    lastUpdated: ZonedDateTime? = now,
+    createdAt: ZonedDateTime? = fixedNow,
+    lastUpdated: ZonedDateTime? = fixedNow,
     audience: List<String>? = listOf(ValidAudiences.PROVIDER.descriptor),
     language: String? = ENGLISH,
     fylke: String? = null,
