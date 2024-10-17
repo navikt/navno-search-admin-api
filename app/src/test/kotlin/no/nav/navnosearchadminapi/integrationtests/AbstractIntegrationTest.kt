@@ -18,14 +18,18 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.boot.test.web.client.exchange
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.cache.CacheManager
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 import org.springframework.context.annotation.Import
+import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpHeaders.CONTENT_TYPE
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -75,17 +79,51 @@ abstract class AbstractIntegrationTest {
         )
     }
 
-    protected fun mockKodeverk() {
-        stubFor(
-            WireMock.get(urlPathMatching("/kodeverk")).willReturn(
-                aResponse().withStatus(HttpStatus.OK.value())
-                    .withBody(objectMapper.writeValueAsString(mockedKodeverkResponse))
-                    .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+    protected fun mockKodeverk(status: HttpStatus = HttpStatus.OK) {
+        when (status) {
+            HttpStatus.OK -> stubFor(
+                WireMock.get(urlPathMatching("/kodeverk")).willReturn(
+                    aResponse().withStatus(HttpStatus.OK.value())
+                        .withBody(objectMapper.writeValueAsString(mockedKodeverkResponse))
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                )
             )
+
+            HttpStatus.INTERNAL_SERVER_ERROR -> stubFor(
+                WireMock.get(urlPathMatching("/kodeverk")).willReturn(
+                    aResponse().withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                )
+            )
+
+            else -> error("HttpStatus $status ikke støttet")
+        }
+    }
+
+    protected fun get(path: String, headers: HttpHeaders = headers()): ResponseEntity<String> {
+        return restTemplate.exchange(
+            "${host()}/$path",
+            HttpMethod.GET,
+            HttpEntity<Any>(headers),
         )
     }
 
-    protected fun headers(isAuthValid: Boolean = true, isApiKeyValid: Boolean = true): HttpHeaders {
+    protected fun <T> post(path: String, content: T, headers: HttpHeaders = headers()): ResponseEntity<String> {
+        return restTemplate.exchange(
+            "${host()}/$path",
+            HttpMethod.POST,
+            HttpEntity(listOf(content), headers),
+        )
+    }
+
+    protected fun delete(path: String, headers: HttpHeaders = headers()): ResponseEntity<String> {
+        return restTemplate.exchange(
+            "${host()}/$path",
+            HttpMethod.DELETE,
+            HttpEntity<Any>(headers),
+        )
+    }
+
+    protected fun headers(isApiKeyValid: Boolean = true): HttpHeaders {
         return HttpHeaders().apply { if (isApiKeyValid) add(API_KEY_HEADER, apiKey) }
     }
 
