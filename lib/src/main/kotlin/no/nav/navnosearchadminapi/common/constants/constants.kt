@@ -21,7 +21,6 @@ const val AUDIENCE = "audience"
 const val LANGUAGE = "language"
 const val FYLKE = "fylke"
 const val METATAGS = "metatags"
-const val KEYWORDS = "keywords"
 const val LANGUAGE_REFS = "languageRefs"
 
 const val EXACT_INNER_FIELD = "exact"
@@ -35,7 +34,6 @@ const val METADATA_AUDIENCE = "$METADATA.$AUDIENCE"
 const val METADATA_LANGUAGE = "$METADATA.$LANGUAGE"
 const val METADATA_FYLKE = "$METADATA.$FYLKE"
 const val METADATA_METATAGS = "$METADATA.$METATAGS"
-const val METADATA_KEYWORDS = "$METADATA.$KEYWORDS"
 const val METADATA_LANGUAGE_REFS = "$METADATA.$LANGUAGE_REFS"
 
 

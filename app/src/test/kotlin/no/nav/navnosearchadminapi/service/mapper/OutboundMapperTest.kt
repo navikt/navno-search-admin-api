@@ -34,7 +34,6 @@ class OutboundMapperTest {
                 fylke shouldBe content.fylke
                 metatags shouldBe content.metatags
                 languageRefs.shouldBeEmpty()  //todo: bør være noe her
-                keywords shouldBe content.keywords
             }
         }
     }
