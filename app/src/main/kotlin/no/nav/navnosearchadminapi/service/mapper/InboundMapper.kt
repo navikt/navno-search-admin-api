@@ -36,14 +36,7 @@ fun ContentDto.toInbound(teamName: String): Content {
         title = MultiLangFieldShort(title, language),
         ingress = MultiLangFieldShort(ingress, language),
         text = MultiLangFieldLong(text, language),
-        allText = MultiLangFieldLong(
-            listOfNotNullOrBlank(
-                title,
-                ingress,
-                text,
-                type.takeIf { shouldBeIncludedInAllTextField(it) }
-            ).joinToString(), language
-        ),
+        allText = MultiLangFieldLong(joinTextFields(title, ingress, text, type), language),
         type = type,
         createdAt = createdAt,
         lastUpdated = lastUpdated,
@@ -53,9 +46,17 @@ fun ContentDto.toInbound(teamName: String): Content {
         fylke = metadata.fylke,
         metatags = resolveMetatags(metadata, id),
         keywords = metadata.keywords,
-        languageRefs = metadata.languageRefs.map { resolveLanguage(it) }
-            .filter { it != resolveLanguage(language) },
+        languageRefs = metadata.languageRefs.map { resolveLanguage(it) }.filter { it != resolveLanguage(language) },
     )
+}
+
+private fun joinTextFields(title: String, ingress: String, text: String, type: String): String {
+    return listOfNotNullOrBlank(
+        title,
+        ingress,
+        text,
+        type.takeIf { shouldBeIncludedInAllTextField(it) }
+    ).joinToString()
 }
 
 private fun shouldBeIncludedInAllTextField(type: String) = type in listOf(ValidTypes.SKJEMA.descriptor)
