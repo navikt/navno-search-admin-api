@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 class OutboundMapperTest {
 
     @Test
-    fun testMapping() {
+    fun `skal mappe alle felter riktig`() {
         val content = dummyContent()
         val mappedContent = content.toOutbound()
 
@@ -38,7 +38,7 @@ class OutboundMapperTest {
     }
 
     @Test
-    fun testMappingWithNynorskLanguage() {
+    fun `skal mappe tekstfelter på nynorsk riktig`() {
         val content = dummyContent(language = NORWEGIAN_NYNORSK)
         val mappedContent = content.toOutbound()
 
@@ -50,7 +50,7 @@ class OutboundMapperTest {
     }
 
     @Test
-    fun testMappingWithEnglishLanguage() {
+    fun `skal mappe tekstfelter på engelsk riktig`() {
         val content = dummyContent(language = ENGLISH)
         val mappedContent = content.toOutbound()
 
@@ -62,7 +62,7 @@ class OutboundMapperTest {
     }
 
     @Test
-    fun testMappingWithUnsupportedLanguage() {
+    fun `skal mappe tekstfelter på andre språk riktig`() {
         val content = dummyContent(language = "se")
         val mappedContent = content.toOutbound()
 

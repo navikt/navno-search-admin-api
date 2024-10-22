@@ -35,7 +35,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
-    fun testValidation() {
+    fun `skal ha tom liste av valideringsfeil ved gyldig input`() {
         val content = listOf(dummyContentDto())
         val validationErrors = validator.validate(content)
 
@@ -43,7 +43,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
-    fun testValidationWithMissingAudience() {
+    fun `skal ha tom liste av valideringsfeil ved gyldig input uten audience`() {
         val content = listOf(dummyContentDto(audience = emptyList()))
         val validationErrors = validator.validate(content)
 
@@ -51,7 +51,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
-    fun testValidationWithMissingRequiredField() {
+    fun `skal returnere valideringsfeil for manglende påkrevd felt`() {
         val content = listOf(dummyContentDto(text = null))
         val validationErrors = validator.validate(content)
 
@@ -60,7 +60,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
-    fun testValidationWithInvalidAudience() {
+    fun `skal returnere valideringsfeil for ugyldig audience`() {
         val content = listOf(dummyContentDto(audience = listOf(invalidValue)))
         val validationErrors = validator.validate(content)
 
@@ -69,7 +69,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
-    fun testValidationWithInvalidType() {
+    fun `skal returnere valideringsfeil for ugyldig type`() {
         val content = listOf(dummyContentDto(type = invalidValue))
         val validationErrors = validator.validate(content)
 
@@ -78,7 +78,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
-    fun testValidationWithInvalidFylke() {
+    fun `skal returnere valideringsfeil for ugyldig fylke`() {
         val content = listOf(dummyContentDto(fylke = invalidValue))
         val validationErrors = validator.validate(content)
 
@@ -87,7 +87,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
-    fun testValidationWithInvalidMetatag() {
+    fun `skal returnere valideringsfeil for ugyldig metatag`() {
         val content = listOf(dummyContentDto(metatags = listOf(invalidValue)))
         val validationErrors = validator.validate(content)
 
@@ -96,7 +96,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
-    fun testValidationWithInvalidLanguage() {
+    fun `skal returnere valideringsfeil for ugyldig språk`() {
         val content = listOf(dummyContentDto(language = invalidValue))
         val validationErrors = validator.validate(content)
 
@@ -105,7 +105,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
-    fun testValidationWithInvalidLanguageRef() {
+    fun `skal returnere valideringsfeil for ugyldig språk i languageRefs`() {
         val content = listOf(dummyContentDto(languageRefs = listOf(invalidValue)))
         val validationErrors = validator.validate(content)
 
@@ -114,7 +114,7 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
-    fun testValidationWithMultipleValidationErrors() {
+    fun `skal returnere flere valideringsfeil ved flere ugyldige verdier i input`() {
         val firstId = "first"
         val secondId = "second"
 
