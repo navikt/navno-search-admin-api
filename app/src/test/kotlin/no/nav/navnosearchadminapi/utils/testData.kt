@@ -101,7 +101,7 @@ fun dummyContent(
     language: String = NORWEGIAN_BOKMAAL,
     fylke: String? = null,
     metatags: List<String> = emptyList()
-) = Content(
+) = Content.from(
     id = createInternalId(teamName, externalId),
     teamOwnedBy = teamName,
     href = "https://www.href.com",

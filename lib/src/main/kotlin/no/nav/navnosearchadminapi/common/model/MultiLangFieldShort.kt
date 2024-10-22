@@ -13,7 +13,7 @@ data class MultiLangFieldShort(
     @field:StandardTextField override val other: String? = null,
 ) : MultiLangField {
     companion object {
-        fun create(value: String, language: String) = when (language) {
+        fun from(value: String, language: String) = when (language) {
             ENGLISH -> MultiLangFieldShort(en = value)
             in norwegianLanguageCodes -> MultiLangFieldShort(no = value)
             else -> MultiLangFieldShort(other = value)

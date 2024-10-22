@@ -28,7 +28,7 @@ fun ContentDto.toInbound(teamName: String): Content {
     requireNotNull(metadata.audience) { "metadata.audience kan ikke være null" }
     requireNotNull(metadata.language) { "metadata.language kan ikke være null" }
 
-    return Content(
+    return Content.from(
         id = createInternalId(teamName, id),
         teamOwnedBy = teamName,
         href = href,
