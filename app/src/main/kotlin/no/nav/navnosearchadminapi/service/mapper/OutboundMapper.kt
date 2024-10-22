@@ -45,5 +45,5 @@ private fun languageSubfieldValue(field: MultiLangField, language: String): Stri
 
 private fun handleMissingValue(id: String, field: String): String {
     logger.warn("Mapping av felt $field feilet for dokument med id $id. Returnerer tom string.")
-    return String()
+    return ""
 }

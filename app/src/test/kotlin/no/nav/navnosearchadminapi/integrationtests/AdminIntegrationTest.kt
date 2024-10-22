@@ -6,6 +6,7 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import no.nav.navnosearchadminapi.utils.TEAM_NAME
+import no.nav.navnosearchadminapi.utils.createInternalId
 import no.nav.navnosearchadminapi.utils.dummyContentDto
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -53,15 +54,15 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
 
     @Test
     fun `should save content`() {
-        val content = dummyContentDto()
+        val content = dummyContentDto(id = "new id")
 
         val response = post("/content/$TEAM_NAME", content)
 
         response.statusCode shouldBe HttpStatus.OK
         response.body!! shouldEqualJson readFile("/json/save-content.json")
 
-        indexCount() shouldBe 11L
-        repository.existsById("$TEAM_NAME-${content.id}").shouldBeTrue()
+        val internalId = createInternalId(TEAM_NAME, content.id!!)
+        repository.existsById(internalId).shouldBeTrue()
     }
 
     @Test

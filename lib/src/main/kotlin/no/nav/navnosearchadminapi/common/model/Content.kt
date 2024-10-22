@@ -24,7 +24,7 @@ data class Content(
     @Field(type = FieldType.Object) val title: MultiLangFieldShort,
     @Field(type = FieldType.Object) val ingress: MultiLangFieldShort,
     @Field(type = FieldType.Object) val text: MultiLangFieldLong,
-    @Field(type = FieldType.Object) val allText: MultiLangFieldLong = text,
+    @Field(type = FieldType.Object) val allText: MultiLangFieldLong,
     @Field(type = FieldType.Keyword) val type: String,
     @Field(type = FieldType.Date) val createdAt: ZonedDateTime,
     @Field(type = FieldType.Date) val lastUpdated: ZonedDateTime,
@@ -34,4 +34,43 @@ data class Content(
     @Field(type = FieldType.Keyword) val fylke: String? = null,
     @Field(type = FieldType.Keyword) val metatags: List<String>,
     @Field(type = FieldType.Keyword) val languageRefs: List<String> = emptyList(),
-)
+) {
+    constructor(
+        id: String,
+        teamOwnedBy: String,
+        href: String,
+        title: String,
+        ingress: String,
+        text: String,
+        type: String,
+        createdAt: ZonedDateTime,
+        lastUpdated: ZonedDateTime,
+        sortByDate: ZonedDateTime,
+        audience: List<String>,
+        language: String,
+        fylke: String? = null,
+        metatags: List<String>,
+        languageRefs: List<String> = emptyList(),
+        includeTypeInAllText: Boolean,
+    ) : this(
+        id = id,
+        teamOwnedBy = teamOwnedBy,
+        href = href,
+        title = MultiLangFieldShort(title, language),
+        ingress = MultiLangFieldShort(ingress, language),
+        text = MultiLangFieldLong(text, language),
+        allText = MultiLangFieldLong(
+            value = listOfNotNull(title, ingress, text, type.takeIf { includeTypeInAllText }).joinToString(),
+            language = language
+        ),
+        type = type,
+        createdAt = createdAt,
+        lastUpdated = lastUpdated,
+        sortByDate = sortByDate,
+        audience = audience,
+        language = language,
+        fylke = fylke,
+        metatags = metatags,
+        languageRefs = languageRefs,
+    )
+}

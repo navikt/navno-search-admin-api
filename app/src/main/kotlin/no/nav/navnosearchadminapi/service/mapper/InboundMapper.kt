@@ -5,12 +5,9 @@ import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
 import no.nav.navnosearchadminapi.common.enums.ValidTypes
 import no.nav.navnosearchadminapi.common.model.Content
-import no.nav.navnosearchadminapi.common.model.MultiLangFieldLong
-import no.nav.navnosearchadminapi.common.model.MultiLangFieldShort
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata
 import no.nav.navnosearchadminapi.utils.createInternalId
-import no.nav.navnosearchadminapi.utils.listOfNotNullOrBlank
 import org.jsoup.Jsoup
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -20,49 +17,44 @@ private val logger: Logger = LoggerFactory.getLogger("InboundMapper")
 private const val MACROS_PATTERN = """\[.*?]"""
 
 fun ContentDto.toInbound(teamName: String): Content {
-    // todo: sjekke om jeg kan gjøre noe med disse feltene som er nullable pga validering men som bør være non-null
-    val language = metadata!!.language!!
-    val title = title!!
-    val ingress = removeHtmlAndMacrosFromString(ingress!!)
-    val text = removeHtmlAndMacrosFromString(text!!)
-    val type = metadata.type
-    val createdAt = metadata.createdAt!!
-    val lastUpdated = metadata.lastUpdated!!
+    requireNotNull(id) { "id kan ikke være null" }
+    requireNotNull(href) { "href kan ikke være null" }
+    requireNotNull(title) { "title kan ikke være null" }
+    requireNotNull(ingress) { "ingress kan ikke være null" }
+    requireNotNull(text) { "text kan ikke være null" }
+    requireNotNull(metadata) { "metadata kan ikke være null" }
+    requireNotNull(metadata.createdAt) { "metadata.createdAt kan ikke være null" }
+    requireNotNull(metadata.lastUpdated) { "metadata.lastUpdated kan ikke være null" }
+    requireNotNull(metadata.audience) { "metadata.audience kan ikke være null" }
+    requireNotNull(metadata.language) { "metadata.language kan ikke være null" }
 
     return Content(
-        id = createInternalId(teamName, id!!),
+        id = createInternalId(teamName, id),
         teamOwnedBy = teamName,
-        href = href!!,
-        title = MultiLangFieldShort(title, language),
-        ingress = MultiLangFieldShort(ingress, language),
-        text = MultiLangFieldLong(text, language),
-        allText = MultiLangFieldLong(joinTextFields(title, ingress, text, type), language),
-        type = type,
-        createdAt = createdAt,
-        lastUpdated = lastUpdated,
-        sortByDate = if (isNyhet(metadata.metatags)) createdAt else lastUpdated,
-        audience = metadata.audience!!,
-        language = resolveLanguage(language),
+        href = href,
+        title = title,
+        ingress = ingress.removeHtmlAndMacros(),
+        text = text.removeHtmlAndMacros(),
+        type = metadata.type,
+        createdAt = metadata.createdAt,
+        lastUpdated = metadata.lastUpdated,
+        sortByDate = if (isNyhet()) metadata.createdAt else metadata.lastUpdated,
+        audience = metadata.audience,
+        language = resolveLanguage(metadata.language),
         fylke = metadata.fylke,
         metatags = resolveMetatags(metadata, id),
-        languageRefs = metadata.languageRefs.map { resolveLanguage(it) }.filter { it != resolveLanguage(language) },
+        languageRefs = metadata.languageRefs
+            .map { resolveLanguage(it) }
+            .filter { it != resolveLanguage(metadata.language) },
+        includeTypeInAllText = shouldBeIncludedInAllTextField(metadata.type)
     )
-}
-
-private fun joinTextFields(title: String, ingress: String, text: String, type: String): String {
-    return listOfNotNullOrBlank(
-        title,
-        ingress,
-        text,
-        type.takeIf { shouldBeIncludedInAllTextField(it) }
-    ).joinToString()
 }
 
 private fun shouldBeIncludedInAllTextField(type: String) = type in listOf(ValidTypes.SKJEMA.descriptor)
 
-private fun removeHtmlAndMacrosFromString(string: String): String {
+private fun String.removeHtmlAndMacros(): String {
     // Må parses to ganger av Jsoup av ukjent årsak
-    return Jsoup.parse(string).text()
+    return Jsoup.parse(this).text()
         .replace(Regex(MACROS_PATTERN), "")
         .let { Jsoup.parse(it).text() }
 }
@@ -90,4 +82,4 @@ private fun isInformasjon(metadata: ContentMetadata): Boolean {
     )
 }
 
-private fun isNyhet(metatags: List<String>) = metatags.contains(ValidMetatags.NYHET.descriptor)
+private fun ContentDto.isNyhet() = metadata?.metatags?.contains(ValidMetatags.NYHET.descriptor) ?: false
