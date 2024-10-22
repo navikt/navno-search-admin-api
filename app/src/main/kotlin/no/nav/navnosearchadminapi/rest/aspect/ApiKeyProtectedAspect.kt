@@ -8,14 +8,12 @@ import org.springframework.stereotype.Component
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
 
-
 @Aspect
 @Component
 class HeaderCheckAspect(@Value("\${api-key}") val apiKey: String) {
 
     @Before("@annotation(apiKeyProtected)")
     fun checkHeader(apiKeyProtected: ApiKeyProtected) {
-
         val request = (RequestContextHolder.currentRequestAttributes() as ServletRequestAttributes).request
 
         val actualValue = request.getHeader(API_KEY_HEADER)

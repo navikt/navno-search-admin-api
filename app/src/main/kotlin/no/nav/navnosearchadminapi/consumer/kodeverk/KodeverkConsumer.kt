@@ -37,7 +37,6 @@ class KodeverkConsumer(
         }
     }
 
-
     private fun headers(accessToken: String): HttpHeaders {
         return HttpHeaders().apply {
             setBearerAuth(accessToken)

@@ -1,4 +1,3 @@
 package no.nav.navnosearchadminapi.exception
 
-class TokenFetchException(message: String, cause: Throwable) : Exception(message, cause) {
-}
+class TokenFetchException(message: String, cause: Throwable) : Exception(message, cause)

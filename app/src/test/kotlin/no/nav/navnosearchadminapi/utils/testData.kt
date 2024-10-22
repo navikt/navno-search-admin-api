@@ -120,7 +120,6 @@ fun dummyContent(
     includeTypeInAllText = false
 )
 
-
 fun dummyContentDto(
     id: String? = "11",
     href: String? = "https://eleventh.com",

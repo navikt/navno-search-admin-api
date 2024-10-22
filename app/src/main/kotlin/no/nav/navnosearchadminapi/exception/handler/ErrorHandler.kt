@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import java.time.Clock
 import java.time.ZonedDateTime
 
-
 @ControllerAdvice
 class ErrorHandler(val clock: Clock) {
 
