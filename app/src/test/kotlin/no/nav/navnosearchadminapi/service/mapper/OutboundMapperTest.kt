@@ -1,7 +1,6 @@
 package no.nav.navnosearchadminapi.service.mapper
 
 import io.kotest.assertions.assertSoftly
-import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import no.nav.navnosearchadminapi.common.constants.ENGLISH
@@ -33,7 +32,7 @@ class OutboundMapperTest {
                 language shouldBe content.language
                 fylke shouldBe content.fylke
                 metatags shouldBe content.metatags
-                languageRefs.shouldBeEmpty()  //todo: bør være noe her
+                languageRefs shouldBe content.languageRefs
             }
         }
     }

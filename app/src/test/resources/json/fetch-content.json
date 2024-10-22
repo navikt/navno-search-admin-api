@@ -20,7 +20,10 @@
         "metatags": [
           "statistikk"
         ],
-        "languageRefs": []
+        "languageRefs": [
+          "nn",
+          "en"
+        ]
       }
     },
     {
@@ -41,7 +44,10 @@
         "metatags": [
           "statistikk"
         ],
-        "languageRefs": []
+        "languageRefs": [
+          "nn",
+          "en"
+        ]
       }
     },
     {
@@ -62,7 +68,10 @@
         "metatags": [
           "statistikk"
         ],
-        "languageRefs": []
+        "languageRefs": [
+          "nn",
+          "en"
+        ]
       }
     },
     {
@@ -81,7 +90,10 @@
         "language": "en",
         "fylke": null,
         "metatags": [],
-        "languageRefs": []
+        "languageRefs": [
+          "nn",
+          "en"
+        ]
       }
     },
     {
@@ -100,7 +112,10 @@
         "language": "en",
         "fylke": null,
         "metatags": [],
-        "languageRefs": []
+        "languageRefs": [
+          "nn",
+          "en"
+        ]
       }
     },
     {
@@ -119,7 +134,10 @@
         "language": "en",
         "fylke": null,
         "metatags": [],
-        "languageRefs": []
+        "languageRefs": [
+          "nn",
+          "en"
+        ]
       }
     },
     {
@@ -138,7 +156,10 @@
         "language": "hi",
         "fylke": null,
         "metatags": [],
-        "languageRefs": []
+        "languageRefs": [
+          "nn",
+          "en"
+        ]
       }
     },
     {
@@ -157,7 +178,10 @@
         "language": "hi",
         "fylke": null,
         "metatags": [],
-        "languageRefs": []
+        "languageRefs": [
+          "nn",
+          "en"
+        ]
       }
     },
     {
@@ -176,7 +200,10 @@
         "language": "hi",
         "fylke": null,
         "metatags": [],
-        "languageRefs": []
+        "languageRefs": [
+          "nn",
+          "en"
+        ]
       }
     },
     {
@@ -195,7 +222,10 @@
         "language": "hi",
         "fylke": null,
         "metatags": [],
-        "languageRefs": []
+        "languageRefs": [
+          "nn",
+          "en"
+        ]
       }
     }
   ],

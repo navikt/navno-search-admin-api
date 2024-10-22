@@ -56,10 +56,10 @@ data class Content(
         id = id,
         teamOwnedBy = teamOwnedBy,
         href = href,
-        title = MultiLangFieldShort(title, language),
-        ingress = MultiLangFieldShort(ingress, language),
-        text = MultiLangFieldLong(text, language),
-        allText = MultiLangFieldLong(
+        title = MultiLangFieldShort.create(title, language),
+        ingress = MultiLangFieldShort.create(ingress, language),
+        text = MultiLangFieldLong.create(text, language),
+        allText = MultiLangFieldLong.create(
             value = listOfNotNull(title, ingress, text, type.takeIf { includeTypeInAllText }).joinToString(),
             language = language
         ),

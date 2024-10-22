@@ -2,6 +2,7 @@ package no.nav.navnosearchadminapi.utils
 
 import no.nav.navnosearchadminapi.common.constants.ENGLISH
 import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_BOKMAAL
+import no.nav.navnosearchadminapi.common.constants.NORWEGIAN_NYNORSK
 import no.nav.navnosearchadminapi.common.enums.ValidAudiences
 import no.nav.navnosearchadminapi.common.enums.ValidFylker
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
@@ -115,7 +116,7 @@ fun dummyContent(
     language = language,
     fylke = fylke,
     metatags = metatags,
-    languageRefs = emptyList(),
+    languageRefs = listOf(NORWEGIAN_NYNORSK, ENGLISH),
     includeTypeInAllText = false
 )
 

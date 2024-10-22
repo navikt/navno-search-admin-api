@@ -38,5 +38,4 @@ const val METADATA_LANGUAGE_REFS = "$METADATA.$LANGUAGE_REFS"
 
 
 val norwegianLanguageCodes = listOf(NORWEGIAN, NORWEGIAN_BOKMAAL, NORWEGIAN_NYNORSK)
-val supportedLanguages = norwegianLanguageCodes + ENGLISH
 val languageSubfields = listOf(NORWEGIAN, ENGLISH, OTHER)
