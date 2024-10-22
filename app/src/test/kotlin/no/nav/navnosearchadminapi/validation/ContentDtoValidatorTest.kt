@@ -51,6 +51,14 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
+    fun `skal ha tom liste av valideringsfeil ved gyldig input uten fylke`() {
+        val content = listOf(dummyContentDto(fylke = null))
+        val validationErrors = validator.validate(content)
+
+        validationErrors.shouldBeEmpty()
+    }
+
+    @Test
     fun `skal returnere valideringsfeil for manglende påkrevd felt`() {
         val content = listOf(dummyContentDto(text = null))
         val validationErrors = validator.validate(content)

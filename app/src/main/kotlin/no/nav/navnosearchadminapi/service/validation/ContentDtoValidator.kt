@@ -86,10 +86,8 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
         } else emptyList()
     }
 
-    private fun validateFylke(fylke: String?): List<String> {
-        return if (fylke != null) {
-            listOfNotNull(validateValueIsValid<ValidFylker>(fylke, METADATA_FYLKE))
-        } else emptyList()
+    private fun validateFylke(fylke: String): List<String> {
+        return listOfNotNull(validateValueIsValid<ValidFylker>(fylke, METADATA_FYLKE))
     }
 
     private fun validateMetatags(metatags: List<String>): List<String> {
