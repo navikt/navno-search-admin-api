@@ -52,7 +52,7 @@ data class Content(
             fylke: String? = null,
             metatags: List<String>,
             languageRefs: List<String> = emptyList(),
-            includeTypeInAllText: Boolean,
+            includeTypeInAllText: Boolean = false,
         ) = Content(
             id = id,
             teamOwnedBy = teamOwnedBy,
