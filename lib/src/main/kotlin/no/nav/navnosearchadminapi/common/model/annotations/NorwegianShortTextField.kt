@@ -15,7 +15,7 @@ import org.springframework.data.elasticsearch.annotations.MultiField
         InnerField(
             suffix = "ngrams", type = FieldType.Text,
             analyzer = "custom_norwegian_ngrams",
-            searchAnalyzer = "custom_norwegian_search"
+            searchAnalyzer = "standard"
         )
     ]
 )
