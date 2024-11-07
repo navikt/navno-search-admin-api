@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    val navSecurityVersion = "5.0.5"
+    val navSecurityVersion = "5.0.10"
     val logstashVersion = "8.0"
     val opensearchVersion = "1.5.2"
     val jsoupVersion = "1.18.1"
