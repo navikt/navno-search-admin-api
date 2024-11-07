@@ -36,7 +36,7 @@
       },
       "front_edge_ngram": {
         "type": "edge_ngram",
-        "min_gram": 4,
+        "min_gram": 3,
         "max_gram": 20,
         "side": "front"
       },
