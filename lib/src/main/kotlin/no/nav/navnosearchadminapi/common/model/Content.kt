@@ -10,7 +10,7 @@ import org.springframework.data.elasticsearch.annotations.WriteTypeHint
 import java.time.ZonedDateTime
 
 @Document(
-    indexName = "search-content-v5",
+    indexName = "search-content-v6",
     dynamic = Dynamic.STRICT,
     /* Disabler type hints da det lager et _class-felt i mappingen som gir problemer for wildcard-søk.
        Bør skrives om dersom vi trenger polymorfisk data. */
