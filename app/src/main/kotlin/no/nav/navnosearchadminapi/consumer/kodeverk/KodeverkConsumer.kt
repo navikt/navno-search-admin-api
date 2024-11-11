@@ -24,25 +24,24 @@ class KodeverkConsumer(
     @Cacheable("spraakkoder")
     fun fetchSpraakKoder(): KodeverkResponse {
         try {
-            val response = restTemplate.exchange(
-                kodeverkUrl,
-                HttpMethod.GET,
-                HttpEntity<Any>(headers()),
-                KodeverkResponse::class.java
-            )
-            return response.body ?: throw KodeverkConsumerException("Tom response body fra kodeverk-api")
+            return azureADConsumer.getAccessToken(kodeverkScope).let { accessToken ->
+                restTemplate.exchange(
+                    kodeverkUrl,
+                    HttpMethod.GET,
+                    HttpEntity<Any>(headers(accessToken)),
+                    KodeverkResponse::class.java
+                )
+            }.body ?: throw KodeverkConsumerException("Tom response body fra kodeverk-api")
         } catch (e: HttpStatusCodeException) {
             throw KodeverkConsumerException("Feil ved kall til kodeverk-api. ${e.message}", e)
         }
     }
 
-    private fun headers(): HttpHeaders {
-        return azureADConsumer.getAccessToken(kodeverkScope).let { accessToken ->
-            HttpHeaders().apply {
-                setBearerAuth(accessToken)
-                set(NAV_CALL_ID, UUID.randomUUID().toString())
-                set(NAV_CONSUMER_ID, NAVNO_SEARCH_ADMIN_API)
-            }
+    private fun headers(accessToken: String): HttpHeaders {
+        return HttpHeaders().apply {
+            setBearerAuth(accessToken)
+            set(NAV_CALL_ID, UUID.randomUUID().toString())
+            set(NAV_CONSUMER_ID, NAVNO_SEARCH_ADMIN_API)
         }
     }
 

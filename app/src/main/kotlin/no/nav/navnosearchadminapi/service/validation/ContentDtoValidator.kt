@@ -29,28 +29,27 @@ import org.springframework.stereotype.Component
 @Component
 class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
 
-    fun validate(content: List<ContentDto>): MutableMap<String, MutableList<String>> {
-        val validationErrors = mutableMapOf<String, MutableList<String>>()
-
-        content.forEach {
-            val errorMessages = mutableListOf<String>()
-
-            errorMessages.addAll(validateNotNull(requiredFieldsMap(it)))
-
-            it.metadata?.type?.let { type -> errorMessages.addAll(validateType(type)) }
-            it.metadata?.audience?.let { audience -> errorMessages.addAll(validateAudience(audience)) }
-            it.metadata?.language?.let { language -> errorMessages.addAll(validateLanguage(language, METADATA_LANGUAGE)) }
-            it.metadata?.fylke?.let { fylke -> errorMessages.addAll(validateFylke(fylke)) }
-            it.metadata?.metatags?.let { metatags -> errorMessages.addAll(validateMetatags(metatags)) }
-            it.metadata?.languageRefs?.let { languageRefs -> errorMessages.addAll(validateLanguageRefs(languageRefs)) }
-
-            errorMessages.forEach { msg ->
-                validationErrors.putIfAbsent(it.id ?: throw MissingIdException(), mutableListOf())
-                validationErrors[it.id]!!.add(msg)
+    fun validate(content: List<ContentDto>): Map<String, List<String>> {
+        return buildMap {
+            content.forEach {
+                validate(it).let { validationErrors ->
+                    if (validationErrors.isNotEmpty()) put(it.id ?: throw MissingIdException(), validationErrors)
+                }
             }
         }
+    }
 
-        return validationErrors
+    private fun validate(content: ContentDto): List<String> {
+        return buildList {
+            addAll(validateNotNull(requiredFieldsMap(content)))
+
+            content.metadata?.type?.let { type -> addAll(validateType(type)) }
+            content.metadata?.audience?.let { audience -> addAll(validateAudience(audience)) }
+            content.metadata?.language?.let { language -> addAll(validateLanguage(language, METADATA_LANGUAGE)) }
+            content.metadata?.fylke?.let { fylke -> addAll(validateFylke(fylke)) }
+            content.metadata?.metatags?.let { metatags -> addAll(validateMetatags(metatags)) }
+            content.metadata?.languageRefs?.let { languageRefs -> addAll(validateLanguageRefs(languageRefs)) }
+        }
     }
 
     private fun requiredFieldsMap(content: ContentDto): Map<String, Any?> {
@@ -69,7 +68,7 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
     }
 
     private fun validateNotNull(fields: Map<String, Any?>): List<String> {
-        return fields.mapNotNull { entry -> if (entry.value == null) "Påkrevd felt mangler: ${entry.key}" else null }
+        return fields.entries.filter { it.value == null }.map { "Påkrevd felt mangler: ${it.key}" }
     }
 
     private fun validateType(type: String): List<String> {
@@ -87,10 +86,8 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
         } else emptyList()
     }
 
-    private fun validateFylke(fylke: String?): List<String> {
-        return if (fylke != null) {
-            listOfNotNull(validateValueIsValid<ValidFylker>(fylke, METADATA_FYLKE))
-        } else emptyList()
+    private fun validateFylke(fylke: String): List<String> {
+        return listOfNotNull(validateValueIsValid<ValidFylker>(fylke, METADATA_FYLKE))
     }
 
     private fun validateMetatags(metatags: List<String>): List<String> {

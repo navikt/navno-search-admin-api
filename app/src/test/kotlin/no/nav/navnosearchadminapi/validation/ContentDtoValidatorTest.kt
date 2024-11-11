@@ -1,5 +1,10 @@
 package no.nav.navnosearchadminapi.validation
 
+import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.collections.shouldContainOnly
+import io.kotest.matchers.maps.shouldBeEmpty
+import io.kotest.matchers.maps.shouldHaveKey
+import io.kotest.matchers.maps.shouldHaveSize
 import no.nav.navnosearchadminapi.common.enums.ValidAudiences
 import no.nav.navnosearchadminapi.common.enums.ValidFylker
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
@@ -9,7 +14,6 @@ import no.nav.navnosearchadminapi.service.validation.ContentDtoValidator
 import no.nav.navnosearchadminapi.utils.dummyContentDto
 import no.nav.navnosearchadminapi.utils.enumDescriptors
 import no.nav.navnosearchadminapi.utils.mockedKodeverkResponse
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -31,92 +35,94 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
     }
 
     @Test
-    fun testValidation() {
+    fun `skal ha tom liste av valideringsfeil ved gyldig input`() {
         val content = listOf(dummyContentDto())
         val validationErrors = validator.validate(content)
-        assertThat(validationErrors).isEmpty()
+
+        validationErrors.shouldBeEmpty()
     }
 
     @Test
-    fun testValidationWithMissingAudience() {
+    fun `skal ha tom liste av valideringsfeil ved gyldig input uten audience`() {
         val content = listOf(dummyContentDto(audience = emptyList()))
         val validationErrors = validator.validate(content)
 
-        assertThat(validationErrors).isEmpty()
+        validationErrors.shouldBeEmpty()
     }
 
     @Test
-    fun testValidationWithMissingRequiredField() {
+    fun `skal ha tom liste av valideringsfeil ved gyldig input uten fylke`() {
+        val content = listOf(dummyContentDto(fylke = null))
+        val validationErrors = validator.validate(content)
+
+        validationErrors.shouldBeEmpty()
+    }
+
+    @Test
+    fun `skal returnere valideringsfeil for manglende påkrevd felt`() {
         val content = listOf(dummyContentDto(text = null))
         val validationErrors = validator.validate(content)
 
-        assertThat(validationErrors).hasSize(1)
-        assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Påkrevd felt mangler: text")
+        validationErrors shouldHaveSize 1
+        validationErrors[id]!!.shouldContainOnly("Påkrevd felt mangler: text")
     }
 
     @Test
-    fun testValidationWithInvalidAudience() {
+    fun `skal returnere valideringsfeil for ugyldig audience`() {
         val content = listOf(dummyContentDto(audience = listOf(invalidValue)))
         val validationErrors = validator.validate(content)
 
-        assertThat(validationErrors).hasSize(1)
-        assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.audience: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidAudiences>()}")
+        validationErrors shouldHaveSize 1
+        validationErrors[id]!!.shouldContainOnly("Ugyldig verdi for metadata.audience: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidAudiences>()}")
     }
 
     @Test
-    fun testValidationWithInvalidType() {
+    fun `skal returnere valideringsfeil for ugyldig type`() {
         val content = listOf(dummyContentDto(type = invalidValue))
         val validationErrors = validator.validate(content)
 
-        assertThat(validationErrors).hasSize(1)
-        assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.type: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidTypes>()}")
+        validationErrors shouldHaveSize 1
+        validationErrors[id]!!.shouldContainOnly("Ugyldig verdi for metadata.type: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidTypes>()}")
     }
 
     @Test
-    fun testValidationWithInvalidFylke() {
+    fun `skal returnere valideringsfeil for ugyldig fylke`() {
         val content = listOf(dummyContentDto(fylke = invalidValue))
         val validationErrors = validator.validate(content)
 
-        assertThat(validationErrors).hasSize(1)
-        assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.fylke: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidFylker>()}")
+        validationErrors shouldHaveSize 1
+        validationErrors[id]!!.shouldContainOnly("Ugyldig verdi for metadata.fylke: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidFylker>()}")
     }
 
     @Test
-    fun testValidationWithInvalidMetatag() {
+    fun `skal returnere valideringsfeil for ugyldig metatag`() {
         val content = listOf(dummyContentDto(metatags = listOf(invalidValue)))
         val validationErrors = validator.validate(content)
 
-        assertThat(validationErrors).hasSize(1)
-        assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.metatags: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidMetatags>()}")
+        validationErrors shouldHaveSize 1
+        validationErrors[id]!!.shouldContainOnly("Ugyldig verdi for metadata.metatags: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidMetatags>()}")
     }
 
     @Test
-    fun testValidationWithInvalidLanguage() {
+    fun `skal returnere valideringsfeil for ugyldig språk`() {
         val content = listOf(dummyContentDto(language = invalidValue))
         val validationErrors = validator.validate(content)
 
-        assertThat(validationErrors).hasSize(1)
-        assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.language: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
+        validationErrors shouldHaveSize 1
+        validationErrors[id]!!.shouldContainOnly("Ugyldig verdi for metadata.language: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
     }
 
     @Test
-    fun testValidationWithInvalidLanguageRef() {
+    fun `skal returnere valideringsfeil for ugyldig språk i languageRefs`() {
         val content = listOf(dummyContentDto(languageRefs = listOf(invalidValue)))
         val validationErrors = validator.validate(content)
 
-        assertThat(validationErrors).hasSize(1)
-        assertThat(validationErrors[id]).hasSize(1)
-        assertThat(validationErrors[id]!!.first()).isEqualTo("Ugyldig verdi for metadata.languageRefs: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
+        validationErrors shouldHaveSize 1
+        validationErrors[id]!!.shouldContainOnly("Ugyldig verdi for metadata.languageRefs: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
     }
 
     @Test
-    fun testValidationWithMultipleValidationErrors() {
+    fun `skal returnere flere valideringsfeil ved flere ugyldige verdier i input`() {
         val firstId = "first"
         val secondId = "second"
 
@@ -126,11 +132,15 @@ class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
         )
         val validationErrors = validator.validate(content)
 
-        assertThat(validationErrors).hasSize(2)
-        assertThat(validationErrors[firstId]).hasSize(1)
-        assertThat(validationErrors[secondId]).hasSize(2)
-        assertThat(validationErrors[firstId]!!.first()).isEqualTo("Ugyldig verdi for metadata.language: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
-        assertThat(validationErrors[secondId]!!).contains("Ugyldig verdi for metadata.audience: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidAudiences>()}")
-        assertThat(validationErrors[secondId]!!).contains("Ugyldig verdi for metadata.fylke: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidFylker>()}")
+        validationErrors shouldHaveSize 2
+
+        validationErrors.shouldHaveKey(firstId)
+        validationErrors[firstId]!!.shouldContainOnly("Ugyldig verdi for metadata.language: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
+
+        validationErrors.shouldHaveKey(secondId)
+        validationErrors[secondId]!! shouldContainExactly (listOf(
+            "Ugyldig verdi for metadata.audience: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidAudiences>()}",
+            "Ugyldig verdi for metadata.fylke: $invalidValue. Gyldige verdier: ${enumDescriptors<ValidFylker>()}"
+        ))
     }
 }

@@ -1,196 +1,139 @@
 package no.nav.navnosearchadminapi.integrationtests
 
 import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.client.WireMock.aResponse
-import com.github.tomakehurst.wiremock.client.WireMock.get
-import com.github.tomakehurst.wiremock.client.WireMock.stubFor
-import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
-import no.nav.navnosearchadminapi.dto.outbound.SaveContentResponse
-import no.nav.navnosearchadminapi.exception.handler.ErrorResponse
+import io.kotest.assertions.json.shouldEqualJson
+import io.kotest.matchers.booleans.shouldBeFalse
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import no.nav.navnosearchadminapi.utils.TEAM_NAME
+import no.nav.navnosearchadminapi.utils.createInternalId
 import no.nav.navnosearchadminapi.utils.dummyContentDto
-import no.nav.navnosearchadminapi.utils.mockedKodeverkResponse
-import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.web.client.exchange
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders.CONTENT_TYPE
-import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 
 class AdminIntegrationTest : AbstractIntegrationTest() {
 
     @BeforeEach
     fun setup() {
-        WireMock.reset()
         setupIndex()
         mockAzuread()
-        stubFor(
-            get(urlPathMatching("/kodeverk")).willReturn(
-                aResponse().withStatus(HttpStatus.OK.value())
-                    .withBody(objectMapper.writeValueAsString(mockedKodeverkResponse))
-                    .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-            )
-        )
+        mockKodeverk()
+    }
+
+    @AfterEach
+    fun teardown() {
+        WireMock.reset()
     }
 
     @Test
-    fun testFetchingContent() {
-        val response: ResponseEntity<Map<String, Any>> = restTemplate.exchange(
-            "${host()}/content/$TEAM_NAME?page=0",
-            HttpMethod.GET,
-            HttpEntity<Any>(headers()),
-        )
+    fun `should fetch content`() {
+        val response = get("/content/$TEAM_NAME?page=0")
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(response.body?.get("totalElements")).isEqualTo(10)
+        response.statusCode shouldBe HttpStatus.OK
+        response.body!! shouldEqualJson readFile("/json/fetch-content.json")
     }
 
     @Test
-    fun testFetchingContentWithMissingRequestParam() {
-        val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
-            "${host()}/content/$TEAM_NAME",
-            HttpMethod.GET,
-            HttpEntity<Any>(headers()),
-        )
+    fun `should return 401 when fetching content with missing api key`() {
+        val response = get("/content/$TEAM_NAME?page=0", headers(isApiKeyValid = false))
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(response.body?.message).isEqualTo("Påkrevd request parameter mangler: page")
+        response.statusCode shouldBe HttpStatus.UNAUTHORIZED
+        response.body!! shouldEqualJson readFile("/json/fetch-content-invalid-api-key.json")
     }
 
     @Test
-    fun testSavingContent() {
+    fun `should return 400 when fetching content with missing request param`() {
+        val response: ResponseEntity<String> = get("/content/$TEAM_NAME")
+
+        response.statusCode shouldBe HttpStatus.BAD_REQUEST
+        response.body!! shouldEqualJson readFile("/json/fetch-content-missing-page-param.json")
+    }
+
+    @Test
+    fun `should save content`() {
+        val content = dummyContentDto(id = "new id")
+
+        val response = post("/content/$TEAM_NAME", content)
+
+        response.statusCode shouldBe HttpStatus.OK
+        response.body!! shouldEqualJson readFile("/json/save-content.json")
+
+        val internalId = createInternalId(TEAM_NAME, content.id!!)
+        repository.existsById(internalId).shouldBeTrue()
+    }
+
+    @Test
+    fun `should return 401 when saving content with missing api key`() {
         val content = dummyContentDto()
 
-        val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
-            "${host()}/content/$TEAM_NAME",
-            HttpMethod.POST,
-            HttpEntity(listOf(content), headers()),
-        )
+        val response = post("/content/$TEAM_NAME", content, headers(isApiKeyValid = false))
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(indexCount()).isEqualTo(11L)
-        assertThat(repository.existsById("$TEAM_NAME-${content.id}")).isTrue()
+        response.statusCode shouldBe HttpStatus.UNAUTHORIZED
+        response.body!! shouldEqualJson readFile("/json/save-content-invalid-api-key.json")
     }
 
     @Test
-    fun testSavingContentWithInvalidApiKey() {
-        val content = dummyContentDto()
+    fun `should return 400 when saving content with missing id`() {
+        val response = post("/content/$TEAM_NAME", dummyContentDto(id = null))
 
-        val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
-            "${host()}/content/$TEAM_NAME",
-            HttpMethod.POST,
-            HttpEntity(listOf(content), headers(isApiKeyValid = false)),
-        )
-
-        assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
-    }
-
-    /*@Test
-    fun testSavingContentWithInvalidToken() {
-        val content = dummyContentDto()
-
-        val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
-            "${host()}/content/$TEAM_NAME",
-            HttpMethod.POST,
-            HttpEntity(listOf(content), authHeader(valid = false)),
-        )
-
-        assertThat(response.statusCode).isEqualTo(HttpStatus.UNAUTHORIZED)
-    }*/
-
-    @Test
-    fun testSavingContentWithMissingId() {
-        val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
-            "${host()}/content/$TEAM_NAME",
-            HttpMethod.POST,
-            HttpEntity(listOf(dummyContentDto(id = null)), headers()),
-        )
-
-        assertThat(response.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
-        assertThat(response.body?.message).isEqualTo("id er påkrevd for alle dokumenter")
+        response.statusCode shouldBe HttpStatus.BAD_REQUEST
+        response.body!! shouldEqualJson readFile("/json/save-content-missing-id.json")
     }
 
     @Test
-    fun testSavingContentWithMissingRequiredField() {
-        val content = dummyContentDto(ingress = null)
+    fun `should return 200 with validation error when saving content with missing required field`() {
+        val response = post("/content/$TEAM_NAME", dummyContentDto(ingress = null))
 
-        val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
-            "${host()}/content/$TEAM_NAME",
-            HttpMethod.POST,
-            HttpEntity(listOf(content), headers()),
-        )
-
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(response.body?.numberOfIndexedDocuments).isEqualTo(0)
-        assertThat(response.body?.numberOfFailedDocuments).isEqualTo(1)
-        assertThat(response.body!!.validationErrors[content.id]!!.first()).isEqualTo("Påkrevd felt mangler: ingress")
+        response.statusCode shouldBe HttpStatus.OK
+        response.body!! shouldEqualJson readFile("/json/save-content-missing-ingress.json")
     }
 
     @Test
-    fun testSavingContentWithInvalidLanguage() {
-        val response: ResponseEntity<SaveContentResponse> = restTemplate.exchange(
-            "${host()}/content/$TEAM_NAME",
-            HttpMethod.POST,
-            HttpEntity(listOf(dummyContentDto(language = "røverspråk")), headers()),
-        )
+    fun `should return 200 with validation error when saving content with invalid language`() {
+        val response = post("/content/$TEAM_NAME", dummyContentDto(language = "røverspråk"))
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(response.body!!.validationErrors["11"]!!.first()).isEqualTo("Ugyldig verdi for metadata.language: røverspråk. Må være tobokstavs språkkode fra kodeverk-api.")
+        response.statusCode shouldBe HttpStatus.OK
+        response.body!! shouldEqualJson readFile("/json/save-content-invalid-language.json")
     }
 
     @Test
-    fun testSavingContentWithServerError() {
+    fun `should return 500 when saving content causes server error`() {
         cacheManager.getCache("spraakkoder")?.clear()
+        mockKodeverk(status = HttpStatus.INTERNAL_SERVER_ERROR)
 
-        stubFor(
-            get(urlPathMatching("/kodeverk")).willReturn(
-                aResponse().withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
-            )
-        )
+        val response = post("/content/$TEAM_NAME", dummyContentDto())
 
-        val content = dummyContentDto()
-
-        val response: ResponseEntity<ErrorResponse> = restTemplate.exchange(
-            "${host()}/content/$TEAM_NAME",
-            HttpMethod.POST,
-            HttpEntity(listOf(content), headers()),
-        )
-
-        assertThat(response.statusCode).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
-        assertThat(response.body?.message).isEqualTo("Ukjent feil")
+        response.statusCode shouldBe HttpStatus.INTERNAL_SERVER_ERROR
+        response.body!! shouldEqualJson readFile("/json/save-content-server-error.json")
     }
 
     @Test
-    fun testDeletingContent() {
+    fun `should delete content`() {
         val deletedId = "1"
-        val response: ResponseEntity<String> =
-            restTemplate.exchange(
-                "${host()}/content/$TEAM_NAME/$deletedId",
-                HttpMethod.DELETE,
-                HttpEntity<Any>(headers()),
-            )
+        val response = delete("/content/$TEAM_NAME/$deletedId")
 
+        response.statusCode shouldBe HttpStatus.NO_CONTENT
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
-        assertThat(indexCount()).isEqualTo(9L)
-        assertThat(repository.existsById("$TEAM_NAME-$deletedId")).isFalse()
+        indexCount() shouldBe 9L
+        repository.existsById("$TEAM_NAME-$deletedId").shouldBeFalse()
     }
 
     @Test
-    fun testDeletingContentForMissingApp() {
-        val deletedId = "1"
+    fun `should return 401 when deleting content with missing api key`() {
+        val response = delete("/content/$TEAM_NAME/1", headers(isApiKeyValid = false))
+
+        response.statusCode shouldBe HttpStatus.UNAUTHORIZED
+        response.body!! shouldEqualJson readFile("/json/delete-content-invalid-api-key.json")
+    }
+
+    @Test
+    fun `should return 204 even if team not found`() {
         val teamName = "missing-team"
-        val response: ResponseEntity<String> =
-            restTemplate.exchange(
-                "${host()}/content/$teamName/$deletedId",
-                HttpMethod.DELETE,
-                HttpEntity<Any>(headers()),
-            )
+        val response = delete("/content/$teamName/1")
 
-        assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
+        response.statusCode shouldBe HttpStatus.NO_CONTENT
     }
 }

@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     val kotlinVersion = "2.0.20"
-    val springBootVersion = "3.3.3"
+    val springBootVersion = "3.3.5"
     val springDepMgmtVersion = "1.1.6"
     val versionsVersion = "0.51.0"
 
@@ -24,16 +24,15 @@ repositories {
 }
 
 dependencies {
-    val navSecurityVersion = "5.0.5"
     val logstashVersion = "8.0"
-    val opensearchVersion = "1.5.2"
+    val opensearchVersion = "1.5.3"
     val jsoupVersion = "1.18.1"
-    val opensearchTestcontainersVersion = "2.1.0"
-    val testcontainersVersion = "1.20.1"
+    val opensearchTestcontainersVersion = "2.1.1"
+    val testcontainersVersion = "1.20.2"
     val wiremockVersion = "4.1.4"
+    val kotestVersion = "5.9.1"
 
     implementation(project(":lib"))
-    implementation("no.nav.security:token-validation-spring:$navSecurityVersion")
     implementation("org.opensearch.client:spring-data-opensearch-starter:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
@@ -46,7 +45,6 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jsoup:jsoup:$jsoupVersion")
-    testImplementation("no.nav.security:token-validation-spring-test:$navSecurityVersion")
     testImplementation("org.opensearch.client:spring-data-opensearch-test-autoconfigure:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
@@ -54,6 +52,8 @@ dependencies {
     testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:$wiremockVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.opensearch:opensearch-testcontainers:$opensearchTestcontainersVersion")
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
 }
 
 tasks.withType<KotlinCompile> {

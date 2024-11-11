@@ -1,43 +1,45 @@
 package no.nav.navnosearchadminapi.integrationtests
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.post
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
-import com.nimbusds.jose.JOSEObjectType
 import no.nav.navnosearchadminapi.common.repository.ContentRepository
 import no.nav.navnosearchadminapi.consumer.azuread.dto.outbound.TokenResponse
-import no.nav.navnosearchadminapi.integrationtests.config.OpensearchConfiguration
+import no.nav.navnosearchadminapi.integrationtests.config.ClockConfig
+import no.nav.navnosearchadminapi.integrationtests.config.OpensearchConfig
 import no.nav.navnosearchadminapi.rest.aspect.HeaderCheckAspect.Companion.API_KEY_HEADER
 import no.nav.navnosearchadminapi.utils.initialTestData
-import no.nav.security.mock.oauth2.MockOAuth2Server
-import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
-import no.nav.security.token.support.spring.test.EnableMockOAuth2Server
+import no.nav.navnosearchadminapi.utils.mockedKodeverkResponse
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.boot.test.web.client.exchange
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.cache.CacheManager
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 import org.springframework.context.annotation.Import
+import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpHeaders.CONTENT_TYPE
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
+import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.testcontainers.junit.jupiter.Testcontainers
 
 @Testcontainers(disabledWithoutDocker = true)
-@Import(OpensearchConfiguration::class)
+@Import(OpensearchConfig::class, ClockConfig::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension::class)
 @AutoConfigureWireMock(port = 0)
-@EnableMockOAuth2Server
 abstract class AbstractIntegrationTest {
 
     @Autowired
@@ -50,9 +52,6 @@ abstract class AbstractIntegrationTest {
     lateinit var repository: ContentRepository
 
     @Autowired
-    lateinit var server: MockOAuth2Server
-
-    @Autowired
     lateinit var cacheManager: CacheManager
 
     @LocalServerPort
@@ -61,16 +60,16 @@ abstract class AbstractIntegrationTest {
     @Value("\${api-key}")
     lateinit var apiKey: String
 
-    fun host() = "http://localhost:$serverPort"
+    protected fun host() = "http://localhost:$serverPort"
 
-    fun indexCount() = repository.count()
+    protected fun indexCount() = repository.count()
 
-    fun setupIndex() {
+    protected fun setupIndex() {
         repository.deleteAll()
         repository.saveAll(initialTestData)
     }
 
-    fun mockAzuread() {
+    protected fun mockAzuread() {
         stubFor(
             post(urlPathMatching("/azuread")).willReturn(
                 aResponse().withStatus(HttpStatus.OK.value())
@@ -80,34 +79,55 @@ abstract class AbstractIntegrationTest {
         )
     }
 
-    fun headers(isAuthValid: Boolean = true, isApiKeyValid: Boolean = true): HttpHeaders {
-        val headers = HttpHeaders()
-        val token = if (isAuthValid) {
-            token("azuread", "subject", "someaudience")
-        } else {
-            token("invalid", "invalid", "invalid")
-        }
-        headers.add(HttpHeaders.AUTHORIZATION, "Bearer $token")
+    protected fun mockKodeverk(status: HttpStatus = HttpStatus.OK) {
+        when (status) {
+            HttpStatus.OK -> stubFor(
+                WireMock.get(urlPathMatching("/kodeverk")).willReturn(
+                    aResponse().withStatus(HttpStatus.OK.value())
+                        .withBody(objectMapper.writeValueAsString(mockedKodeverkResponse))
+                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                )
+            )
 
-        if (isApiKeyValid) {
-            headers.add(API_KEY_HEADER, apiKey)
-        }
+            HttpStatus.INTERNAL_SERVER_ERROR -> stubFor(
+                WireMock.get(urlPathMatching("/kodeverk")).willReturn(
+                    aResponse().withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                )
+            )
 
-        return headers
+            else -> error("HttpStatus $status ikke støttet")
+        }
     }
 
-    private fun token(issuerId: String, subject: String, audience: String): String {
-        return server.issueToken(
-            issuerId,
-            "theclientid",
-            DefaultOAuth2TokenCallback(
-                issuerId,
-                subject,
-                JOSEObjectType.JWT.type,
-                listOf(audience),
-                mapOf("acr" to "Level4"),
-                3600
-            )
-        ).serialize()
+    protected fun get(path: String, headers: HttpHeaders = headers()): ResponseEntity<String> {
+        return restTemplate.exchange(
+            "${host()}/$path",
+            HttpMethod.GET,
+            HttpEntity<Any>(headers),
+        )
+    }
+
+    protected fun <T> post(path: String, content: T, headers: HttpHeaders = headers()): ResponseEntity<String> {
+        return restTemplate.exchange(
+            "${host()}/$path",
+            HttpMethod.POST,
+            HttpEntity(listOf(content), headers),
+        )
+    }
+
+    protected fun delete(path: String, headers: HttpHeaders = headers()): ResponseEntity<String> {
+        return restTemplate.exchange(
+            "${host()}/$path",
+            HttpMethod.DELETE,
+            HttpEntity<Any>(headers),
+        )
+    }
+
+    protected fun headers(isApiKeyValid: Boolean = true): HttpHeaders {
+        return HttpHeaders().apply { if (isApiKeyValid) add(API_KEY_HEADER, apiKey) }
+    }
+
+    protected fun readFile(name: String): String {
+        return {}.javaClass.getResource(name)!!.readText()
     }
 }

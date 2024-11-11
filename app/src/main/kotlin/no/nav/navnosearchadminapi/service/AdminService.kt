@@ -3,8 +3,8 @@ package no.nav.navnosearchadminapi.service
 import no.nav.navnosearchadminapi.common.repository.ContentRepository
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.outbound.SaveContentResponse
-import no.nav.navnosearchadminapi.service.mapper.ContentDtoMapper
-import no.nav.navnosearchadminapi.service.mapper.ContentMapper
+import no.nav.navnosearchadminapi.service.mapper.toInbound
+import no.nav.navnosearchadminapi.service.mapper.toOutbound
 import no.nav.navnosearchadminapi.service.validation.ContentDtoValidator
 import no.nav.navnosearchadminapi.utils.createInternalId
 import org.slf4j.Logger
@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service
 @Service
 class AdminService(
     val validator: ContentDtoValidator,
-    val contentDtoMapper: ContentDtoMapper,
-    val contentMapper: ContentMapper,
     val repository: ContentRepository,
     @Value("\${opensearch.page-size}") val pageSize: Int,
 ) {
@@ -33,7 +31,7 @@ class AdminService(
 
         val mappedContent = content
             .filter { !validationErrors.containsKey(it.id) }
-            .map { contentMapper.toContent(it, teamName) }
+            .map { it.toInbound(teamName) }
         repository.saveAll(mappedContent)
 
         val numberOfIndexedDocuments = mappedContent.size
@@ -54,6 +52,6 @@ class AdminService(
 
     fun getContentForTeamName(teamName: String, page: Int): Page<ContentDto> {
         val pageable = PageRequest.of(page, pageSize)
-        return repository.findAllByTeamOwnedBy(teamName, pageable).map { contentDtoMapper.toContentDto(it) }
+        return repository.findAllByTeamOwnedBy(teamName, pageable).map { it.toOutbound() }
     }
 }
