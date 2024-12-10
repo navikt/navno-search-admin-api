@@ -38,7 +38,7 @@ api-key: dummy
 
 ## Publisering av felles bibliotek
 
-Ved merging til main-branchen, publiseres det et felles bibliotek til maven. Dette brukes også av [navno-search-api](https://github.com/navikt/navno-search-api). Biblioteket inneholder diverse konstanter, samt klassen som brukes for å opprette Opensearch-indexen. Ved deling og versjonering av denne er det mulig å opprette og populere en ny index før man skrur apiet over til å søke mot denne.
+Ved trigging av workflow, publiseres det et felles bibliotek til maven. Dette brukes også av [navno-search-api](https://github.com/navikt/navno-search-api). Biblioteket inneholder diverse konstanter, samt klassen som brukes for å opprette Opensearch-indexen. Ved deling og versjonering av denne er det mulig å opprette og populere en ny index før man skrur apiet over til å søke mot denne.
 
 ## Logging
 
