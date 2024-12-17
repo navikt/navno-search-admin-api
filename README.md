@@ -1,7 +1,7 @@
 # navno-search-admin-api
 Backend for å administrere og populere Opensearch-index som brukes i søk på nav.no.
 
-Secrets ligger i [Google Secret Manager](https://doc.nais.io/security/secrets/google-secrets-manager/).
+Secrets ligger i [Nais console](https://console.nav.cloud.nais.io/team/personbruker/secrets).
 
 ## Lokal kjøring
 For å kjøre appen lokalt må man opprette en application-local.yml-fil og populere denne med følgende  (opensearch-credentials ligger i kubernetes).
