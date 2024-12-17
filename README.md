@@ -19,9 +19,9 @@ kodeverk:
 no.nav.security.jwt:
   issuer:
     azuread:
-      discoveryurl: http://localhost:${mock-oauth2-server.port}/azuread/.well-known/openid-configuration
       accepted-audience: someaudience
-      cookie_name: azuread-idtoken
+      client-secret: somesecret
+      token-endpoint: someendpoint
       
 api-key: dummy
 ```
