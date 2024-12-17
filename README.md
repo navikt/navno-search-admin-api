@@ -15,6 +15,7 @@ opensearch:
 kodeverk:
   spraak:
     url: https://kodeverk.dev-fss-pub.nais.io/api/v1/kodeverk/Språk/koder
+  scope: kodeverk-scope
 
 no.nav.security.jwt:
   issuer:
@@ -25,6 +26,8 @@ no.nav.security.jwt:
       
 api-key: dummy
 ```
+
+Husk å starte applikasjonen med profile "local".
 
 ## Deploy til dev
 
