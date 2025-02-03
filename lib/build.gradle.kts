@@ -1,7 +1,8 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val versionsVersion = "0.51.0"
+    val versionsVersion = "0.52.0"
 
     kotlin("jvm")
     id("com.github.ben-manes.versions") version versionsVersion // ./gradlew dependencyUpdates to check for new versions
@@ -18,17 +19,17 @@ repositories {
 }
 
 dependencies {
-    val opensearchVersion = "1.5.3"
+    val opensearchVersion = "1.6.0"
 
     implementation("org.opensearch.client:spring-data-opensearch-starter:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "21"
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions {
+        freeCompilerArgs.add("-Xjsr305=strict")
+        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 
