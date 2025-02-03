@@ -1,11 +1,12 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     val kotlinVersion = "2.0.20"
-    val springBootVersion = "3.3.5"
+    val springBootVersion = "3.4.2"
     val springDepMgmtVersion = "1.1.7"
-    val versionsVersion = "0.51.0"
+    val versionsVersion = "0.52.0"
 
     kotlin("jvm")
     kotlin("plugin.spring") version kotlinVersion
@@ -25,11 +26,11 @@ repositories {
 
 dependencies {
     val logstashVersion = "8.0"
-    val opensearchVersion = "1.5.3"
-    val jsoupVersion = "1.18.1"
-    val opensearchTestcontainersVersion = "2.1.1"
-    val testcontainersVersion = "1.20.2"
-    val wiremockVersion = "4.1.4"
+    val opensearchVersion = "1.6.0"
+    val jsoupVersion = "1.18.3"
+    val opensearchTestcontainersVersion = "2.1.2"
+    val testcontainersVersion = "1.20.4"
+    val wiremockVersion = "4.2.0"
     val kotestVersion = "5.9.1"
 
     implementation(project(":lib"))
@@ -56,10 +57,10 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "21"
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions {
+        freeCompilerArgs.add("-Xjsr305=strict")
+        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 
