@@ -3,6 +3,8 @@ Backend for å administrere og populere Opensearch-index som brukes i søk på n
 
 Secrets ligger i [Nais console](https://console.nav.cloud.nais.io/team/personbruker/secrets).
 
+Les mer om indeksering i [navno-search-api](https://github.com/navikt/navno-search-api).
+
 ## Lokal kjøring
 For å kjøre appen lokalt må man opprette en application-local.yml-fil og populere denne med følgende  (opensearch-credentials ligger i kubernetes).
 
@@ -29,6 +31,34 @@ api-key: dummy
 
 Husk å starte applikasjonen med profile "local".
 
+## Logs
+I Opensearch (uri ligger i ```application-local.yaml``` filen) kan man finne logger ved å f.eks. søke på
+
+```
+GET /_cat/indices
+
+DELETE /search-content-v7
+
+GET /search-content-v6
+
+GET /search-content-v6/_mapping
+
+POST /search-content-v6/_analyze
+{
+  "field": "title.no",
+  "text": "skule"
+}
+
+POST /search-content-v6/_search
+{
+  "query": {
+    "match": {
+      "title.no": "nav midt-buskerud"
+    }
+  }
+}
+```
+
 ## Deploy til dev
 
 [Actions](https://github.com/navikt/navno-search-admin-api/actions) -> Velg workflow -> Run workflow -> Velg branch -> Run workflow
@@ -36,8 +66,10 @@ Husk å starte applikasjonen med profile "local".
 ## Prodsetting
 
 -   Lag en PR til main, og merge inn etter godkjenning
+-   Test at alt funker i dev
 -   Lag en release på master med versjon-bump, beskrivende tittel og oppsummering av endringene dine
 -   Publiser release-en for å starte deploy til prod
+-   Gå til [packages](https://github.com/navikt/navno-search-admin-api/packages) og hent ```version``` fra siste package (etter at siste release er deployet), og endre siste versjon av ```navnoSearchCommonVersion``` i ```navno-search-api```
 
 ## Publisering av felles bibliotek
 
