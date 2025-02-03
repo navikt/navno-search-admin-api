@@ -38,10 +38,11 @@ Husk å starte applikasjonen med profile "local".
 ## Prodsetting
 
 -   Lag en PR til main, og merge inn etter godkjenning
--   Test at alt funker i dev
+-   Test at alt funker i dev ved å deploye til dev (Se punkt over)
 -   Lag en release på master med versjon-bump, beskrivende tittel og oppsummering av endringene dine
 -   Publiser release-en for å starte deploy til prod
--   Gå til [packages](https://github.com/navikt/navno-search-admin-api/packages) og hent ```version``` fra siste package (etter at siste release er deployet), og endre siste versjon av ```navnoSearchCommonVersion``` i [navno-search-api](https://github.com/navikt/navno-search-api). (Les mer om Publisering av felles bibliotek i punktet under
+-   Kjør workflowen ```Bygg og publiser bibliotek```
+-   Gå til [packages](https://github.com/navikt/navno-search-admin-api/packages) og hent ```version``` fra siste package (etter at siste release er deployet), og endre siste versjon av ```navnoSearchCommonVersion``` i [navno-search-api](https://github.com/navikt/navno-search-api). (Les mer om Publisering av felles bibliotek i punktet under)
 
 ### Publisering av felles bibliotek
 
