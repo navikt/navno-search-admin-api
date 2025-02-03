@@ -1,7 +1,7 @@
 # navno-search-admin-api
 Backend for å administrere og populere Opensearch-index som brukes i søk på nav.no.
 
-Secrets ligger i [Google Secret Manager](https://doc.nais.io/security/secrets/google-secrets-manager/).
+Secrets ligger i [Nais console](https://console.nav.cloud.nais.io/team/personbruker/secrets).
 
 ## Lokal kjøring
 For å kjøre appen lokalt må man opprette en application-local.yml-fil og populere denne med følgende  (opensearch-credentials ligger i kubernetes).
@@ -15,16 +15,19 @@ opensearch:
 kodeverk:
   spraak:
     url: https://kodeverk.dev-fss-pub.nais.io/api/v1/kodeverk/Språk/koder
+  scope: kodeverk-scope
 
 no.nav.security.jwt:
   issuer:
     azuread:
-      discoveryurl: http://localhost:${mock-oauth2-server.port}/azuread/.well-known/openid-configuration
       accepted-audience: someaudience
-      cookie_name: azuread-idtoken
+      client-secret: somesecret
+      token-endpoint: someendpoint
       
 api-key: dummy
 ```
+
+Husk å starte applikasjonen med profile "local".
 
 ## Deploy til dev
 
@@ -38,7 +41,7 @@ api-key: dummy
 
 ## Publisering av felles bibliotek
 
-Ved merging til main-branchen, publiseres det et felles bibliotek til maven. Dette brukes også av [navno-search-api](https://github.com/navikt/navno-search-api). Biblioteket inneholder diverse konstanter, samt klassen som brukes for å opprette Opensearch-indexen. Ved deling og versjonering av denne er det mulig å opprette og populere en ny index før man skrur apiet over til å søke mot denne.
+Ved trigging av workflow, publiseres det et felles bibliotek til maven. Dette brukes også av [navno-search-api](https://github.com/navikt/navno-search-api). Biblioteket inneholder diverse konstanter, samt klassen som brukes for å opprette Opensearch-indexen. Ved deling og versjonering av denne er det mulig å opprette og populere en ny index før man skrur apiet over til å søke mot denne.
 
 ## Logging
 
