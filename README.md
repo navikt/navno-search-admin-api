@@ -35,9 +35,7 @@ Husk å starte applikasjonen med profile "local".
 
 ## Prodsetting
 
--   Lag en PR til main, og merge inn etter godkjenning
--   Lag en release på master med versjon-bump, beskrivende tittel og oppsummering av endringene dine
--   Publiser release-en for å starte deploy til prod
+Lag en PR til main, og merge inn etter godkjenning (En automatisk release vil oppstå ved deploy til main)
 
 ## Publisering av felles bibliotek
 
