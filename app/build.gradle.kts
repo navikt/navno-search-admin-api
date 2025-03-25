@@ -3,8 +3,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "2.1.10"
+    val kotlinVersion = "2.1.20"
     val springBootVersion = "3.4.4"
+  
     val springDepMgmtVersion = "1.1.7"
     val versionsVersion = "0.52.0"
 
@@ -30,7 +31,7 @@ dependencies {
     val jsoupVersion = "1.19.1"
     val opensearchTestcontainersVersion = "2.1.3"
     val testcontainersVersion = "1.20.6"
-    val wiremockVersion = "4.2.0"
+    val wiremockVersion = "4.2.1"
     val kotestVersion = "5.9.1"
 
     implementation(project(":lib"))
