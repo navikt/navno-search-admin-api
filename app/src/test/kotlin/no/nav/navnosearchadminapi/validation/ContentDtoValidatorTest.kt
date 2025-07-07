@@ -22,7 +22,7 @@ import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
 
 @ExtendWith(MockitoExtension::class)
-class ContentDtoValidatorTest(@Mock val kodeverkConsumer: KodeverkConsumer) {
+class ContentDtoValidatorTest(@param:Mock val kodeverkConsumer: KodeverkConsumer) {
 
     private val invalidValue = "invalidValue"
     private val id = dummyContentDto().id

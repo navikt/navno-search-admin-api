@@ -10,7 +10,7 @@ import org.springframework.web.context.request.ServletRequestAttributes
 
 @Aspect
 @Component
-class HeaderCheckAspect(@Value("\${api-key}") val apiKey: String) {
+class HeaderCheckAspect(@param:Value("\${api-key}") val apiKey: String) {
 
     @Before("@annotation(apiKeyProtected)")
     fun checkHeader(apiKeyProtected: ApiKeyProtected) {

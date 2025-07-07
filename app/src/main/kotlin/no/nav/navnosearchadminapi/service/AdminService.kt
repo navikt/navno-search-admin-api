@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service
 class AdminService(
     val validator: ContentDtoValidator,
     val repository: ContentRepository,
-    @Value("\${opensearch.page-size}") val pageSize: Int,
+    @param:Value("\${opensearch.page-size}") val pageSize: Int,
 ) {
     val logger: Logger = LoggerFactory.getLogger(AdminService::class.java)
 
