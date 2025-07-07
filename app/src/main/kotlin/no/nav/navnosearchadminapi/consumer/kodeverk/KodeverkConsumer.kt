@@ -17,8 +17,8 @@ import java.util.*
 class KodeverkConsumer(
     val restTemplate: RestTemplate,
     val azureADConsumer: AzureADConsumer,
-    @Value("\${kodeverk.spraak.url}") val kodeverkUrl: String,
-    @Value("\${kodeverk.scope}") val kodeverkScope: String,
+    @param:Value("\${kodeverk.spraak.url}") val kodeverkUrl: String,
+    @param:Value("\${kodeverk.scope}") val kodeverkScope: String,
 ) {
 
     @Cacheable("spraakkoder")

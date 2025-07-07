@@ -17,9 +17,9 @@ import org.springframework.web.client.exchange
 @Component
 class AzureADConsumer(
     val restTemplate: RestTemplate,
-    @Value("\${no.nav.security.jwt.issuer.azuread.accepted-audience}") val clientId: String,
-    @Value("\${no.nav.security.jwt.issuer.azuread.client-secret}") val clientSecret: String,
-    @Value("\${no.nav.security.jwt.issuer.azuread.token-endpoint}") val tokenEndpoint: String,
+    @param:Value("\${no.nav.security.jwt.issuer.azuread.accepted-audience}") val clientId: String,
+    @param:Value("\${no.nav.security.jwt.issuer.azuread.client-secret}") val clientSecret: String,
+    @param:Value("\${no.nav.security.jwt.issuer.azuread.token-endpoint}") val tokenEndpoint: String,
 ) {
     fun getAccessToken(scope: String): String {
         try {
