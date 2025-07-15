@@ -2,9 +2,9 @@ apiVersion: aiven.io/v1alpha1
 kind: OpenSearch
 metadata:
   labels:
-    team: personbruker
-  name: opensearch-personbruker-navno-search
-  namespace: personbruker
+    team: navno
+  name: opensearch-navno-navno-search
+  namespace: navno
 spec:
   plan: {{opensearch-plan}}
   project: {{opensearch-project}}
@@ -17,11 +17,11 @@ apiVersion: aiven.io/v1alpha1
 kind: ServiceIntegration
 metadata:
   labels:
-    team: personbruker
-  name: opensearch-personbruker-navno-search
-  namespace: personbruker
+    team: navno
+  name: opensearch-navno-navno-search
+  namespace: navno
 spec:
   project: {{opensearch-project}}
   integrationType: prometheus
   destinationEndpointId: {{opensearch-endpoint-id}}
-  sourceServiceName: opensearch-personbruker-navno-search
+  sourceServiceName: opensearch-navno-navno-search
