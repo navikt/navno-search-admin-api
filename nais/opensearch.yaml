@@ -3,8 +3,8 @@ kind: OpenSearch
 metadata:
   labels:
     team: navno
-  name: opensearch-personbruker-navno-search
-  namespace: personbruker
+  name: opensearch-navno-navno-search
+  namespace: navno
 spec:
   plan: {{opensearch-plan}}
   project: {{opensearch-project}}
@@ -18,10 +18,10 @@ kind: ServiceIntegration
 metadata:
   labels:
     team: navno
-  name: opensearch-personbruker-navno-search
-  namespace: personbruker
+  name: opensearch-navno-navno-search
+  namespace: navno
 spec:
   project: {{opensearch-project}}
   integrationType: prometheus
   destinationEndpointId: {{opensearch-endpoint-id}}
-  sourceServiceName: opensearch-personbruker-navno-search
+  sourceServiceName: opensearch-navno-navno-search
