@@ -32,7 +32,7 @@ spec:
     max: {{ max-replicas }}
   openSearch:
     access: admin
-    instance: navno-search
+    instance: navnosearch
   azure:
     application:
       enabled: true
