@@ -30,7 +30,7 @@ dependencies {
     val opensearchVersion = "1.8.1"
     val jsoupVersion = "1.21.1"
 
-    val opensearchTestcontainersVersion = "2.1.3"
+    val opensearchTestcontainersVersion = "3.0.2"
     val testcontainersVersion = "1.21.3"
     val wiremockVersion = "4.3.0"
     val kotestVersion = "5.9.1"
