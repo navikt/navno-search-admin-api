@@ -1,7 +1,7 @@
 # navno-search-admin-api
 Backend for å administrere og populere Opensearch-index som brukes i søk på nav.no.
 
-Secrets ligger i [Nais console](https://console.nav.cloud.nais.io/team/personbruker/secrets).
+Secrets ligger i [Nais console](https://console.nav.cloud.nais.io/team/navno/secrets).
 
 ## Lokal kjøring
 For å kjøre appen lokalt må man opprette en application-local.yml-fil og populere denne med følgende  (opensearch-credentials ligger i kubernetes).
@@ -51,8 +51,8 @@ Ved trigging av workflowen `Bygg og publiser bibliotek`, publiseres det et felle
 
 ## Henvendelser
 
-Spørsmål knyttet til koden eller prosjektet kan rettes mot https://github.com/orgs/navikt/teams/personbruker
+Spørsmål knyttet til koden eller prosjektet kan rettes mot https://github.com/orgs/navikt/teams/navno
 
 ## For NAV-ansatte
 
-Interne henvendelser kan sendes via Slack i kanalen #team-personbruker.
+Interne henvendelser kan sendes via Slack i kanalen #team-navno.
