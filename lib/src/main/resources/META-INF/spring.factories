@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+no.nav.navnosearchadminapi.common.config.OpenSearchAutoConfiguration

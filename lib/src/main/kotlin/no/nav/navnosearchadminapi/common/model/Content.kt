@@ -1,5 +1,6 @@
 package no.nav.navnosearchadminapi.common.model
 
+import no.nav.navnosearchadminapi.common.constants.IndexInfo
 import org.springframework.data.annotation.Id
 import org.springframework.data.elasticsearch.annotations.Document
 import org.springframework.data.elasticsearch.annotations.Dynamic
@@ -12,11 +13,12 @@ import java.time.ZonedDateTime
 @Document(
     /* Note that after moving to the 'navno' namespace in Nais, v1-v7 no longer exists as the
     opensearch instance is new. However, we're keeping with the versioning for continuity. */
-    indexName = "search-content-v8",
+    indexName = IndexInfo.INDEX_NAME,
     dynamic = Dynamic.STRICT,
     /* Disabler type hints da det lager et _class-felt i mappingen som gir problemer for wildcard-søk.
        Bør skrives om dersom vi trenger polymorfisk data. */
     writeTypeHint = WriteTypeHint.FALSE,
+    createIndex = false,
 )
 @Setting(settingPath = "opensearch/index-settings.json")
 data class Content(
