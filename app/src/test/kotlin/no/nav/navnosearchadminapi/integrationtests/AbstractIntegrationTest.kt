@@ -6,7 +6,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.post
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
-import no.nav.navnosearchadminapi.common.repository.ContentRepository
+import no.nav.navnosearchadminapi.repository.ContentRepository
 import no.nav.navnosearchadminapi.consumer.azuread.dto.outbound.TokenResponse
 import no.nav.navnosearchadminapi.integrationtests.config.ClockConfig
 import no.nav.navnosearchadminapi.integrationtests.config.OpensearchConfig
