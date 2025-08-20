@@ -1,4 +1,4 @@
-package no.nav.navnosearchadminapi.common.repository
+package no.nav.navnosearchadminapi.repository
 
 import no.nav.navnosearchadminapi.common.model.Content
 import org.springframework.data.domain.Page

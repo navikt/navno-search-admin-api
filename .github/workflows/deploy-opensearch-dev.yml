@@ -16,4 +16,4 @@ jobs:
         env:
           CLUSTER: dev-gcp
           RESOURCE: ./nais/opensearch.yaml
-          VARS: ./nais/dev-gcp/personbruker.json
+          VARS: ./nais/dev-gcp/navno.json

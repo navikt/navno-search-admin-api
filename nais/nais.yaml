@@ -2,9 +2,9 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: navno-search-admin-api
-  namespace: personbruker
+  namespace: navno
   labels:
-    team: personbruker
+    team: navno
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "10m"
 spec:
@@ -32,7 +32,7 @@ spec:
     max: {{ max-replicas }}
   openSearch:
     access: admin
-    instance: navno-search
+    instance: navnosearch
   azure:
     application:
       enabled: true

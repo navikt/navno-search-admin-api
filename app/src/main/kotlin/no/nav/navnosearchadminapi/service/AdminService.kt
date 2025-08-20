@@ -1,6 +1,6 @@
 package no.nav.navnosearchadminapi.service
 
-import no.nav.navnosearchadminapi.common.repository.ContentRepository
+import no.nav.navnosearchadminapi.repository.ContentRepository
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.outbound.SaveContentResponse
 import no.nav.navnosearchadminapi.service.mapper.toInbound
