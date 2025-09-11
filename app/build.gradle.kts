@@ -27,13 +27,13 @@ repositories {
 
 dependencies {
     val logstashVersion = "8.1"
-    val opensearchVersion = "1.8.1"
-    val jsoupVersion = "1.21.1"
-
+    val opensearchVersion = "2.0.1"
+    val jsoupVersion = "1.21.2"
     val opensearchTestcontainersVersion = "2.1.3"
     val testcontainersVersion = "1.21.3"
     val wiremockVersion = "4.3.0"
-    val kotestVersion = "5.9.1"
+    val kotestVersion = "6.0.3"
+    val jacksonVersion = "2.20.0"
 
     implementation(project(":lib"))
     implementation("org.opensearch.client:spring-data-opensearch-starter:$opensearchVersion") {
@@ -48,6 +48,8 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jsoup:jsoup:$jsoupVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonVersion}")
     testImplementation("org.opensearch.client:spring-data-opensearch-test-autoconfigure:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
