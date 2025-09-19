@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     val kotlinVersion = "2.2.20"
     val springBootVersion = "3.5.6"
-  
     val springDepMgmtVersion = "1.1.7"
     val versionsVersion = "0.52.0"
 
@@ -14,7 +13,7 @@ plugins {
 
     id("org.springframework.boot") version springBootVersion
     id("io.spring.dependency-management") version springDepMgmtVersion
-    id("com.github.ben-manes.versions") version versionsVersion // ./gradlew dependencyUpdates to check for new versions
+    id("com.github.ben-manes.versions") version versionsVersion
 }
 
 java {
@@ -29,7 +28,7 @@ dependencies {
     val logstashVersion = "8.1"
     val opensearchVersion = "2.0.2"
     val jsoupVersion = "1.21.2"
-    val opensearchTestcontainersVersion = "2.1.3"
+    val opensearchTestcontainersVersion = "3.0.2"
     val testcontainersVersion = "1.21.3"
     val wiremockVersion = "4.3.0"
     val kotestVersion = "6.0.3"
@@ -46,10 +45,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
     implementation("io.micrometer:micrometer-registry-prometheus")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jsoup:jsoup:$jsoupVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${jacksonVersion}")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     testImplementation("org.opensearch.client:spring-data-opensearch-test-autoconfigure:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
