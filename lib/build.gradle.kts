@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val versionsVersion = "0.52.0"
+    val versionsVersion = "0.53.0"
 
     kotlin("jvm")
     id("com.github.ben-manes.versions") version versionsVersion // ./gradlew dependencyUpdates to check for new versions
