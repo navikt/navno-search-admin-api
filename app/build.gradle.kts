@@ -31,7 +31,7 @@ dependencies {
     val opensearchTestcontainersVersion = "3.0.2"
     val testcontainersVersion = "1.21.3"
     val wiremockVersion = "4.3.0"
-    val kotestVersion = "6.0.3"
+    val kotestVersion = "6.0.4"
     val jacksonVersion = "2.20.0"
 
     implementation(project(":lib"))
