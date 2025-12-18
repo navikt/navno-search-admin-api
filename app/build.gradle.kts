@@ -30,7 +30,7 @@ dependencies {
     val jsoupVersion = "1.21.2"
     val opensearchTestcontainersVersion = "4.0.0"
     val testcontainersVersion = "1.21.4"
-    val wiremockVersion = "4.3.0"
+    val wiremockSpringBootVersion = "4.0.8"
     val kotestVersion = "6.0.7"
     val jacksonVersion = "2.20.1"
 
@@ -52,7 +52,7 @@ dependencies {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:$wiremockVersion")
+    testImplementation("org.wiremock.integrations:wiremock-spring-boot:$wiremockSpringBootVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.opensearch:opensearch-testcontainers:$opensearchTestcontainersVersion")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")

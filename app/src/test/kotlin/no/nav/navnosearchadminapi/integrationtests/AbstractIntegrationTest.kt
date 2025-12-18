@@ -21,7 +21,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.client.exchange
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.cache.CacheManager
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
+import org.wiremock.spring.EnableWireMock
 import org.springframework.context.annotation.Import
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -39,7 +39,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension::class)
-@AutoConfigureWireMock(port = 0)
+@EnableWireMock()
 abstract class AbstractIntegrationTest {
 
     @Autowired
