@@ -29,9 +29,9 @@ dependencies {
     val opensearchVersion = "2.0.3"
     val jsoupVersion = "1.21.2"
     val opensearchTestcontainersVersion = "4.0.0"
-    val testcontainersVersion = "1.21.3"
+    val testcontainersVersion = "1.21.4"
     val wiremockVersion = "4.3.0"
-    val kotestVersion = "6.0.4"
+    val kotestVersion = "6.0.7"
     val jacksonVersion = "2.20.1"
 
     implementation(project(":lib"))
