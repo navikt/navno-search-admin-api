@@ -1,12 +1,14 @@
 plugins {
     kotlin("jvm")
     id("com.github.ben-manes.versions")
+
     `java-library`
     `maven-publish`
 }
 
 dependencies {
     val opensearchVersion = "3.0.0"
+
     implementation("org.opensearch.client:spring-data-opensearch-starter:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }

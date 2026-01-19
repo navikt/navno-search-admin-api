@@ -15,8 +15,8 @@ plugins {
     id("io.spring.dependency-management") version springDepMgmtVersion apply false
     id("com.github.ben-manes.versions") version versionsVersion apply false
 
-    `java-library`
-    `maven-publish`
+    `java-library` apply false
+    `maven-publish` apply false
 }
 
 allprojects {

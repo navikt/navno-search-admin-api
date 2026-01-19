@@ -29,22 +29,22 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-aspectj")
     implementation("org.springframework.boot:spring-boot-starter-restclient")
+
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("org.jsoup:jsoup:$jsoupVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-    implementation("org.springframework.boot:spring-boot-starter-web")
 
     testImplementation("org.opensearch.client:spring-data-opensearch-test-autoconfigure:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-resttestclient")
+
     testImplementation("org.wiremock.integrations:wiremock-spring-boot:$wiremockSpringBootVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.opensearch:opensearch-testcontainers:$opensearchTestcontainersVersion")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
-    testImplementation("org.springframework.boot:spring-boot-starter-restclient")
-    testImplementation("org.springframework.boot:spring-boot-resttestclient")
 }
