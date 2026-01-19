@@ -30,6 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-aspectj")
     implementation("org.springframework.boot:spring-boot-starter-restclient")
+    implementation("org.springframework.boot:spring-boot-starter-jackson")
 
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
     implementation("io.micrometer:micrometer-registry-prometheus")
