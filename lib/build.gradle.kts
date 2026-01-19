@@ -1,35 +1,14 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    val versionsVersion = "0.53.0"
-
     kotlin("jvm")
-    id("com.github.ben-manes.versions") version versionsVersion // ./gradlew dependencyUpdates to check for new versions
+    id("com.github.ben-manes.versions")
     `java-library`
     `maven-publish`
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_21
-}
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     val opensearchVersion = "3.0.0"
-
     implementation("org.opensearch.client:spring-data-opensearch-starter:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
-    }
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    compilerOptions {
-        freeCompilerArgs.add("-Xjsr305=strict")
-        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 

@@ -1,6 +1,6 @@
 package no.nav.navnosearchadminapi.config
 
-import org.springframework.boot.web.client.RestTemplateBuilder
+import org.springframework.boot.restclient.RestTemplateBuilder
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -11,9 +11,7 @@ import java.time.Clock
 @EnableCaching
 class ApplicationConfig {
     @Bean
-    fun restTemplate(builder: RestTemplateBuilder): RestTemplate? {
-        return builder.build()
-    }
+    fun restTemplate(builder: RestTemplateBuilder): RestTemplate = builder.build()
 
     @Bean
     fun clock(): Clock {
