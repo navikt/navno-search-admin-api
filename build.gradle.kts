@@ -19,6 +19,8 @@ plugins {
     `maven-publish` apply false
 }
 
+extra["opensearchVersion"] = "3.0.0"
+
 allprojects {
     repositories {
         mavenCentral()
