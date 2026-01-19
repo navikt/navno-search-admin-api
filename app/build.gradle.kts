@@ -32,7 +32,7 @@ dependencies {
     val testcontainersVersion = "1.21.3"
     val wiremockVersion = "4.3.0"
     val kotestVersion = "6.0.4"
-    val jacksonVersion = "2.20.1"
+    val jacksonVersion = "2.21.0"
 
     implementation(project(":lib"))
     implementation("org.opensearch.client:spring-data-opensearch-starter:$opensearchVersion") {
