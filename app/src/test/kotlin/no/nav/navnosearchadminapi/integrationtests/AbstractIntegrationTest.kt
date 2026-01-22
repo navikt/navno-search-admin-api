@@ -6,8 +6,6 @@ import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.post
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
-import com.github.tomakehurst.wiremock.junit5.WireMockExtension
 import no.nav.navnosearchadminapi.repository.ContentRepository
 import no.nav.navnosearchadminapi.consumer.azuread.dto.outbound.TokenResponse
 import no.nav.navnosearchadminapi.integrationtests.config.ClockConfig
@@ -15,9 +13,7 @@ import no.nav.navnosearchadminapi.integrationtests.config.OpensearchConfig
 import no.nav.navnosearchadminapi.rest.aspect.HeaderCheckAspect.Companion.API_KEY_HEADER
 import no.nav.navnosearchadminapi.utils.initialTestData
 import no.nav.navnosearchadminapi.utils.mockedKodeverkResponse
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.api.extension.RegisterExtension
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
@@ -25,6 +21,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.client.exchange
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.cache.CacheManager
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
 import org.springframework.context.annotation.Import
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -34,8 +31,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.testcontainers.junit.jupiter.Testcontainers
 
@@ -44,28 +39,8 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension::class)
+@AutoConfigureWireMock(port = 0)
 abstract class AbstractIntegrationTest {
-
-    companion object {
-        @JvmStatic
-        @RegisterExtension
-        val wireMock: WireMockExtension = WireMockExtension.newInstance()
-            .options(wireMockConfig().dynamicPort())
-            .build()
-
-        @JvmStatic
-        @DynamicPropertySource
-        fun configureProperties(registry: DynamicPropertyRegistry) {
-            registry.add("wiremock.server.port") { wireMock.port }
-            // Add any other properties that referenced the wiremock port, e.g.:
-            // registry.add("some.service.url") { "http://localhost:${wireMock.port}" }
-        }
-    }
-
-    @BeforeEach
-    fun resetWireMock() {
-        wireMock.resetAll()
-    }
 
     @Autowired
     lateinit var objectMapper: ObjectMapper
