@@ -1,27 +1,20 @@
+// build.gradle.kts (:app)
+
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "2.2.21"
-    val springBootVersion = "3.5.7"
-    val springDepMgmtVersion = "1.1.7"
-    val versionsVersion = "0.53.0"
-
     kotlin("jvm")
-    kotlin("plugin.spring") version kotlinVersion
+    kotlin("plugin.spring")
 
-    id("org.springframework.boot") version springBootVersion
-    id("io.spring.dependency-management") version springDepMgmtVersion
-    id("com.github.ben-manes.versions") version versionsVersion
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
+    id("com.github.ben-manes.versions")
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
@@ -35,19 +28,24 @@ dependencies {
     val jacksonVersion = "2.21.0"
 
     implementation(project(":lib"))
+
     implementation("org.opensearch.client:spring-data-opensearch-starter:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-aop")
+
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("org.jsoup:jsoup:$jsoupVersion")
+
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+
     testImplementation("org.opensearch.client:spring-data-opensearch-test-autoconfigure:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
@@ -66,7 +64,7 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
-tasks.withType<Test> {
+tasks.withType<Test>().configureEach {
     useJUnitPlatform()
     testLogging {
         exceptionFormat = TestExceptionFormat.FULL
