@@ -23,7 +23,7 @@ dependencies {
     val testcontainersVersion = "1.21.4"
     val wiremockVersion = "4.3.0"
     val kotestVersion = "6.1.2"
-    val jacksonVersion = "2.21.0"
+    val jacksonVersion = "2.21.1"
 
     implementation(project(":lib"))
 
