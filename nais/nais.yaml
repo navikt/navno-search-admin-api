@@ -50,8 +50,6 @@ spec:
          {{/each}}
   envFrom:
     - secret: navno-search-admin-api-secret
-  secureLogs:
-    enabled: true
   resources:
     requests:
       cpu: 100m
