@@ -33,7 +33,7 @@ data class Content(
     @Field(type = FieldType.Keyword) val language: String,
     @Field(type = FieldType.Keyword) val fylke: String? = null,
     @Field(type = FieldType.Keyword) val metatags: List<String>,
-    @Field(type = FieldType.Keyword) val keywords: List<String>,
+    @Field(type = FieldType.Keyword) val keywords: List<String> = emptyList(),
     @Field(type = FieldType.Keyword) val languageRefs: List<String> = emptyList(),
 ) {
     companion object {
@@ -52,7 +52,7 @@ data class Content(
             language: String,
             fylke: String? = null,
             metatags: List<String>,
-            keywords: List<String>,
+            keywords: List<String> = emptyList(),
             languageRefs: List<String> = emptyList(),
             includeTypeInAllText: Boolean = false,
         ) = Content(
