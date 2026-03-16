@@ -63,7 +63,7 @@ data class Content(
             ingress = MultiLangFieldShort.from(ingress, language),
             text = MultiLangFieldLong.from(text, language),
             allText = MultiLangFieldLong.from(
-                value = listOfNotNull(title, ingress, text, type.takeIf { includeTypeInAllText }).joinToString(),
+                value = (listOfNotNull(title, ingress, text, type.takeIf { includeTypeInAllText }) + keywords).joinToString(),
                 language = language
             ),
             type = type,
