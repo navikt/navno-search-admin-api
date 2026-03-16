@@ -37,6 +37,7 @@ class InboundMapperTest {
             language shouldBe contentDto.metadata!!.language
             fylke shouldBe contentDto.metadata!!.fylke
             metatags shouldBe contentDto.metadata!!.metatags
+            keywords shouldBe contentDto.metadata!!.keywords
             languageRefs shouldBe contentDto.metadata!!.languageRefs
         }
     }
