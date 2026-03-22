@@ -43,6 +43,7 @@ fun ContentDto.toInbound(teamName: String): Content {
         language = resolveLanguage(metadata.language),
         fylke = metadata.fylke,
         metatags = resolveMetatags(metadata, id),
+        keywords = metadata.keywords,
         languageRefs = metadata.languageRefs
             .map { resolveLanguage(it) }
             .filter { it != resolveLanguage(metadata.language) },
