@@ -16,5 +16,5 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: ./nais/opensearch.yaml
-          VARS: ./nais/dev-gcp/navno.json
+          RESOURCE: ./.nais/opensearch.yaml
+          VARS: ./.nais/dev-gcp/navno.json
