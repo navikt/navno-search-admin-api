@@ -24,7 +24,7 @@ class OutboundMapperTest {
             text shouldBe content.text.no
             metadata.shouldNotBeNull()
 
-            with(metadata!!) {
+            with(metadata) {
                 type shouldBe content.type
                 createdAt shouldBe content.createdAt
                 lastUpdated shouldBe content.lastUpdated
@@ -32,6 +32,7 @@ class OutboundMapperTest {
                 language shouldBe content.language
                 fylke shouldBe content.fylke
                 metatags shouldBe content.metatags
+                keywords shouldBe content.keywords
                 languageRefs shouldBe content.languageRefs
             }
         }

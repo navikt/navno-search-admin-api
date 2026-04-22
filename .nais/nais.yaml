@@ -45,13 +45,11 @@ spec:
       external:
         - host: kodeverk-api.nav.no
   ingresses:
-  {{#each ingresses}}
+    {{#each ingresses}}
      - "{{this}}"
-         {{/each}}
+    {{/each}}
   envFrom:
     - secret: navno-search-admin-api-secret
-  secureLogs:
-    enabled: true
   resources:
     requests:
       cpu: 100m
