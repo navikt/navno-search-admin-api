@@ -1,16 +1,21 @@
 name: Deploy to prod
 on:
   release:
-    types: [released]
+    types: [ released ]
 
 jobs:
-  deploy:
+  build-and-deploy:
+    runs-on: ubuntu-latest
     if: github.event.release.target_commitish == 'main'
     permissions:
       contents: read
       id-token: write
-    uses: ./.github/workflows/build-and-deploy.yml
-    with:
-      environment: prod
-    secrets:
-      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Build and deploy prod
+        uses: ./.github/actions/build-and-deploy
+        with:
+          ENVIRONMENT: prod
+          NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}

@@ -11,9 +11,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      - name: deploy to dev
+
+      - name: Deploy to dev
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: ./nais/opensearch.yaml
-          VARS: ./nais/dev-gcp/navno.json
+          RESOURCE: ./.nais/opensearch.yaml
+          VARS: ./.nais/dev-gcp/navno.json
