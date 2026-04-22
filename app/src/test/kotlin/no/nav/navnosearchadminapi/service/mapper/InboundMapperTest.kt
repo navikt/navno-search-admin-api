@@ -31,7 +31,7 @@ class InboundMapperTest {
             ingress.value shouldBe contentDto.ingress
             text.value shouldBe contentDto.text
             allText.value shouldBe with(contentDto) { "$title, $ingress, $text" }
-            type shouldBe contentDto.metadata!!.type
+            type shouldBe metadata.type
             createdAt shouldBe contentDto.metadata.createdAt
             lastUpdated shouldBe contentDto.metadata.lastUpdated
             audience shouldBe contentDto.metadata.audience
@@ -48,7 +48,8 @@ class InboundMapperTest {
         val contentDto = dummyContentDto(type = ValidTypes.SKJEMA.descriptor)
         val mappedContent = contentDto.toInbound(TEAM_NAME)
 
-        mappedContent.allText.value shouldBe with(contentDto) { "$title, $ingress, $text, ${metadata!!.type}" }
+        val metadataType = contentDto.metadata!!.type
+        mappedContent.allText.value shouldBe with(contentDto) { "$title, $ingress, $text, $metadataType" }
     }
 
     @Test
