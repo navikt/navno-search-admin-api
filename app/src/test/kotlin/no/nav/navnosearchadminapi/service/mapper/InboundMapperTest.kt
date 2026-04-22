@@ -31,14 +31,14 @@ class InboundMapperTest {
             text.value shouldBe contentDto.text
             allText.value shouldBe with(contentDto) { "$title, $ingress, $text" }
             type shouldBe contentDto.metadata!!.type
-            createdAt shouldBe contentDto.metadata!!.createdAt
-            lastUpdated shouldBe contentDto.metadata!!.lastUpdated
-            audience shouldBe contentDto.metadata!!.audience
-            language shouldBe contentDto.metadata!!.language
-            fylke shouldBe contentDto.metadata!!.fylke
-            metatags shouldBe contentDto.metadata!!.metatags
-            keywords shouldBe contentDto.metadata!!.keywords
-            languageRefs shouldBe contentDto.metadata!!.languageRefs
+            createdAt shouldBe contentDto.metadata.createdAt
+            lastUpdated shouldBe contentDto.metadata.lastUpdated
+            audience shouldBe contentDto.metadata.audience
+            language shouldBe contentDto.metadata.language
+            fylke shouldBe contentDto.metadata.fylke
+            metatags shouldBe contentDto.metadata.metatags
+            keywords shouldBe contentDto.metadata.keywords
+            languageRefs shouldBe contentDto.metadata.languageRefs
         }
     }
 
