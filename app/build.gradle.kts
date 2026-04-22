@@ -17,13 +17,11 @@ java {
 
 dependencies {
     val logstashVersion = "9.0"
-    val opensearchVersion = "2.0.3"
+    val opensearchVersion = "3.0.4"
     val jsoupVersion = "1.22.1"
     val opensearchTestcontainersVersion = "4.1.0"
     val testcontainersVersion = "1.21.4"
-    val wiremockVersion = "4.3.0"
-    val kotestVersion = "6.1.2"
-    val jacksonVersion = "2.21.0"
+    val kotestVersion = "6.1.7"
 
     implementation(project(":lib"))
 
@@ -35,20 +33,19 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation("org.springframework.boot:spring-boot-starter-aspectj")
 
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
     implementation("io.micrometer:micrometer-registry-prometheus")
     implementation("org.jsoup:jsoup:$jsoupVersion")
 
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("tools.jackson.module:jackson-module-kotlin")
 
     testImplementation("org.opensearch.client:spring-data-opensearch-test-autoconfigure:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:$wiremockVersion")
+    testImplementation("org.wiremock.integrations:wiremock-spring-boot:4.2.1")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.opensearch:opensearch-testcontainers:$opensearchTestcontainersVersion")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
