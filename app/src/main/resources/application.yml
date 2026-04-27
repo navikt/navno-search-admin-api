@@ -15,6 +15,9 @@ management:
       exposure:
         include: prometheus,health
       base-path: /internal
+  health:
+    ssl:
+      enabled: false
 
 kodeverk:
   spraak:
