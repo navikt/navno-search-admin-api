@@ -21,6 +21,7 @@ class InboundMapperTest {
     fun `skal mappe alle felter riktig`() {
         val contentDto = dummyContentDto()
         val mappedContent = contentDto.toInbound(TEAM_NAME)
+        val metadata = contentDto.metadata!!
 
         assertSoftly(mappedContent) {
             id shouldBe "$TEAM_NAME-${contentDto.id}"
@@ -30,14 +31,15 @@ class InboundMapperTest {
             ingress.value shouldBe contentDto.ingress
             text.value shouldBe contentDto.text
             allText.value shouldBe with(contentDto) { "$title, $ingress, $text" }
-            type shouldBe contentDto.metadata!!.type
-            createdAt shouldBe contentDto.metadata!!.createdAt
-            lastUpdated shouldBe contentDto.metadata!!.lastUpdated
-            audience shouldBe contentDto.metadata!!.audience
-            language shouldBe contentDto.metadata!!.language
-            fylke shouldBe contentDto.metadata!!.fylke
-            metatags shouldBe contentDto.metadata!!.metatags
-            languageRefs shouldBe contentDto.metadata!!.languageRefs
+            type shouldBe metadata.type
+            createdAt shouldBe contentDto.metadata.createdAt
+            lastUpdated shouldBe contentDto.metadata.lastUpdated
+            audience shouldBe contentDto.metadata.audience
+            language shouldBe contentDto.metadata.language
+            fylke shouldBe contentDto.metadata.fylke
+            metatags shouldBe contentDto.metadata.metatags
+            keywords shouldBe contentDto.metadata.keywords
+            languageRefs shouldBe contentDto.metadata.languageRefs
         }
     }
 
@@ -46,7 +48,8 @@ class InboundMapperTest {
         val contentDto = dummyContentDto(type = ValidTypes.SKJEMA.descriptor)
         val mappedContent = contentDto.toInbound(TEAM_NAME)
 
-        mappedContent.allText.value shouldBe with(contentDto) { "$title, $ingress, $text, ${metadata!!.type}" }
+        val metadataType = contentDto.metadata!!.type
+        mappedContent.allText.value shouldBe with(contentDto) { "$title, $ingress, $text, $metadataType" }
     }
 
     @Test

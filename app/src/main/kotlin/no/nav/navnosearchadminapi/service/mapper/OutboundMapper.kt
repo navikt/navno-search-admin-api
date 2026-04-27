@@ -19,6 +19,7 @@ fun Content.toOutbound() = ContentDto(
         language = language,
         fylke = fylke,
         metatags = metatags,
+        keywords = keywords,
         languageRefs = languageRefs,
     )
 )

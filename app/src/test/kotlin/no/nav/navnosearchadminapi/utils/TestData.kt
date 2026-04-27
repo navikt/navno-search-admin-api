@@ -37,18 +37,18 @@ val initialTestData = listOf(
             ValidAudiences.PROVIDER.descriptor
         ),
         fylke = ValidFylker.AGDER.descriptor,
-        metatags = listOf(ValidMetatags.STATISTIKK.descriptor)
+        metatags = listOf(ValidMetatags.STATISTIKK.descriptor),
     ),
     dummyContent(
         externalId = "2",
         fylke = ValidFylker.AGDER.descriptor,
-        metatags = listOf(ValidMetatags.STATISTIKK.descriptor)
+        metatags = listOf(ValidMetatags.STATISTIKK.descriptor),
     ),
     dummyContent(
         externalId = "3",
         timestamp = fixedNowMinusTwoYears,
         fylke = ValidFylker.AGDER.descriptor,
-        metatags = listOf(ValidMetatags.STATISTIKK.descriptor)
+        metatags = listOf(ValidMetatags.STATISTIKK.descriptor),
     ),
     dummyContent(
         externalId = "4",
@@ -100,7 +100,8 @@ fun dummyContent(
     audience: List<String> = listOf(ValidAudiences.PERSON.descriptor),
     language: String = NORWEGIAN_BOKMAAL,
     fylke: String? = null,
-    metatags: List<String> = emptyList()
+    metatags: List<String> = emptyList(),
+    keywords: List<String> = emptyList()
 ) = Content.from(
     id = createInternalId(teamName, externalId),
     teamOwnedBy = teamName,
@@ -116,6 +117,7 @@ fun dummyContent(
     language = language,
     fylke = fylke,
     metatags = metatags,
+    keywords = keywords,
     languageRefs = listOf(NORWEGIAN_NYNORSK, ENGLISH),
     includeTypeInAllText = false
 )
@@ -133,6 +135,7 @@ fun dummyContentDto(
     language: String? = ENGLISH,
     fylke: String? = null,
     metatags: List<String> = listOf(ValidMetatags.INFORMASJON.descriptor),
+    keywords: List<String> = listOf(),
     languageRefs: List<String> = listOf(NORWEGIAN_BOKMAAL),
 ) = ContentDto(
     id = id,
@@ -148,6 +151,7 @@ fun dummyContentDto(
         language = language,
         fylke = fylke,
         metatags = metatags,
+        keywords = keywords,
         languageRefs = languageRefs,
     )
 )
