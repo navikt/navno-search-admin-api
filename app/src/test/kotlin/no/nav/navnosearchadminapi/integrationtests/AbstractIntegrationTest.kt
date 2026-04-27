@@ -1,6 +1,6 @@
 package no.nav.navnosearchadminapi.integrationtests
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import tools.jackson.databind.ObjectMapper
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.aResponse
 import com.github.tomakehurst.wiremock.client.WireMock.post
@@ -17,21 +17,19 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.boot.test.web.client.exchange
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.cache.CacheManager
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock
+import org.wiremock.spring.EnableWireMock
 import org.springframework.context.annotation.Import
-import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpHeaders.CONTENT_TYPE
-import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.springframework.web.client.RestClient
 import org.testcontainers.junit.jupiter.Testcontainers
 
 @Testcontainers(disabledWithoutDocker = true)
@@ -39,14 +37,13 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension::class)
-@AutoConfigureWireMock(port = 0)
+@EnableWireMock
 abstract class AbstractIntegrationTest {
 
     @Autowired
     lateinit var objectMapper: ObjectMapper
 
-    @Autowired
-    lateinit var restTemplate: TestRestTemplate
+    private val restClient = RestClient.create()
 
     @Autowired
     lateinit var repository: ContentRepository
@@ -100,27 +97,31 @@ abstract class AbstractIntegrationTest {
     }
 
     protected fun get(path: String, headers: HttpHeaders = headers()): ResponseEntity<String> {
-        return restTemplate.exchange(
-            "${host()}/$path",
-            HttpMethod.GET,
-            HttpEntity<Any>(headers),
-        )
+        return restClient.get()
+            .uri("${host()}/$path")
+            .headers { it.addAll(headers) }
+            .retrieve()
+            .onStatus(HttpStatusCode::isError) { _, _ -> }
+            .toEntity(String::class.java)
     }
 
     protected fun <T> post(path: String, content: T, headers: HttpHeaders = headers()): ResponseEntity<String> {
-        return restTemplate.exchange(
-            "${host()}/$path",
-            HttpMethod.POST,
-            HttpEntity(listOf(content), headers),
-        )
+        return restClient.post()
+            .uri("${host()}/$path")
+            .headers { it.addAll(headers) }
+            .body(listOf(content))
+            .retrieve()
+            .onStatus(HttpStatusCode::isError) { _, _ -> }
+            .toEntity(String::class.java)
     }
 
     protected fun delete(path: String, headers: HttpHeaders = headers()): ResponseEntity<String> {
-        return restTemplate.exchange(
-            "${host()}/$path",
-            HttpMethod.DELETE,
-            HttpEntity<Any>(headers),
-        )
+        return restClient.delete()
+            .uri("${host()}/$path")
+            .headers { it.addAll(headers) }
+            .retrieve()
+            .onStatus(HttpStatusCode::isError) { _, _ -> }
+            .toEntity(String::class.java)
     }
 
     protected fun headers(isApiKeyValid: Boolean = true): HttpHeaders {
