@@ -1,6 +1,7 @@
 {
   "ingresses": [
-    "https://navno-search-admin-api.intern.dev.nav.no"
+    "https://navno-search-admin-api.intern.dev.nav.no",
+    "https://navno-search-admin-api.ekstern.dev.nav.no"
   ],
   "min-replicas": 1,
   "max-replicas": 1,
