@@ -17,12 +17,12 @@ java {
 
 dependencies {
     val logstashVersion = "9.0"
-    val opensearchVersion = "3.1.0"
-    val jsoupVersion = "1.22.2"
+    val opensearchVersion = "3.1.1"
+    val jsoupVersion = "1.23.1"
     val opensearchTestcontainersVersion = "4.1.0"
     val testcontainersVersion = "1.21.4"
     val wiremockVersion = "5.0.3"
-    val kotestVersion = "6.2.2"
+    val kotestVersion = "6.2.3"
 
     implementation(project(":lib"))
 
