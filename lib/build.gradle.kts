@@ -27,7 +27,7 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
-val libraryVersion: String = properties["lib_version"]?.toString() ?: "latest-local"
+val libraryVersion: String = providers.gradleProperty("lib_version").getOrElse("latest-local")
 
 publishing {
     repositories {
