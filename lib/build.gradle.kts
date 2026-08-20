@@ -13,7 +13,7 @@ java {
 }
 
 dependencies {
-    val opensearchVersion = "3.1.0"
+    val opensearchVersion = "3.1.1"
 
     implementation("org.opensearch.client:spring-data-opensearch-starter:$opensearchVersion") {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
@@ -27,7 +27,7 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
-val libraryVersion: String = properties["lib_version"]?.toString() ?: "latest-local"
+val libraryVersion: String = providers.gradleProperty("lib_version").getOrElse("latest-local")
 
 publishing {
     repositories {
