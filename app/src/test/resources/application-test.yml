@@ -6,7 +6,7 @@ kodeverk:
 no.nav.security.jwt:
   issuer:
     azuread:
-      discovery-url: http://localhost:${wiremock.server.port}/azuread/.well-known/openid-configuration
+      discovery-url: http://localhost:${mock-oauth2-server.port}/azuread/.well-known/openid-configuration
       accepted-audience: someaudience
       client-secret: somesecret
       token-endpoint: http://localhost:${wiremock.server.port}/azuread

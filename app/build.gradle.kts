@@ -49,6 +49,7 @@ dependencies {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("no.nav.security:token-validation-spring-test:$tokenValidationVersion")
     testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:$wiremockVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.opensearch:opensearch-testcontainers:$opensearchTestcontainersVersion")
