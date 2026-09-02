@@ -9,30 +9,17 @@ import no.nav.navnosearchadminapi.common.enums.ValidAudiences
 import no.nav.navnosearchadminapi.common.enums.ValidFylker
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
 import no.nav.navnosearchadminapi.common.enums.ValidTypes
-import no.nav.navnosearchadminapi.consumer.kodeverk.KodeverkConsumer
 import no.nav.navnosearchadminapi.service.validation.ContentDtoValidator
 import no.nav.navnosearchadminapi.utils.dummyContentDto
 import no.nav.navnosearchadminapi.utils.enumDescriptors
-import no.nav.navnosearchadminapi.utils.mockedKodeverkResponse
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.junit.jupiter.MockitoExtension
 
-@ExtendWith(MockitoExtension::class)
-class ContentDtoValidatorTest(@param:Mock val kodeverkConsumer: KodeverkConsumer) {
+class ContentDtoValidatorTest {
 
     private val invalidValue = "invalidValue"
     private val id = dummyContentDto().id
 
-    private val validator = ContentDtoValidator(kodeverkConsumer)
-
-    @BeforeEach
-    fun setup() {
-        Mockito.`when`(kodeverkConsumer.fetchSpraakKoder()).thenReturn(mockedKodeverkResponse)
-    }
+    private val validator = ContentDtoValidator()
 
     @Test
     fun `skal ha tom liste av valideringsfeil ved gyldig input`() {
@@ -109,7 +96,7 @@ class ContentDtoValidatorTest(@param:Mock val kodeverkConsumer: KodeverkConsumer
         val validationErrors = validator.validate(content)
 
         validationErrors shouldHaveSize 1
-        validationErrors[id]!!.shouldContainOnly("Ugyldig verdi for metadata.language: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
+        validationErrors[id]!!.shouldContainOnly("Ugyldig verdi for metadata.language: invalidValue. Må være gyldig tobokstavs ISO 639-1 språkkode.")
     }
 
     @Test
@@ -118,7 +105,7 @@ class ContentDtoValidatorTest(@param:Mock val kodeverkConsumer: KodeverkConsumer
         val validationErrors = validator.validate(content)
 
         validationErrors shouldHaveSize 1
-        validationErrors[id]!!.shouldContainOnly("Ugyldig verdi for metadata.languageRefs: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
+        validationErrors[id]!!.shouldContainOnly("Ugyldig verdi for metadata.languageRefs: invalidValue. Må være gyldig tobokstavs ISO 639-1 språkkode.")
     }
 
     @Test
@@ -135,7 +122,7 @@ class ContentDtoValidatorTest(@param:Mock val kodeverkConsumer: KodeverkConsumer
         validationErrors shouldHaveSize 2
 
         validationErrors.shouldHaveKey(firstId)
-        validationErrors[firstId]!!.shouldContainOnly("Ugyldig verdi for metadata.language: invalidValue. Må være tobokstavs språkkode fra kodeverk-api.")
+        validationErrors[firstId]!!.shouldContainOnly("Ugyldig verdi for metadata.language: invalidValue. Må være gyldig tobokstavs ISO 639-1 språkkode.")
 
         validationErrors.shouldHaveKey(secondId)
         validationErrors[secondId]!! shouldContainExactly (listOf(

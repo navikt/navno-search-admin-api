@@ -1,6 +1,5 @@
 package no.nav.navnosearchadminapi.integrationtests
 
-import com.github.tomakehurst.wiremock.client.WireMock
 import io.kotest.assertions.json.shouldEqualJson
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -8,7 +7,6 @@ import io.kotest.matchers.shouldBe
 import no.nav.navnosearchadminapi.utils.TEAM_NAME
 import no.nav.navnosearchadminapi.utils.createInternalId
 import no.nav.navnosearchadminapi.utils.dummyContentDto
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
@@ -19,13 +17,6 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
     @BeforeEach
     fun setup() {
         setupIndex()
-        mockAzuread()
-        mockKodeverk()
-    }
-
-    @AfterEach
-    fun teardown() {
-        WireMock.reset()
     }
 
     @Test
@@ -97,17 +88,6 @@ class AdminIntegrationTest : AbstractIntegrationTest() {
 
         response.statusCode shouldBe HttpStatus.OK
         response.body!! shouldEqualJson readFile("/json/save-content-invalid-language.json")
-    }
-
-    @Test
-    fun `should return 500 when saving content causes server error`() {
-        cacheManager.getCache("spraakkoder")?.clear()
-        mockKodeverk(status = HttpStatus.INTERNAL_SERVER_ERROR)
-
-        val response = post("/content/$TEAM_NAME", dummyContentDto())
-
-        response.statusCode shouldBe HttpStatus.INTERNAL_SERVER_ERROR
-        response.body!! shouldEqualJson readFile("/json/save-content-server-error.json")
     }
 
     @Test
