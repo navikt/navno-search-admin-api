@@ -5,6 +5,7 @@ import no.nav.navnosearchadminapi.integrationtests.config.ClockConfig
 import no.nav.navnosearchadminapi.integrationtests.config.OpensearchConfig
 import no.nav.navnosearchadminapi.rest.aspect.HeaderCheckAspect.Companion.API_KEY_HEADER
 import no.nav.navnosearchadminapi.utils.initialTestData
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
