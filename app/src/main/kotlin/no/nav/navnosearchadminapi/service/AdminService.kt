@@ -13,16 +13,28 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
+import tools.jackson.databind.ObjectMapper
 
 @Service
 class AdminService(
     val validator: ContentDtoValidator,
     val repository: ContentRepository,
     @param:Value("\${opensearch.page-size}") val pageSize: Int,
+    val objectMapper: ObjectMapper,
 ) {
     val logger: Logger = LoggerFactory.getLogger(AdminService::class.java)
 
-    fun saveAllContent(content: List<ContentDto>, teamName: String): SaveContentResponse {
+    fun saveAllContent(content: List<ContentDto>, teamName: String, xpOrigin: String?): SaveContentResponse {
+        if (xpOrigin in SMOKE_TEST_XP_ORIGINS) {
+            content.forEach {
+                logger.info(
+                    "Search document received as smoke test from $xpOrigin. " +
+                        "Dropping indexing. Document: ${objectMapper.writeValueAsString(it)}"
+                )
+            }
+            return SaveContentResponse(numberOfIndexedDocuments = 0, numberOfFailedDocuments = 0, validationErrors = emptyMap())
+        }
+
         val validationErrors = validator.validate(content)
 
         if (validationErrors.isNotEmpty()) {
@@ -53,5 +65,11 @@ class AdminService(
     fun getContentForTeamName(teamName: String, page: Int): Page<ContentDto> {
         val pageable = PageRequest.of(page, pageSize)
         return repository.findAllByTeamOwnedBy(teamName, pageable).map { it.toOutbound() }
+    }
+
+    companion object {
+        // xp-origin header values for XP dev environments that only run smoke tests and whose
+        // documents must never be indexed.
+        private val SMOKE_TEST_XP_ORIGINS = setOf("q6", "dev3")
     }
 }

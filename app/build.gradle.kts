@@ -23,6 +23,7 @@ dependencies {
     val testcontainersVersion = "1.21.4"
     val wiremockVersion = "5.0.2"
     val kotestVersion = "6.1.7"
+    val tokenValidationVersion = "6.0.12"
 
     implementation(project(":lib"))
 
@@ -36,6 +37,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-aspectj")
+    implementation("no.nav.security:token-validation-spring:$tokenValidationVersion")
 
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
     implementation("io.micrometer:micrometer-registry-prometheus")

@@ -2,6 +2,7 @@ package no.nav.navnosearchadminapi.exception.handler
 
 import jakarta.servlet.http.HttpServletRequest
 import no.nav.navnosearchadminapi.exception.InvalidApiKeyException
+import no.nav.navnosearchadminapi.exception.InvalidTokenException
 import no.nav.navnosearchadminapi.exception.MissingIdException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -27,6 +28,19 @@ class ErrorHandler(val clock: Clock) {
         return handleException(
             status = HttpStatus.UNAUTHORIZED,
             message = "Invalid API key",
+            path = request.requestURI,
+            ex = ex
+        )
+    }
+
+    @ExceptionHandler(value = [InvalidTokenException::class])
+    fun invalidTokenHandler(
+        ex: InvalidTokenException,
+        request: HttpServletRequest
+    ): ResponseEntity<ErrorResponse> {
+        return handleException(
+            status = HttpStatus.UNAUTHORIZED,
+            message = "Invalid token",
             path = request.requestURI,
             ex = ex
         )

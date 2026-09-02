@@ -15,5 +15,12 @@ plugins {
 allprojects {
     repositories {
         mavenCentral()
+        maven {
+            url = uri("https://maven.pkg.github.com/navikt/token-support")
+            credentials {
+                username = "token"
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
