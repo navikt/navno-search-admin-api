@@ -82,7 +82,7 @@ class ContentDtoValidator {
     }
 
     private fun validateLanguage(value: String, fieldName: String): List<String> {
-        return if (!validLanguages.contains(value.lowercase())) {
+        return if (!validLanguages.contains(value.lowercase(Locale.ROOT))) {
             listOf("Ugyldig verdi for $fieldName: $value. Må være gyldig tobokstavs ISO 639-1 språkkode.")
         } else emptyList()
     }
