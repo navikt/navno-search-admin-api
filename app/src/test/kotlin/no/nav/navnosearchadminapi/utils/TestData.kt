@@ -8,7 +8,6 @@ import no.nav.navnosearchadminapi.common.enums.ValidFylker
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
 import no.nav.navnosearchadminapi.common.enums.ValidTypes
 import no.nav.navnosearchadminapi.common.model.Content
-import no.nav.navnosearchadminapi.consumer.kodeverk.dto.KodeverkResponse
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.dto.inbound.ContentMetadata
 import java.time.LocalDateTime
@@ -17,8 +16,6 @@ import java.time.ZonedDateTime
 
 const val TEAM_NAME = "test-team"
 const val HINDI = "hi"
-
-val mockedKodeverkResponse = KodeverkResponse(listOf("NB", "NN", "EN", "SE", "PL", "UK", "RU"))
 
 val fixedNow: ZonedDateTime = ZonedDateTime.of(
     LocalDateTime.of(2020, 1, 1, 12, 0),

@@ -1,37 +1,20 @@
 package no.nav.navnosearchadminapi.integrationtests
 
-import tools.jackson.databind.ObjectMapper
-import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.client.WireMock.aResponse
-import com.github.tomakehurst.wiremock.client.WireMock.post
-import com.github.tomakehurst.wiremock.client.WireMock.stubFor
-import com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching
 import no.nav.navnosearchadminapi.repository.ContentRepository
-import no.nav.navnosearchadminapi.consumer.azuread.dto.outbound.TokenResponse
 import no.nav.navnosearchadminapi.integrationtests.config.ClockConfig
 import no.nav.navnosearchadminapi.integrationtests.config.OpensearchConfig
 import no.nav.navnosearchadminapi.rest.aspect.HeaderCheckAspect.Companion.API_KEY_HEADER
 import no.nav.navnosearchadminapi.utils.initialTestData
-import no.nav.navnosearchadminapi.utils.mockedKodeverkResponse
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.server.LocalServerPort
-import org.springframework.cache.CacheManager
-import org.springframework.cloud.contract.wiremock.WireMockSpring
 import org.springframework.context.annotation.Import
 import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpHeaders.CONTENT_TYPE
-import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
-import org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.web.client.RestClient
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -43,39 +26,16 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @ExtendWith(SpringExtension::class)
 abstract class AbstractIntegrationTest {
 
-    companion object {
-        private val wireMockServer = WireMockServer(WireMockSpring.options().dynamicPort())
-            .also { it.start() }
-
-        @JvmStatic
-        @DynamicPropertySource
-        fun wireMockProperties(registry: DynamicPropertyRegistry) {
-            registry.add("wiremock.server.port") { wireMockServer.port() }
-        }
-    }
-
-    @Autowired
-    lateinit var objectMapper: ObjectMapper
-
     private val restClient = RestClient.create()
 
     @Autowired
     lateinit var repository: ContentRepository
-
-    @Autowired
-    lateinit var cacheManager: CacheManager
 
     @LocalServerPort
     var serverPort: Int? = null
 
     @Value("\${api-key}")
     lateinit var apiKey: String
-
-    @BeforeEach
-    fun resetWireMock() {
-        WireMock.configureFor(wireMockServer.port())
-        WireMock.reset()
-    }
 
     protected fun host() = "http://localhost:$serverPort"
 
@@ -84,36 +44,6 @@ abstract class AbstractIntegrationTest {
     protected fun setupIndex() {
         repository.deleteAll()
         repository.saveAll(initialTestData)
-    }
-
-    protected fun mockAzuread() {
-        stubFor(
-            post(urlPathMatching("/azuread")).willReturn(
-                aResponse().withStatus(HttpStatus.OK.value())
-                    .withBody(objectMapper.writeValueAsString(TokenResponse(accessToken = "token")))
-                    .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-            )
-        )
-    }
-
-    protected fun mockKodeverk(status: HttpStatus = HttpStatus.OK) {
-        when (status) {
-            HttpStatus.OK -> stubFor(
-                WireMock.get(urlPathMatching("/kodeverk")).willReturn(
-                    aResponse().withStatus(HttpStatus.OK.value())
-                        .withBody(objectMapper.writeValueAsString(mockedKodeverkResponse))
-                        .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                )
-            )
-
-            HttpStatus.INTERNAL_SERVER_ERROR -> stubFor(
-                WireMock.get(urlPathMatching("/kodeverk")).willReturn(
-                    aResponse().withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                )
-            )
-
-            else -> error("HttpStatus $status ikke støttet")
-        }
     }
 
     protected fun get(path: String, headers: HttpHeaders = headers()): ResponseEntity<String> {
