@@ -19,15 +19,17 @@ import no.nav.navnosearchadminapi.common.enums.ValidAudiences
 import no.nav.navnosearchadminapi.common.enums.ValidFylker
 import no.nav.navnosearchadminapi.common.enums.ValidMetatags
 import no.nav.navnosearchadminapi.common.enums.ValidTypes
-import no.nav.navnosearchadminapi.consumer.kodeverk.KodeverkConsumer
 import no.nav.navnosearchadminapi.dto.inbound.ContentDto
 import no.nav.navnosearchadminapi.exception.MissingIdException
 import no.nav.navnosearchadminapi.utils.enumContains
 import no.nav.navnosearchadminapi.utils.enumDescriptors
 import org.springframework.stereotype.Component
+import java.util.Locale
 
 @Component
-class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
+class ContentDtoValidator {
+
+    private val validLanguages = Locale.getISOLanguages().toSet()
 
     fun validate(content: List<ContentDto>): Map<String, List<String>> {
         return buildMap {
@@ -80,9 +82,8 @@ class ContentDtoValidator(val kodeverkConsumer: KodeverkConsumer) {
     }
 
     private fun validateLanguage(value: String, fieldName: String): List<String> {
-        val validLanguages = kodeverkConsumer.fetchSpraakKoder().koder
-        return if (!validLanguages.contains(value.uppercase())) {
-            listOf("Ugyldig verdi for $fieldName: $value. Må være tobokstavs språkkode fra kodeverk-api.")
+        return if (!validLanguages.contains(value.lowercase(Locale.ROOT))) {
+            listOf("Ugyldig verdi for $fieldName: $value. Må være gyldig tobokstavs ISO 639-1 språkkode.")
         } else emptyList()
     }
 

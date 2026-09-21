@@ -21,7 +21,6 @@ dependencies {
     val jsoupVersion = "1.23.1"
     val opensearchTestcontainersVersion = "4.1.0"
     val testcontainersVersion = "1.21.4"
-    val wiremockVersion = "5.0.3"
     val kotestVersion = "6.2.3"
 
     implementation(project(":lib"))
@@ -33,7 +32,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-restclient")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-aspectj")
 
@@ -47,7 +45,6 @@ dependencies {
         exclude("org.opensearch.client", "opensearch-rest-client-sniffer")
     }
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:$wiremockVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.opensearch:opensearch-testcontainers:$opensearchTestcontainersVersion")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
