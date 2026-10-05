@@ -15,6 +15,8 @@ java {
     sourceCompatibility = JavaVersion.VERSION_21
 }
 
+extra["tomcat.version"] = "11.0.25"
+
 dependencies {
     val logstashVersion = "9.0"
     val opensearchVersion = "3.1.4"
