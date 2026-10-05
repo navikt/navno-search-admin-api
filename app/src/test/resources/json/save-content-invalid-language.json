@@ -3,7 +3,7 @@
   "numberOfFailedDocuments": 1,
   "validationErrors": {
     "11": [
-      "Ugyldig verdi for metadata.language: røverspråk. Må være tobokstavs språkkode fra kodeverk-api."
+      "Ugyldig verdi for metadata.language: røverspråk. Må være gyldig tobokstavs ISO 639-1 språkkode."
     ]
   }
 }
