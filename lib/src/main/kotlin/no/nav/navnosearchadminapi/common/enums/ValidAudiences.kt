@@ -9,6 +9,7 @@ enum class ValidAudiences(override val descriptor: String) : DescriptorProvider 
     PROVIDER_OPTICIAN("provider_optician"),
     PROVIDER_ADMINISTRATOR("provider_administrator"),
     PROVIDER_MEASURES_ORGANIZER("provider_measures_organizer"),
+    PROVIDER_TREKKMOTTAKER("provider_trekkmottaker"),
     PROVIDER_AID_SUPPLIER("provider_aid_supplier"),
     PROVIDER_OTHER("provider_other"),
     OTHER("other"),
