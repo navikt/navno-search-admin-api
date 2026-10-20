@@ -20,7 +20,7 @@ extra["tomcat.version"] = "11.0.25"
 dependencies {
     val logstashVersion = "9.0"
     val opensearchVersion = "3.1.4"
-    val jsoupVersion = "1.23.1"
+    val jsoupVersion = "1.23.2"
     val opensearchTestcontainersVersion = "4.1.0"
     val testcontainersVersion = "1.21.4"
     val kotestVersion = "6.2.3"
