@@ -1,0 +1,35 @@
+# Rebuilds and redeploys prod weekly so the image gets the newest base image.
+# Prod only runs released code, so this starts "Deploy to prod" on the newest release's tag rather than building main.
+name: Refresh base image
+on:
+  schedule:
+    - cron: '17 23 * * 0' # Sunday 23:17, off the hour due to quirks with GitHub scheduling
+      timezone: Europe/Oslo
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    # "Run workflow" lets you pick a branch. Skip unless it's main, so a manual
+    # run can't use a changed copy of this workflow from a feature branch.
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write # to start deploy-to-prod.yml
+      contents: read
+    steps:
+      - name: Start Deploy to prod on the newest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          # releases/latest skips drafts and pre-releases, like the `released` trigger in deploy-to-prod.yml
+          read -r tag target < <(gh api "repos/$REPO/releases/latest" --jq '"\(.tag_name) \(.target_commitish)"')
+          if [ "$target" != "main" ]; then
+            echo "::error::The newest release $tag targets $target, not main; deploy-to-prod.yml would not have deployed it."
+            exit 1
+          fi
+          # Runs the workflow as it is at the tag, so the release must contain a deploy-to-prod.yml with workflow_dispatch.
+          gh workflow run deploy-to-prod.yml --repo "$REPO" --ref "$tag"
+          echo "::notice::Started Deploy to prod on release $tag: $GITHUB_SERVER_URL/$REPO/actions/workflows/deploy-to-prod.yml"
