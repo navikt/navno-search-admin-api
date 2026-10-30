@@ -10,14 +10,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      - name: Setup Java
-        uses: actions/setup-java@v6
+      - name: Setup Java and Gradle
+        uses: navikt/navno-actions/setup-jvm@v1
         with:
-          distribution: 'temurin'
-          java-version: 21
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
+          dependency-graph: disabled
 
       - name: Build library
         run: ./gradlew build

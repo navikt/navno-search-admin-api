@@ -1,20 +1,12 @@
 name: Deploy Opensearch dev
 on:
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   deploy-opensearch:
-    name: Deploy Opensearch instance to cluster
-    permissions:
-      id-token: write
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-
-      - name: Deploy to dev
-        uses: nais/deploy/actions/deploy@v3
-        env:
-          CLUSTER: dev-gcp
-          RESOURCE: ./.nais/opensearch.yaml
-          VARS: ./.nais/dev-gcp/navno.json
+    uses: navikt/navno-ci/.github/workflows/nais-deploy.yml@v1
+    permissions: { contents: read, id-token: write }
+    with:
+      cluster: dev-gcp
+      resource: .nais/opensearch.yaml
+      vars: .nais/dev-gcp/navno.json
