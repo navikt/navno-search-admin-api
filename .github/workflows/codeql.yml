@@ -29,14 +29,10 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      - name: Set up Java
-        uses: actions/setup-java@v6
+      - name: Setup Java and Gradle
+        uses: navikt/navno-actions/setup-jvm@v1
         with:
-          distribution: 'temurin'
-          java-version: 21
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
+          dependency-graph: disabled
 
       - name: Build project
         run: ./gradlew clean build

@@ -1,21 +1,27 @@
+# Prod is deployed by publishing a release on main by hand, see README.md.
+# base-image-refresh.yml also starts this weekly on the newest release's tag, to rebuild it on a fresh base image.
 name: Deploy to prod
 on:
   release:
-    types: [ released ]
+    types: [released]
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    if: github.event.release.target_commitish == 'main'
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
+  build:
+    # Dispatching on a branch would put unreleased code in prod, so only tags are allowed.
+    if: >-
+      (github.event_name == 'release' && github.event.release.target_commitish == 'main') ||
+      (github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/tags/'))
+    uses: navikt/navno-ci/.github/workflows/jvm-build.yml@v1
+    permissions: { contents: read, id-token: write, packages: read }
+    secrets: inherit
 
-      - name: Build and deploy prod
-        uses: ./.github/actions/build-and-deploy
-        with:
-          ENVIRONMENT: prod
-          NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+  deploy:
+    needs: build
+    uses: navikt/navno-ci/.github/workflows/nais-deploy.yml@v1
+    permissions: { contents: read, id-token: write }
+    with:
+      cluster: prod-gcp
+      resource: .nais/nais.yaml
+      vars: .nais/prod-gcp/navno.json
+      workload-image: ${{ needs.build.outputs.image }}

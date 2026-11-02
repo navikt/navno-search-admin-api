@@ -42,6 +42,16 @@ Husk å starte applikasjonen med profile "local".
 - Kjør workflowen `Build and publish library` 
 - Gå til packages og hent version fra siste package (etter at siste release er deployet), og endre siste versjon av navnoSearchCommonVersion i `navno-search-api`. (Les mer om Publisering av felles bibliotek i punktet under)
 
+## Ukentlig rebuild
+
+Workflowen `Refresh base image` starter `Deploy to prod` på taggen til siste release hver søndag kveld, slik at prod bygges på nytt med nyeste base image. Det er alltid siste release som deployes, aldri main.
+
+`Deploy to prod` kan også startes manuelt på en tagg (Run workflow -> velg tagg), f.eks. for å rulle tilbake til en tidligere release. Den kan ikke startes på en branch.
+
+## CI
+
+Workflowene bruker de felles workflowene i [navno-ci](https://github.com/navikt/navno-ci) og actions fra [navno-actions](https://github.com/navikt/navno-actions).
+
 ## Publisering av felles bibliotek
 Ved trigging av workflowen `Build and publish library`, publiseres det et felles bibliotek til maven. Dette brukes av `navno-search-api`. Biblioteket inneholder diverse konstanter, samt klassen som brukes for å opprette Opensearch-indexen. Ved deling og versjonering av denne er det mulig å opprette og populere en ny index før man skrur apiet over til å søke mot denne.
 
